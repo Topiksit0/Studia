@@ -42,45 +42,50 @@ const home = () => {
 
 
                     <div className='flex flex-wrap gap-x-8 h-[11rem] gap-8 '>
-                        <div className='shadow-md  bg-white grid text-center cursor-pointer from-green-400 p-1 to-blue-600 bg-gradient-to-r rounded-md w-48'>
-                            <div className=' dark:bg-gray-900 rounded-md flex flex-col '>
-                                <div>
-                                    <FaSchool size={50} className='inline-grid text-white my-3' />
+
+                        <a href="/register">
+                            <div className='shadow-md  bg-white grid text-center cursor-pointer from-green-400 p-1 to-blue-600 bg-gradient-to-r rounded-md w-48'>
+
+                                <div className=' dark:bg-gray-900 rounded-md flex flex-col  '>
+                                    <div>
+                                        <FaSchool size={50} className='inline-grid text-white my-3' />
+                                    </div>
+
+                                    <h1 className='font-semibold text-white px-3'> New student?</h1>
+                                    <p className='text-xs text-white px-3'>If you are a student and you have just enrolled, create your credentials.</p>
                                 </div>
-
-                                <h1 className='font-semibold text-white px-3'> New student?</h1>
-                                <p className='text-xs text-white px-3'>If you are a student and you have just enrolled, create your credentials.</p>
                             </div>
-                        </div>
+                        </a>
 
 
+                        <a href="">
+                            <div className='shadow-md  bg-white grid text-center cursor-pointer  from-green-400 p-1 to-blue-600 bg-gradient-to-r rounded-md w-48'>
+                                <div className=' dark:bg-gray-900 rounded-md flex flex-col'>
+                                    <div>
+                                        <MdSchool size={50} className='inline text-white my-3' />
+                                    </div>
 
-                        <div className='shadow-md  bg-white grid text-center cursor-pointer  from-green-400 p-1 to-blue-600 bg-gradient-to-r rounded-md w-48'>
-                            <div className=' dark:bg-gray-900 rounded-md flex flex-col'>
-                                <div>
-                                    <MdSchool size={50} className='inline text-white my-3' />
+                                    <h1 className='font-semibold text-white px-3'>Do you need help?</h1>
+                                    <p className='text-xs text-white px-3'>Consult the resources available or contact the support team.</p>
                                 </div>
-
-                                <h1 className='font-semibold text-white px-3'>Do you need help?</h1>
-                                <p className='text-xs text-white px-3'>Consult the resources available or contact the support team.</p>
                             </div>
-                        </div>
+                        </a>
 
+                        <a href="">
+                            <div className='shadow-md  bg-white grid text-center cursor-pointer   from-green-400 p-1 to-blue-600 bg-gradient-to-r rounded-md w-48'>
+                                <div className=' dark:bg-gray-900 rounded-md flex flex-col'>
+                                    <div>
+                                        <RiSurveyFill className='inline text-white my-3' size={50} />
+                                    </div>
 
-                        <div className='shadow-md  bg-white grid text-center cursor-pointer   from-green-400 p-1 to-blue-600 bg-gradient-to-r rounded-md w-48'>
-                            <div className=' dark:bg-gray-900 rounded-md flex flex-col'>
-                                <div>
-                                    <RiSurveyFill className='inline text-white my-3' size={50} />
+                                    <h1 className='font-semibold text-white px-3'>Help us to improve</h1>
+                                    <p className='text-xs text-white px-3'>Complete the survey and help us to improve the teaching platform.</p>
                                 </div>
-
-                                <h1 className='font-semibold text-white px-3'>Help us to improve</h1>
-                                <p className='text-xs text-white px-3'>Complete the survey and help us to improve the teaching platform.</p>
                             </div>
-                        </div>
+                        </a>
+
+
                     </div>
-                </div>
-                <div className='col-span-3 ' >
-
                 </div>
 
             </div>

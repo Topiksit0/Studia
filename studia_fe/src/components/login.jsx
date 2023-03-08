@@ -26,8 +26,7 @@ const login = () => {
 
                         <div className="hidden md:block w-1/2 bg-image py-10 px-10 relative ">
                             <div className='w-[2rem]'>
-                                <a href="/home
-">
+                                <a href="/home">
                                     <BsFillArrowLeftSquareFill size={30} style={{ cursor: "pointer", color: "rgba(255, 255, 255, 1)" }} />
                                 </a>
                             </div>
@@ -42,11 +41,11 @@ const login = () => {
 
 
                             <div className='absolute bottom-7 inset-x-0 flex flex-col items-center'>
-                                <p className='text-white text-sm text-center' >In case you do not have an account already</p>
-                                <button class="my-5 bg-white text-gray-800 font-bold rounded border-b-2 border-green-500 hover:border-green-600 hover:bg-green-500 hover:text-white shadow-md py-2 px-6 inline-flex items-center">
+                                <p className='text-white text-sm text-center text-xs' >In case you do not have an account already</p>
+                                <Link to="/register" class="my-3 bg-white text-gray-800 font-bold rounded border-b-2 border-green-500  transition-all hover:border-green-600 hover:bg-green-500 hover:text-white shadow-md py-2 px-6 inline-flex items-center">
                                     <span class="">Register</span>
 
-                                </button>
+                                </Link>
                             </div>
 
                         </div>
@@ -54,7 +53,7 @@ const login = () => {
                             <div className="text-center mb-10">
 
                                 <h1 class="font-bold text-3xl text-gray-900">Login</h1>
-                                <p>Enter your information to register</p>
+                                <p>Enter your information</p>
                             </div>
 
                             <div>
