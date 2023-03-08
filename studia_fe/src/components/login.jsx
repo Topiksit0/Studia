@@ -1,9 +1,13 @@
 import React from 'react'
 import './styles/login.css'
+import { BsFillArrowLeftSquareFill } from 'react-icons/bs'
+import { Link } from 'react-router-dom';
 
 const login = () => {
     return (
         <div class="">
+
+
             <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.js" defer></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.4.2/zxcvbn.js"></script>
 
@@ -15,14 +19,22 @@ const login = () => {
 
                 <div class="bg-gray-100 text-gray-500 rounded-3xl shadow-xl w-full overflow-hidden " style={{ maxWidth: '1000px' }} >
 
-                    <div className='absolute bg-gray-400 shadow-lg transform sm:skew-y-0 sm:rounded-3xl -translate-x-[4%]  translate-y-[12%] -z-10 sm:w-2/4 sm:h-2/4'>
+                    <div className='absolute bg-gray-400 shadow-lg transform sm:skew-y-0 sm:rounded-3xl -translate-x-[4%]  translate-y-[12%] -z-10 sm:w-[60rem] sm:h-[36rem]'>
 
                     </div>
                     <div className="md:flex w-full ">
+
                         <div className="hidden md:block w-1/2 bg-image py-10 px-10 relative ">
+                            <div className='w-[2rem]'>
+                                <a href="/home
+">
+                                    <BsFillArrowLeftSquareFill size={30} style={{ cursor: "pointer", color: "rgba(255, 255, 255, 1)" }} />
+                                </a>
+                            </div>
+
 
                             <div className='flex justify-center'>
-                                <div className='absolute top-36 w-2/4   '>
+                                <div className='absolute top-48 w-2/4   '>
                                     <h1 className='text-white font-medium text-4xl '>Welcome back!</h1>
                                     <p className='text-white py-3 '>You can sign in to access with your existing account.</p>
                                 </div>
@@ -31,11 +43,9 @@ const login = () => {
 
                             <div className='absolute bottom-7 inset-x-0 flex flex-col items-center'>
                                 <p className='text-white text-sm text-center' >In case you do not have an account already</p>
-                                <button className="my-5  w-2/5   p-1 mb-2 mr-2 text-sm font-medium text-gray-900 
-                                rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white dark:text-white focus:ring-4">
-                                    <span className="block w-full max-w-xs mx-auto py-3.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0 font-semibold" >
-                                        Register an Account
-                                    </span>
+                                <button class="my-5 bg-white text-gray-800 font-bold rounded border-b-2 border-green-500 hover:border-green-600 hover:bg-green-500 hover:text-white shadow-md py-2 px-6 inline-flex items-center">
+                                    <span class="">Register</span>
+
                                 </button>
                             </div>
 
@@ -85,12 +95,10 @@ const login = () => {
 
                                 <div className='flex flex-col text-center items-center'>
                                     <p className='text-xs'>or connect with social media</p>
-                                    <div class="google-btn my-5">
-                                        <div class="google-icon-wrapper">
-                                            <img class="google-icon" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" />
-                                        </div>
-                                        <p class="btn-text"><b>Sign in with google</b></p>
-                                    </div>
+                                    <button type="button" class="my-5 text-white bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55 mr-2 mb-2">
+                                        <svg class="w-4 h-4 mr-2 -ml-1" aria-hidden="true" focusable="false" data-prefix="fab" data-icon="google" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 488 512"><path fill="currentColor" d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"></path></svg>
+                                        Sign in with Google
+                                    </button>
                                 </div>
                             </div>
                         </div>
