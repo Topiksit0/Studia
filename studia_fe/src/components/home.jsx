@@ -62,13 +62,23 @@ const home = () => {
                     <div
                         class="container flex flex-col items-center justify-between h-full max-w-6xl px-8 mx-auto -mt-32 lg:flex-row xl:px-0">
                         <div
-                            class="z-30 flex flex-col items-center w-full max-w-xl pt-48 text-center lg:items-start lg:w-1/2 lg:pt-20 xl:pt-40 lg:text-left">
+                            class="z-30 flex flex-col items-center w-full max-w-xl pt-48 text-center lg:items-start lg:w-1/2 lg:pt-20 xl:pt-40 lg:text-left justify-center">
                             <h1
                                 class="relative mb-4 text-3xl font-black leading-tight text-gray-900 sm:text-6xl xl:mb-8 tracking-tighter">
                                 Welcome to the new era of Learning </h1>
-                            <p class="pr-0 mt-7 text-base text-gray-600 sm:text-lg xl:text-xl lg:pr-20">Join the future of
+                            <p class="pr-0 mt-7 text-base text-gray-900 sm:text-lg xl:text-xl lg:pr-20 z-20">Join the future of
                                 education with our user-friendly e-learning platform designed for the University of Barcelona.</p>
+                            <div className='lg:left-48 relative py-6 top-5 z-20'>
+                                <a  href="/login
+                                ">
+                                    <button class="inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800">
+                                        <span class=" px-8 py-3.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                                            Enter the classroom
+                                        </span>
+                                    </button>
+                                </a>
 
+                            </div>
 
                             <div class="flex-col hidden mt-12 sm:flex lg:mt-24">
                                 <div class="flex flex-wrap gap-x-8 h-[11rem] gap-8 ">
@@ -86,7 +96,7 @@ const home = () => {
                                         </div>
                                     </a>
 
-                                    <a href="">
+                                    <a href="https://www.ub.edu/campusvirtualub/ca/content/et-cal-ajuda">
                                         <div className='shadow-lg  bg-white grid text-center cursor-pointer rounded-md w-40'>
                                             <div className=' from-[#657DE9] h-[12rem] to-[#6e66d6] bg-gradient-to-r rounded-md flex flex-col'>
                                                 <div>
@@ -99,7 +109,7 @@ const home = () => {
                                         </div>
                                     </a>
 
-                                    <a href="">
+                                    <a href="https://forms.office.com/pages/responsepage.aspx?id=qzwxosOxOk-7ESFXRH3btJgz-3XbAEBHsUehETyC1ApUQjJKSEhPNVlWV1pXRlYwTlVVT0cwMElIOC4u">
                                         <div className='shadow-lg  bg-white grid text-center cursor-pointer   rounded-md w-40'>
                                             <div className=' from-[#657DE9] h-[12rem] to-[#6e66d6] bg-gradient-to-r rounded-md flex flex-col'>
                                                 <div>
@@ -150,11 +160,7 @@ const home = () => {
                     </div>
 
                 </div>
-                <footer className='wave_fot '>
-                    <div className=''>
-                        
-                    </div>
-                </footer>
+
 
             </div>
 

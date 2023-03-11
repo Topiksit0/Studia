@@ -21,7 +21,7 @@ function register() {
 
         <div class="bg-gray-100 text-gray-500 rounded-3xl shadow-xl w-full overflow-hidden " style={{ maxWidth: '1000px' }} >
 
-          <div className='absolute bg-gray-400 shadow-lg transform sm:skew-y-0 sm:rounded-3xl -translate-x-[4%]  translate-y-[8%] -z-10 sm:w-[60rem] sm:h-[47rem]'>
+          <div className='absolute bg-gray-900 shadow-lg transform sm:skew-y-0 sm:rounded-3xl -translate-x-[4%]  translate-y-[8%] z-20 sm:w-[60rem] sm:h-[47rem] '>
 
           </div>
           <div className="md:flex w-full ">

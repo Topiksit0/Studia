@@ -17,19 +17,20 @@ const login = () => {
             <div class="min-w-screen min-h-screen  flex items-center justify-center px-5 py-5">
 
 
-                <div class="bg-gray-100 text-gray-500 rounded-3xl shadow-xl w-full overflow-hidden " style={{ maxWidth: '1000px' }} >
-
-                    <div className='absolute bg-gray-400 shadow-lg transform sm:skew-y-0 sm:rounded-3xl -translate-x-[4%]  translate-y-[12%] -z-10 sm:w-[60rem] sm:h-[36rem]'>
+                <div class="bg-gray-100 text-gray-500 rounded-3xl shadow-xl w-full overflow-hidden  " style={{ maxWidth: '1000px' }} >
+                    <div className='absolute  shadow-lg transform sm:skew-y-0 sm:rounded-3xl -z-10 -translate-x-[4%]  translate-y-[12%] sm:w-[60rem] sm:h-[36rem] '>
 
                     </div>
-                    <div className="md:flex w-full ">
 
-                        <div className="hidden md:block w-1/2 bg-image py-10 px-10 relative ">
+                    <div className="md:flex w-full z-50">
+
+                        <div className="hidden md:block w-1/2 bg-image py-10 px-10 relative z-50">
                             <div className='w-[2rem]'>
                                 <a href="/home">
                                     <BsFillArrowLeftSquareFill size={30} style={{ cursor: "pointer", color: "rgba(255, 255, 255, 1)" }} />
                                 </a>
                             </div>
+
 
 
                             <div className='flex justify-center'>
@@ -49,7 +50,7 @@ const login = () => {
                             </div>
 
                         </div>
-                        <div class="w-full md:w-1/2 py-10 px-5 md:px-10">
+                        <div class="w-full md:w-1/2 py-10 px-5 md:px-10 z-50">
                             <div className="text-center mb-10">
 
                                 <h1 class="font-bold text-3xl text-gray-900">Login</h1>
@@ -58,8 +59,8 @@ const login = () => {
 
                             <div>
 
-                                <div class="flex -mx-3">
-                                    <div class="w-full px-3 mb-5">
+                                <div class="flex -mx-3 z-50">
+                                    <div class="w-full px-3 mb-5 z-50">
                                         <label for="" class="text-xs font-semibold px-1">Email</label>
                                         <div class="flex">
                                             <div class="w-10 z-10 pl-1 text-center pointer-events-none flex items-center justify-center"><i class="mdi mdi-email-outline text-gray-400 text-lg"></i></div>
