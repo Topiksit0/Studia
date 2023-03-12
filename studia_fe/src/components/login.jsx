@@ -1,13 +1,24 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './styles/login.css'
 import { BsFillArrowLeftSquareFill } from 'react-icons/bs'
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux'
 
-const login = () => {
-    function handleSubmit(e) {
+const Login = () => {
+    const [formData, setFormData] = useState({
+        email: '',
+        password: ''
+    })
+
+    const { email, password } = formData
+    const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value })
+
+    const handleSubmit = e => {
         e.preventDefault();
-        window.location.assign('/courses')
-      }
+
+        // login(email, password)
+    }
+
     
     return (
         <div class="">
@@ -69,7 +80,7 @@ const login = () => {
                                         <label for="" class="text-xs font-semibold px-1">Email</label>
                                         <div class="flex">
                                             <div class="w-10 z-10 pl-1 text-center pointer-events-none flex items-center justify-center"><i class="mdi mdi-email-outline text-gray-400 text-lg"></i></div>
-                                            <input type="email" class="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500" placeholder="marc9@alumnes.ub.edu" />
+                                            <input type="email" class="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500" placeholder="marc9@alumnes.ub.edu" value={email} onChange={e => onChange(e)} required />
                                         </div>
                                     </div>
                                 </div>
@@ -80,7 +91,7 @@ const login = () => {
                                         <label for="" class="text-xs font-semibold px-1">Password</label>
                                         <div class="flex">
                                             <div class="w-10 z-10 pl-1 text-center pointer-events-none flex items-center justify-center"><i class="mdi mdi-lock-outline text-gray-400 text-lg"></i></div>
-                                            <input type="password" class="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500" placeholder="************" />
+                                            <input type="password" class="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500" placeholder="************" value={password} onChange={e => onChange(e)} minLength='8'  required  />
 
                                         </div>
                                         <a href="" className='absolute  right-0  right-0'>  <p className='  text-xs my-3 mr-4 '>Forgot password?</p> </a>
@@ -114,8 +125,9 @@ const login = () => {
     )
 }
 
-export default login
+const mapStateToProps = state => ({
 
-/*
- <button class="block w-full max-w-xs mx-auto  hover:bg-indigo-700 transition ease-in-out delay-150 bg-blue-500 hover:-translate-y-1 hover:scale-110 hover:bg-indigo-500 duration-300 focus:bg-indigo-700 text-white rounded-lg px-3 py-3 my-5 font-semibold">Login</button>
-*/
+})
+
+export default connect(null,{ })(Login);
+
