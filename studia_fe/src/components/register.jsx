@@ -1,6 +1,6 @@
 import React from 'react'
 import { BsFillArrowLeftSquareFill } from 'react-icons/bs'
-import { Link, useNavigate  } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function register() {
 
@@ -16,12 +16,12 @@ function register() {
 
       <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/5.3.45/css/materialdesignicons.min.css')</style>
 
-      <div class="min-w-screen min-h-screen  flex items-center justify-center px-5 py-5">
+      <div class="min-w-screen min-h-screen  flex items-center justify-center px-5 py-5 bg-gradient-to-r from-indigo-400  to-[#6e66d6]">
 
 
         <div class="bg-gray-100 text-gray-500 rounded-3xl shadow-xl w-full overflow-hidden " style={{ maxWidth: '1000px' }} >
 
-          <div className='absolute bg-gray-900 shadow-lg transform sm:skew-y-0 sm:rounded-3xl -translate-x-[4%]  translate-y-[8%] z-20 sm:w-[60rem] sm:h-[47rem] '>
+          <div className='absolute li bg-gray-100 shadow-lg transform sm:skew-y-0 sm:rounded-3xl -z-0 -translate-x-[9%]  translate-y-[14%] sm:w-[26rem] sm:h-[38rem] '>
 
           </div>
           <div className="md:flex w-full ">
@@ -44,7 +44,7 @@ function register() {
 
               <div className='absolute bottom-7 inset-x-0 flex flex-col items-center'>
                 <p className='text-white text-sm text-center text-xs' >In case you have an account already</p>
-                <Link to="/login" class="my-3 bg-white text-gray-800 font-bold rounded border-b-2 border-green-500  transition-all hover:border-green-600 hover:bg-green-500 hover:text-white shadow-md py-2 px-6 inline-flex items-center">
+                <Link to="/login" class="my-3 bg-white text-gray-800 font-bold rounded border-b-2 border-indigo-400  transition-all hover:border-indigo-400 hover:bg-indigo-400 hover:text-white shadow-md py-2 px-6 inline-flex items-center">
                   <span class="">Login</span>
 
                 </Link>
@@ -112,10 +112,9 @@ function register() {
                   </div>
                 </div>
                 <div class="flex justify-center pt-7 mb-5">
-                  <div class="w-full px-3 sm:ml-8 mb-5">
-                    <button className="  w-full max-w-xs mx-auto  inline-flex  p-1 mb-2 mr-2 text-sm font-medium text-gray-900 
-                            rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white dark:text-white focus:ring-4">
-                      <span className="block w-full max-w-xs mx-auto py-3.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0 font-semibold" >
+                  <div class="w-full px-3 sm:ml-8 mb-5 text-center sm:mr-5">
+                    <button class=" inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800">
+                      <span class=" w-[16rem] py-3.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
                         Register
                       </span>
                     </button>
