@@ -27,12 +27,34 @@ export default function(state = initialState, action) {
     const { type, payload } = action;
 
     switch(type) {
-        case AUTHENTICATED_SUCCESS:
+        case LOGOUT:
+            localStorage.removeItem('access');
+            localStorage.removeItem('refresh');
             return {
                 ...state,
-                isAuthenticated: true
+                access: null,
+                refresh: null,
+                isAuthenticated: false,
+                user: null
             }
         case LOGIN_SUCCESS:
+            localStorage.setItem('access',payload.access)
+            return{
+                ...state,
+                isAuthenticated: true,
+                access: payload.access,
+                refresh: payload.access
+            }
+        case LOGIN_FAIL:
+            localStorage.removeItem('access');
+            localStorage.removeItem('refresh');
+            return {
+                ...state,
+                access: null,
+                refresh: null,
+                isAuthenticated: false,
+                user: null
+            }
         case SIGNUP_SUCCESS:
             return {
                 ...state,
@@ -42,6 +64,11 @@ export default function(state = initialState, action) {
             return {
                 ...state,
                 user: payload
+            }
+        case AUTHENTICATED_SUCCESS:
+            return {
+                ...state,
+                isAuthenticated: true
             }
         case AUTHENTICATED_FAIL:
             return {
@@ -53,18 +80,7 @@ export default function(state = initialState, action) {
                 ...state,
                 user: null
             }
-        case LOGIN_FAIL:
         case SIGNUP_FAIL:
-        case LOGOUT:
-            localStorage.removeItem('access');
-            localStorage.removeItem('refresh');
-            return {
-                ...state,
-                access: null,
-                refresh: null,
-                isAuthenticated: false,
-                user: null
-            }
         case PASSWORD_RESET_SUCCESS:
         case PASSWORD_RESET_FAIL:
         case PASSWORD_RESET_CONFIRM_SUCCESS:

@@ -4,7 +4,9 @@ import Login from './components/login';
 import Register from './components/register';
 import Courses from './components/coursesHome'
 import ReactDOM from "react-dom/client";
-import { Provider } from 'react-redux';
+import { Provider, connect } from 'react-redux';
+import { useEffect } from 'react';
+import { checkAuthenticated, load_user } from './actions/auth';
 
 import store from './store';
 
@@ -15,6 +17,7 @@ import {
   Navigate,
   NavLink,
 } from "react-router-dom";
+
 
 
 
