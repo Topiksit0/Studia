@@ -3,8 +3,11 @@ import Home from "./components/home";
 import Login from './components/login';
 import Register from './components/register';
 import Courses from './components/coursesHome'
+import Configuration from './components/configurationsHome'
+import Verify from './components/verify'
 import ReactDOM from "react-dom/client";
 import { Provider, connect } from 'react-redux';
+
 import { useEffect } from 'react';
 import { checkAuthenticated, load_user } from './actions/auth';
 
@@ -32,6 +35,8 @@ function App() {
             <Route path="/login" element={<Login />}></Route>
             <Route path="/register" element={<Register />}></Route>
             <Route path="/courses" element={<Courses />}></Route>
+            <Route path="/configuration" element={<Configuration />}></Route>
+            <Route exact path='/activate/:uid/:token' component={Verify} />
           </Routes>
         </div>
       </Router>

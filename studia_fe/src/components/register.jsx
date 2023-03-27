@@ -1,10 +1,41 @@
-import React from 'react'
+import {React, useState} from 'react'
 import { BsFillArrowLeftSquareFill } from 'react-icons/bs'
 import { Link, useNavigate } from 'react-router-dom';
+import { signup } from '../actions/auth';
+import { connect } from 'react-redux';
 
-function register() {
 
+const Register = ({ signup , isAuthenticated }) => {
+  const [accountCreated, setAccountCreated] = useState(false);
+  const navigate = useNavigate();
 
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    repassword: '',
+    username: '',
+    name: ''
+  });
+  const { email, password, username, name, repassword} = formData;
+
+  const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  const handleSubmit = e => {
+    e.preventDefault();
+
+    if(password === repassword){
+      signup(email, name, username, password, repassword)
+      setAccountCreated(true);
+    }
+};
+
+if(isAuthenticated){
+  navigate("/courses");
+}
+
+if(accountCreated){
+  navigate("/login");
+}
 
   return (
     <div class="">
@@ -65,7 +96,14 @@ function register() {
                     <label for="" class="text-xs font-semibold px-1">Username</label>
                     <div class="flex">
                       <div class="w-10 z-10 pl-1 text-center pointer-events-none flex items-center justify-center"><i class="mdi mdi-account text-gray-400 text-lg"></i></div>
-                      <input type="email" class="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500" placeholder="marcus01" />
+                      <input
+                        type="email"
+                        class="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500"
+                        placeholder="marcus01"
+                        name='username'
+                        value={username}
+                        onChange={e => onChange(e)}
+                        required />
                     </div>
                   </div>
                 </div>
@@ -74,7 +112,14 @@ function register() {
                     <label for="" class="text-xs font-semibold px-1">Name</label>
                     <div class="flex">
                       <div class="w-10 z-10 pl-1 text-center pointer-events-none flex items-center justify-center"><i class="mdi mdi-account-group text-gray-400 text-lg"></i></div>
-                      <input type="email" class="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500" placeholder="Marcos Palomino Vivar" />
+                      <input
+                        type="email"
+                        class="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500"
+                        placeholder="Marcos Palomino Vivar"
+                        name='name'
+                        value={name}
+                        onChange={e => onChange(e)}
+                        required />
                     </div>
                   </div>
                 </div>
@@ -83,7 +128,14 @@ function register() {
                     <label for="" class="text-xs font-semibold px-1">Email</label>
                     <div class="flex">
                       <div class="w-10 z-10 pl-1 text-center pointer-events-none flex items-center justify-center"><i class="mdi mdi-email-outline text-gray-400 text-lg"></i></div>
-                      <input type="email" class="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500" placeholder="marc9@alumnes.ub.edu" />
+                      <input
+                        type="email"
+                        class="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500"
+                        placeholder="marc9@alumnes.ub.edu"
+                        name='email'
+                        value={email}
+                        onChange={e => onChange(e)}
+                        required />
                     </div>
                   </div>
                 </div>
@@ -94,7 +146,15 @@ function register() {
                     <label for="" class="text-xs font-semibold px-1">Password</label>
                     <div class="flex">
                       <div class="w-10 z-10 pl-1 text-center pointer-events-none flex items-center justify-center"><i class="mdi mdi-lock-outline text-gray-400 text-lg"></i></div>
-                      <input type="password" class="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500" placeholder="************" />
+                      <input
+                        type="password"
+                        class="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500"
+                        placeholder="************"
+                        name='password'
+                        value={password}
+                        onChange={e => onChange(e)}
+                        minLength='8'
+                        required />
 
                     </div>
 
@@ -105,15 +165,23 @@ function register() {
                     <label for="" class="text-xs font-semibold px-1">Repeat Password</label>
                     <div class="flex">
                       <div class="w-10 z-10 pl-1 text-center pointer-events-none flex items-center justify-center"><i class="mdi mdi-lock-outline text-gray-400 text-lg"></i></div>
-                      <input type="password" class="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500" placeholder="************" />
+                      <input
+                        type="password"
+                        class="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500"
+                        placeholder="************"
+                        name='repassword'
+                        value={repassword}
+                        onChange={e => onChange(e)}
+                        minLength='8'
+                        required />
 
                     </div>
-                    <a href="" className='absolute  right-0  right-0'>  <p className='  text-xs my-3 mr-4 '>Forgot password?</p> </a>
+                    <a href="" className='absolute right-0 '>  <p className='  text-xs my-3 mr-4 '>Forgot password?</p> </a>
                   </div>
                 </div>
                 <div class="flex justify-center pt-7 mb-5">
                   <div class="w-full px-3 sm:ml-8 mb-5 text-center sm:mr-5">
-                    <button class=" inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800">
+                    <button onClick={handleSubmit} class=" inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800">
                       <span class=" w-[16rem] py-3.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
                         Register
                       </span>
@@ -139,4 +207,9 @@ function register() {
   )
 }
 
-export default register
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated
+});
+
+
+export default connect(mapStateToProps, { signup })(Register);

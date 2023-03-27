@@ -46,6 +46,7 @@ const CoursesHome = ({ checkAuthenticated, load_user }) => {
 
 
           <div className=' absolute right-0 flex items-center pb-10 sm:pb-0'>
+          <span class="bg-indigo-100 text-indigo-800 text-xs font-medium mr-5 px-2.5 py-0.5 rounded dark:bg-indigo-900 dark:text-indigo-300 invisible sm:visible">Student</span>
             <FiBell size={25} className="mr-8 cursor-pointer" />
             <div className='rounded w-14 mr-9'>
               <img src="https://this-person-does-not-exist.com/img/avatar-gen118a816458addb7868c4574cf666b165.jpg" className='object-scale-down rounded-lg cursor-pointer border border-black' alt="" />
@@ -70,7 +71,7 @@ const CoursesHome = ({ checkAuthenticated, load_user }) => {
               </a>
 
               <a href="" className=''>
-                <li className='py-3 mt-8 pl-5 underL '>
+                <li className='py-3 mt-8 pl-5 hover:bg-indigo-200 transition rounded-lg duration-300'>
                   <span className='flex font-bold  '>
                     < FiCalendar size={25} />
                     <h2 className='px-4 '>Events</h2>
@@ -80,7 +81,7 @@ const CoursesHome = ({ checkAuthenticated, load_user }) => {
               </a>
 
               <a href="">
-                <li className='py-3 mt-7 pl-5 underL'>
+                <li className='py-3 mt-7 pl-5 hover:bg-indigo-200 transition rounded-lg duration-300'>
                   <span className='flex font-bold  '>
                     < FiBarChart size={25} />
                     <h2 className='px-4'>Dashboard</h2>
@@ -90,7 +91,7 @@ const CoursesHome = ({ checkAuthenticated, load_user }) => {
               </a>
 
               <a href="">
-                <li className='py-3 mt-7 pl-5 underL '>
+                <li className='py-3 mt-7 pl-5 hover:bg-indigo-200 transition rounded-lg duration-300 '>
                   <span className='flex  align-middle font-bold '>
                     < FiCheckCircle size={25} />
                     <h2 className='px-4'>Qualifications</h2>
@@ -99,8 +100,8 @@ const CoursesHome = ({ checkAuthenticated, load_user }) => {
                 </li>
               </a>
 
-              <a href="">
-                <li className='py-3 mt-7 pl-5 underL'>
+              <a href="/configuration">
+                <li className='py-3 mt-7 pl-5 hover:bg-indigo-200 transition rounded-lg duration-300'>
                   <span className='flex font-bold  '>
                     < FiSettings size={25} />
                     <h2 className='px-4'>Configuration</h2>
@@ -119,10 +120,9 @@ const CoursesHome = ({ checkAuthenticated, load_user }) => {
             <div className='py-10'>
 
               <div className="max-w-sm bg-white  rounded-lg shadow cursor-pointer h-[35rem]">
-                <img className="rounded-t-lg w-full h-[13rem] object-cover" src="https://serviciostecnicosmovil.com/wp-content/uploads/2019/09/electronica.jpg" alt="" />
+                <img className="rounded-t-lg w-full h-[13rem] object-cover" src="" alt="" />
                 <div className="p-3 flex flex-col justify-center items-center">
-                  <h5 className="text-2xl tracking-tight ">Electrónica</h5>
-                  <p className='text-sm text-gray-400 font-normal'>Formació obligatoria</p>
+
                 </div>
               </div>
 

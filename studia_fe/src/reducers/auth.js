@@ -27,6 +27,7 @@ export default function(state = initialState, action) {
     const { type, payload } = action;
 
     switch(type) {
+        case SIGNUP_FAIL:
         case LOGOUT:
             localStorage.removeItem('access');
             localStorage.removeItem('refresh');
@@ -80,7 +81,7 @@ export default function(state = initialState, action) {
                 ...state,
                 user: null
             }
-        case SIGNUP_FAIL:
+        
         case PASSWORD_RESET_SUCCESS:
         case PASSWORD_RESET_FAIL:
         case PASSWORD_RESET_CONFIRM_SUCCESS:
