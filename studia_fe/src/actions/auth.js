@@ -85,8 +85,7 @@ export const checkAuthenticated = () => async dispatch => {
     }
 };
 
-export const login = (email, password) => async dispatch => {
-    console.log("1")
+export const login = (email, password) => async dispatch => {   
     const config = {
         headers: {
             'Content-Type': 'application/json'
@@ -97,7 +96,6 @@ export const login = (email, password) => async dispatch => {
 
     try {
         const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/jwt/create/`, body, config);
-        console.log("12")
         dispatch({
             type: LOGIN_SUCCESS,
             payload: res.data
@@ -109,21 +107,19 @@ export const login = (email, password) => async dispatch => {
             type: LOGIN_FAIL
         })
     }
-    console.log("2")
 };
 
-export const signup = (email, name, username, password, re_password) => async dispatch => {
+export const signup = (email, name, user_name, password, re_password) => async dispatch => {
+    console.log("h")
     const config = {
         headers: {
             'Content-Type': 'application/json'
         }
     };
-
-    const body = JSON.stringify({ email, name, username, password, re_password });
-
+    const body = JSON.stringify({ email, name, user_name, password, re_password });
     try {
-        const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/users/`, body, config);
-
+        const url = process.env.REACT_APP_API_URL + '/auth/users/';
+        const res = await axios.post(url, body, config);
         dispatch({
             type: SIGNUP_SUCCESS,
             payload: res.data

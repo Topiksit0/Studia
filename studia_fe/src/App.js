@@ -30,19 +30,17 @@ function App() {
       <Router>
         <div>
           <Routes>
-            <Route path="/home" element={<Home />}></Route>
             <Route path="" element={<Navigate to="/home" />} />
+            <Route path="/home" element={<Home />}></Route>
             <Route path="/login" element={<Login />}></Route>
             <Route path="/register" element={<Register />}></Route>
             <Route path="/courses" element={<Courses />}></Route>
             <Route path="/configuration" element={<Configuration />}></Route>
-            <Route exact path='/activate/:uid/:token' component={Verify} />
+            <Route path="/activate/:uid/:token" element={<Verify />}></Route>
           </Routes>
         </div>
       </Router>
     </Provider>
-
-
   );
 }
 
