@@ -1,0 +1,26 @@
+.underL {
+    position: relative;
+    transition: color 0.3s;
+   
+}
+
+
+.underL::after{
+    content: "";
+    position: absolute;
+    background-color: #605fbe;
+    height: 3px;
+    width: 0;
+    left: 0;
+    bottom: -5px;
+    transition: 0.3s;
+}
+
+.underL:hover::after{
+    width: 100%;
+}
+
+.underL:hover{
+  
+    
+}

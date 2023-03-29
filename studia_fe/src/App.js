@@ -1,24 +1,46 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import Home from "./components/home";
+import Login from './components/login';
+import Register from './components/register';
+import Courses from './components/coursesHome'
+import Configuration from './components/configurationsHome'
+import Verify from './components/verify'
+import ReactDOM from "react-dom/client";
+import { Provider, connect } from 'react-redux';
+
+import { useEffect } from 'react';
+import { checkAuthenticated, load_user } from './actions/auth';
+
+import store from './store';
+
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+  NavLink,
+} from "react-router-dom";
+
+
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Provider store={store}>
+      <Router>
+        <div>
+          <Routes>
+            <Route path="" element={<Navigate to="/home" />} />
+            <Route path="/home" element={<Home />}></Route>
+            <Route path="/login" element={<Login />}></Route>
+            <Route path="/register" element={<Register />}></Route>
+            <Route path="/courses" element={<Courses />}></Route>
+            <Route path="/configuration" element={<Configuration />}></Route>
+            <Route path="/activate/:uid/:token" element={<Verify />} />
+          </Routes>
+        </div>
+      </Router>
+    </Provider>
   );
 }
 
