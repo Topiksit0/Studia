@@ -1,14 +1,27 @@
-import {React, useState} from 'react'
+import { React, useState } from 'react'
 import { BsFillArrowLeftSquareFill } from 'react-icons/bs'
 import { Link, useNavigate } from 'react-router-dom';
 import { signup } from '../actions/auth';
 import { connect } from 'react-redux';
 
 
-const Register = ({ signup , isAuthenticated }) => {
+
+const Register = ({ signup, isAuthenticated }) => {
+
   const [accountCreated, setAccountCreated] = useState(false);
   const navigate = useNavigate();
-
+  const Swal = require('sweetalert2')
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer)
+      toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+  })
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -16,26 +29,39 @@ const Register = ({ signup , isAuthenticated }) => {
     username: '',
     name: ''
   });
-  const { email, password, username, name, repassword} = formData;
+  const { email, password, username, name, repassword } = formData;
+
+
+  async function getData(email, name, username, password, repassword) {
+    try {
+      const data = await signup(email, name, username, password, repassword)
+      setAccountCreated(true)
+    } catch (error) {
+      console.log(error)
+      setAccountCreated(false)
+    }
+  }
 
   const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const handleSubmit = e => {
     e.preventDefault();
+    getData(email, name, username, password, repassword)
+      .then((data) => console.log(data));
 
-    if(password === repassword){
-      signup(email, name, username, password, repassword)
-      setAccountCreated(true);
-    }
-};
+  };
 
-if(isAuthenticated){
-  navigate("/courses");
-}
+  if (isAuthenticated) {
+    navigate("/courses");
+  }
 
-if(accountCreated){
-  navigate("/login");
-}
+  if (accountCreated) {
+    Toast.fire({
+      icon: 'success',
+      title: 'Account succesfully created'
+  })
+    navigate("/login");
+  }
 
   return (
     <div class="">

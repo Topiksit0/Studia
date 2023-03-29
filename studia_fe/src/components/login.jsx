@@ -13,21 +13,46 @@ const Login = ({ login , isAuthenticated }) => {
         password: '' 
     });
 
+    const Swal = require('sweetalert2')
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+      }
+    })
+
     const { email, password } = formData;
 
     const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
 
     const handleSubmit = e => {
         e.preventDefault();
-        login(email, password);
-
-        if (isAuthenticated) {
-            console.log("estoy dentro")
-            navigate("/courses");
-        }
+        getData(email, password)
+          .then((data) => console.log(data));
     };
 
+    async function getData(email, password) {
+        try {
+          const data = await login(email, password)
+          setAccountCreated(true)
+        } catch (error) {
+          console.log(error)
+          setAccountCreated(false)
+        }
+      }
 
+    if (isAuthenticated) {
+        Toast.fire({
+            icon: 'success',
+            title: 'Signed in successfully'
+        })
+        navigate("/courses");
+    }
 
     return (
         <div className="">

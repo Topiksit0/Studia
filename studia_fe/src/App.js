@@ -36,7 +36,7 @@ function App() {
             <Route path="/register" element={<Register />}></Route>
             <Route path="/courses" element={<Courses />}></Route>
             <Route path="/configuration" element={<Configuration />}></Route>
-            <Route path="/activate/:uid/:token" element={<Verify />}></Route>
+            <Route path="/activate/:uid/:token" element={<Verify />} />
           </Routes>
         </div>
       </Router>

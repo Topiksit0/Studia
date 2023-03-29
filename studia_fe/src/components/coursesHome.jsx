@@ -49,7 +49,7 @@ const CoursesHome = ({ checkAuthenticated, load_user }) => {
           <span class="bg-indigo-100 text-indigo-800 text-xs font-medium mr-5 px-2.5 py-0.5 rounded dark:bg-indigo-900 dark:text-indigo-300 invisible sm:visible">Student</span>
             <FiBell size={25} className="mr-8 cursor-pointer" />
             <div className='rounded w-14 mr-9'>
-              <img src="https://this-person-does-not-exist.com/img/avatar-gen118a816458addb7868c4574cf666b165.jpg" className='object-scale-down rounded-lg cursor-pointer border border-black' alt="" />
+              <img src="" className='object-scale-down rounded-lg cursor-pointer border border-black' alt="" />
             </div>
 
           </div>
