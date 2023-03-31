@@ -1,5 +1,5 @@
-import { useEffect, React } from 'react';
-import { connect } from 'react-redux';
+import { useEffect, useState, React } from 'react';
+import { connect, useSelector } from 'react-redux';
 import { checkAuthenticated, load_user } from '../actions/auth';
 import { IconContext } from "react-icons";
 
@@ -12,13 +12,14 @@ import { FiBell } from "react-icons/fi";
 
 import './styles/utils.css'
 
-const CoursesHome = ({ checkAuthenticated, load_user }) => {
-  const user = 'topik'
+const CoursesHome = ({ user, isAuthenticated, checkAuthenticated, load_user }) => {
 
   useEffect(() => {
     checkAuthenticated();
     load_user();
   }, []);
+
+
 
 
   return (
@@ -46,8 +47,10 @@ const CoursesHome = ({ checkAuthenticated, load_user }) => {
 
 
           <div className=' absolute right-0 flex items-center pb-10 sm:pb-0'>
-          <span class="bg-indigo-100 text-indigo-800 text-xs font-medium mr-5 px-2.5 py-0.5 rounded dark:bg-indigo-900 dark:text-indigo-300 invisible sm:visible">Student</span>
             <FiBell size={25} className="mr-8 cursor-pointer" />
+            <span class="bg-indigo-100 text-indigo-800 text-xs font-medium mr-3 px-2.5 py-0.5 rounded dark:bg-indigo-900 dark:text-indigo-300 invisible sm:visible">Student</span>
+            {user && <p className='font-semibold mr-5'>{user['name']}</p>}
+
             <div className='rounded w-14 mr-9'>
               <img src="" className='object-scale-down rounded-lg cursor-pointer border border-black' alt="" />
             </div>
@@ -140,7 +143,11 @@ const CoursesHome = ({ checkAuthenticated, load_user }) => {
 
 
 const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated
+  isAuthenticated: state.auth.isAuthenticated,
+  user: state.auth.user
 });
 
-export default connect(null, { checkAuthenticated, load_user })(CoursesHome);
+
+
+
+export default connect(mapStateToProps, { checkAuthenticated, load_user })(CoursesHome);
