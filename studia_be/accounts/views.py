@@ -10,3 +10,7 @@ from accounts.serializers import UserCreateSerializer
 class UserDetail(generics.RetrieveAPIView):
     queryset = UserAccount.objects.all()
     serializer_class = UserCreateSerializer()
+
+class UserListAPIView(generics.ListAPIView):
+    queryset = UserAccount.objects.all()
+    serializer_class = UserCreateSerializer()

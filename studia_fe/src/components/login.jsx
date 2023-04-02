@@ -39,10 +39,8 @@ const Login = ({ login , isAuthenticated }) => {
     async function getData(email, password) {
         try {
           const data = await login(email, password)
-          setAccountCreated(true)
         } catch (error) {
           console.log(error)
-          setAccountCreated(false)
         }
       }
 
