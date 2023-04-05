@@ -190,7 +190,3 @@ AUTH_USER_MODEL = 'accounts.UserAccount'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-
-#EMAIL: jhinstoppls@gmail.com
-# APP PASSWORD: fdddfsoavtfpzynv
