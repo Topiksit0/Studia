@@ -22,8 +22,21 @@ const CoursesHome = ({ user, isAuthenticated, checkAuthenticated, load_user }) =
   useEffect(() => {
     checkAuthenticated();
     load_user();
+    callApi();
   }, []);
 
+
+  function callApi() {
+    if (user !== null) {
+      const link = "http://localhost:8000/api/accounts/users/" + user['id'] + "/courses/";
+      fetch(link).then((res) => {
+        res.json();
+      }).then(data => {
+        setCourses(data)
+      }
+      )
+    }
+  }
 
   function RenderCourseFirst() {
     if (courses.length === 0) {
@@ -44,7 +57,7 @@ const CoursesHome = ({ user, isAuthenticated, checkAuthenticated, load_user }) =
 
 
           <div className='w-96 ml-8'>
-          <SkeletonTheme height={'10rem'} baseColor="#c7d2fe">
+            <SkeletonTheme height={'10rem'} baseColor="#c7d2fe">
               <Skeleton count={1} />
             </SkeletonTheme>
             <div className='py-5'>
@@ -58,7 +71,7 @@ const CoursesHome = ({ user, isAuthenticated, checkAuthenticated, load_user }) =
 
 
           <div className='w-96 ml-8'>
-          <SkeletonTheme height={'10rem'} baseColor="#c7d2fe">
+            <SkeletonTheme height={'10rem'} baseColor="#c7d2fe">
               <Skeleton count={1} />
             </SkeletonTheme>
             <div className='py-5'>
@@ -69,7 +82,7 @@ const CoursesHome = ({ user, isAuthenticated, checkAuthenticated, load_user }) =
             </div>
 
           </div>
-          
+
         </div>
       )
 

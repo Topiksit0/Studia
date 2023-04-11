@@ -11,15 +11,15 @@ from courses.models import Course
 
 class UserDetail(generics.RetrieveAPIView):
     queryset = UserAccount.objects.all()
-    serializer_class = UserCreateSerializer()
-    
-    class CourseList(generics.ListAPIView):
-        serializer_class = CourseSerializer()
-
-        def get_queryset(self):
-            user_id = self.kwargs['pk']
-            return Course.objects.filter(users__id=user_id)
+    serializer_class = UserCreateSerializer
 
 class UserListAPIView(generics.ListAPIView):
     queryset = UserAccount.objects.all()
-    serializer_class = UserCreateSerializer()
+    serializer_class = UserCreateSerializer
+    
+class CourseList(generics.ListAPIView):
+    serializer_class = CourseSerializer
+    
+    def get_queryset(self):
+        user_id = self.kwargs['pk']
+        return Course.objects.filter(students__id=user_id)
