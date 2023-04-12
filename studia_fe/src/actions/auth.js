@@ -120,10 +120,10 @@ export const login = (email, password) => async dispatch => {
                 dispatch({
                     type: LOGIN_FAIL
                 })
-                console.log(error)
+                const error2 = JSON.parse(error.response.request.responseText)
                 Toast.fire({
                     icon: 'error',
-                    text: error.response.request.responseText,
+                    text: error2['detail'],
                     title: 'Something went wrong'
                 })
                 reject(error)
@@ -166,10 +166,10 @@ export const signup = (email, name, user_name, password, re_password) => async d
                 dispatch({
                     type: SIGNUP_FAIL
                 })
-                console.log(error)
+                const error2 = JSON.parse(error.response.request.responseText)
                 Toast.fire({
                     icon: 'error',
-                    text: error.response.request.responseText,
+                    text: error2['detail'],
                     title: 'Something went wrong'
                 })
                 reject(error)
@@ -211,9 +211,10 @@ export const verify = (uid, token) => async dispatch => {
                 dispatch({
                     type: ACTIVATION_FAIL
                 })
+                const error2 = JSON.parse(error.response.request.responseText)
                 Toast.fire({
                     icon: 'error',
-                    text: error.response.request.responseText,
+                    text: error2['detail'],
                     title: 'Something went wrong'
                 })
                 reject(error)
