@@ -62,6 +62,7 @@ export const checkAuthenticated = () => async dispatch => {
 
         try {
             const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/jwt/verify/`, body, config)
+            
 
             if (res.data.code !== 'token_not_valid') {
                 dispatch({

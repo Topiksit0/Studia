@@ -14,6 +14,9 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 from pathlib import Path
 from datetime import timedelta
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 
@@ -24,7 +27,7 @@ import os
 
 # SECURITY WARNING: keep the secret key used in production secret!
 #secretodo
-SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -101,17 +104,18 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'auth_system',
         'USER': 'postgres',
-        'PASSWORD': os.environ['POSTGRESQL_PASSWORD'],
+        'PASSWORD': os.getenv('POSTGRESQL_PASSWORD'),
         'HOST': 'localhost',
     }
 }
+
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'jhinstoppls@gmail.com'
-EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = True
 
 
