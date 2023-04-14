@@ -1,7 +1,4 @@
 import React from 'react'
-import figure3 from '..//assets/figure3.svg';
-import logo from '../assets/logo.png'
-import draw from '../assets/draw.png';
 import bg_img from '../assets/mbpng2.png'
 import { MdSchool } from 'react-icons/md';
 import { RiSurveyFill } from 'react-icons/ri';
