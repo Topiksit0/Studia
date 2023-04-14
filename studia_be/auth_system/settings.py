@@ -23,8 +23,8 @@ import os
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-fsa7=dg8+ovhcms*6=j%cmr6&%_mfic3ncld-&vg^rz90+6!%m'
-
+#secretodo
+SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -101,7 +101,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'auth_system',
         'USER': 'postgres',
-        'PASSWORD': 'ayer me comi una pasta',
+        'PASSWORD': os.environ['POSTGRESQL_PASSWORD'],
         'HOST': 'localhost',
     }
 }
@@ -111,7 +111,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'jhinstoppls@gmail.com'
-EMAIL_HOST_PASSWORD = 'otgrwfpdssjcotam'
+EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
 EMAIL_USE_TLS = True
 
 
