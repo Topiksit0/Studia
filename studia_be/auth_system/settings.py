@@ -15,6 +15,9 @@ from pathlib import Path
 from datetime import timedelta
 from django.core.management.utils import get_random_secret_key
 import os
+import pymongo
+from pymongo import uri_parser
+from django.conf import settings
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -100,6 +103,8 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:9000"
 ]
 
+
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -110,6 +115,13 @@ DATABASES = {
     }
 }
 
+
+
+uri = ''
+
+MONGODB_SETTINGS = {
+    'uri': os.getenv('MONGODB_URL')
+}
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
