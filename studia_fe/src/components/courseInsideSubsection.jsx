@@ -19,19 +19,13 @@ import {
     AccordionIcon,
 } from '@chakra-ui/accordion'
 
-import { FiChevronDown } from "react-icons/fi";
 
-
-const CourseInside = ({ user, isAuthenticated, checkAuthenticated, load_user }) => {
+const CourseInsideSubsection = ({ user, isAuthenticated, checkAuthenticated, load_user }) => {
     const navigate = useNavigate();
     const [courseInformation, setCourseInformation] = useState([]);
     const [courseContentInformation, setCourseContentInformation] = useState([]);
     let { id } = useParams();
-    console.log(courseContentInformation)
-
-    function handleHome() {
-        navigate("/courses");
-    }
+    let { name } = useParams();
 
     useEffect(() => {
         checkAuthenticated();
@@ -39,13 +33,11 @@ const CourseInside = ({ user, isAuthenticated, checkAuthenticated, load_user }) 
     }, []);
 
     useEffect(callCourseData, [])
-
     useEffect(() => {
         if (courseContentInformation.length === 0) {
             callCourseSectionData();
         }
     });
-
     function callCourseData() {
         const link = "http://localhost:8000/api/courses/" + id + "/";
         fetch(link)
@@ -64,6 +56,7 @@ const CourseInside = ({ user, isAuthenticated, checkAuthenticated, load_user }) 
                 setCourseContentInformation(data);
             })
     }
+
 
     function selectFaseSectionContent(str) {
         if (str === "Forethought") {
@@ -86,7 +79,6 @@ const CourseInside = ({ user, isAuthenticated, checkAuthenticated, load_user }) 
             )
         }
     }
-
     function RenderCourseInsideSectionContent(subsection) {
         const url = "/courses/" + id + "/" + subsection.titulo + "/"
         return (
@@ -128,7 +120,6 @@ const CourseInside = ({ user, isAuthenticated, checkAuthenticated, load_user }) 
     }
 
 
-
     return (
         <div className='h-screen w-full bg-white'>
             <nav className="h-[8rem] bg-white">
@@ -141,7 +132,7 @@ const CourseInside = ({ user, isAuthenticated, checkAuthenticated, load_user }) 
                     </button>
                     <h1 className='p-10 sm:px-16 font-bold text-3xl italic leading-none tracking-tight cursor-pointer'>Studia <span className='text-pink-500 text-4xl '>.</span></h1>
                     <div className=' absolute right-0 flex items-center pb-10 sm:pb-0'>
-                        <FiBell size={25} className="mr-8 cursor-pointer" />
+                        <FiBell size={25} className="mr-8 cursor-pointer sm:visible collapse" />
                         <span className="bg-indigo-100 text-indigo-800 text-xs font-medium mr-3 px-2.5 py-0.5 rounded dark:bg-indigo-900 dark:text-indigo-300 invisible sm:visible">Student</span>
                         {user && <p className='font-semibold mr-5'>{user['name']}</p>}
 
@@ -149,7 +140,8 @@ const CourseInside = ({ user, isAuthenticated, checkAuthenticated, load_user }) 
                             <img src="https://media.licdn.com/dms/image/C4E03AQFEOaCX1a2YrA/profile-displayphoto-shrink_100_100/0/1663844200883?e=1686787200&v=beta&t=kK62__WjZnUk90Z_rcA42H5ugHGm1kbSM6nlGrSynLk" className='object-scale-down rounded-lg cursor-pointer' alt="" />
                         </div>
                     </div>
-                    {courseInformation && <h1 className='ml-44 text-2xl font-bold '>{courseInformation.title}</h1>}
+
+                    {courseInformation && <h1 className='ml-44 text-2xl font-bold sm:visible collapse'>{courseInformation.title}</h1>}
                 </div>
 
 
@@ -213,13 +205,13 @@ const CourseInside = ({ user, isAuthenticated, checkAuthenticated, load_user }) 
                     </div>
 
                 </aside>
-                
                 <div className='container-fluid h-screen w-screen rounded-tl-3xl bg-[#e7eaf886] flex flex-wrap'>
 
                     <div className='flex-1 min-w-0  sm:w-auto mt-8 ml-8 mr-8'>
 
-                        <img src="https://kinsta.com/wp-content/uploads/2022/03/what-is-postgresql.png" alt="" className='rounded shadow' />
-                        {courseContentInformation[0] && <p className='text-xl mt-5 font-semibold'> {courseContentInformation[0].subsecciones[0].titulo}</p>}
+                        <img src="https://kinsta.com/wp-content/uploads/2022/03/what-is-postgresql.png" alt="" className='rounded shadow'/>
+
+                        <p className='text-xl mt-5 font-semibold'>{name}</p>
                         <div className='flex flex-row mt-4  items-center'>
                             <p className='text-base font-semibold'>{courseInformation.professor}</p>
                             <button type="button" class="duration-150 ml-auto flex-shrink-0 flex border focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2 border-gray-600 text-black hover:text-white hover:bg-gray-600 focus:ring-gray-800">
@@ -241,12 +233,10 @@ const CourseInside = ({ user, isAuthenticated, checkAuthenticated, load_user }) 
 
 
                 </div>
-
             </div>
         </div>
     )
 }
-
 
 const mapStateToProps = state => ({
     isAuthenticated: state.auth.isAuthenticated,
@@ -254,4 +244,6 @@ const mapStateToProps = state => ({
 });
 
 
-export default connect(mapStateToProps, { checkAuthenticated, load_user })(CourseInside);
+
+
+export default connect(mapStateToProps, { checkAuthenticated, load_user })(CourseInsideSubsection);

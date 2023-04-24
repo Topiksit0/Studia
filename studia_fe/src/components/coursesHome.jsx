@@ -106,6 +106,7 @@ const CoursesHome = ({ user, isAuthenticated, checkAuthenticated, load_user }) =
 
 
   function RenderCourse(course) {
+    console.log("los dato", course)
     return (
       <div className=' '>
         <div className="max-w-sm bg-white  rounded-lg shadow cursor-pointer h-[35rem] shadow2" onClick={() => moveComponent(`/courses/`, course)}>
@@ -123,7 +124,7 @@ const CoursesHome = ({ user, isAuthenticated, checkAuthenticated, load_user }) =
                 <p className=' text-lg font-normal'>{course.students.length}</p>
               </div>
               <div className=' bg-gray-100 h-[2rem] rounded space-x-3 px-2 '>
-                <p className='text-lg font-normal'>Marcos Vivar</p>
+                <p className='text-lg font-normal'>{course.professor}</p>
               </div>
             </div>
 

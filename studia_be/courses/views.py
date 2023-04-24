@@ -35,9 +35,10 @@ class ActivitiesDetail(APIView):
                 lista_actividades = []
                 
                 for actividad in subseccion['contenido']['actividades']:
+                   
                     lista_actividades.append({'tipo': actividad['tipo'], 'descripcion': actividad['descripcion']})
                 
-                lista_subsecciones.append({'titulo': subseccion['titulo'], 'contenido': {'texto': subseccion['contenido']['texto'], 'actividades': lista_actividades}})
+                lista_subsecciones.append({'titulo': subseccion['titulo'],'fase': subseccion['fase'] ,'contenido': {'texto': subseccion['contenido']['texto'], 'actividades': lista_actividades}})
             
             lista_secciones.append({'titulo': seccion['titulo'], 'subsecciones': lista_subsecciones})
         

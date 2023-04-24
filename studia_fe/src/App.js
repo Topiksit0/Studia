@@ -6,6 +6,7 @@ import Courses from './components/coursesHome'
 import Configuration from './components/configurationsHome'
 import Verify from './components/verify'
 import Course from './components/courseInside'
+import CourseSubsection from './components/courseInsideSubsection'
 import ReactDOM from "react-dom/client";
 import { Provider, connect } from 'react-redux';
 
@@ -39,6 +40,7 @@ function App() {
             <Route path="/configuration" element={<Configuration />}></Route>
             <Route path="/activate/:uid/:token" element={<Verify />} />
             <Route path="/courses/:id/" element={<Course />}></Route>
+            <Route path="/courses/:id/:name" element={<CourseSubsection />}></Route>
           </Routes>
         </div>
       </Router>

@@ -34,4 +34,4 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ['user_name', 'name']
     
     def __str__(self):
-        return self.user_name
+        return self.name

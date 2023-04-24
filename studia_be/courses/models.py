@@ -9,7 +9,7 @@ class Course(models.Model):
     course_type = models.TextField()
     start_date = models.DateField()
     end_date = models.DateField()
-    professor = models.ForeignKey(UserAccount, on_delete=models.CASCADE, default=1)
+    professor = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
     students = models.ManyToManyField(UserAccount, related_name='courses')
     student_count = models.IntegerField(default=0)
 
