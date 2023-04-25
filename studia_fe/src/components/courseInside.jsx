@@ -11,6 +11,10 @@ import { FiBarChart } from "react-icons/fi";
 import { FiBell } from "react-icons/fi";
 import { FiUser } from "react-icons/fi";
 
+import { FiFolder } from "react-icons/fi";
+import { FiTrello } from "react-icons/fi";
+import { FiBook } from "react-icons/fi";
+
 import {
     Accordion,
     AccordionItem,
@@ -87,8 +91,8 @@ const CourseInside = ({ user, isAuthenticated, checkAuthenticated, load_user }) 
         }
     }
 
-    function RenderCourseInsideSectionContent(subsection) {
-        const url = "/courses/" + id + "/" + subsection.titulo + "/"
+    function RenderCourseInsideSectionContent(subsection, titulo) {
+        const url = "/courses/" + id + "/" + titulo + "/" + subsection.titulo + "/"
         return (
             <div>
                 <a href={url}>
@@ -101,7 +105,64 @@ const CourseInside = ({ user, isAuthenticated, checkAuthenticated, load_user }) 
             </div>
         )
     }
+    function renderAllActivities(activities) {
+        if (activities.tipo === "evaluación") {
+            return (
+                <div className='flex cursor-pointer mt-4 pl-4 bg-yellow-100 rounded py-4'>
+                    <div className='bg-amber-300 rounded shadow py-2 px-2'>
+                        <FiFolder size={40} />
+                    </div>
+                    <div className='flex flex-col'>
+                        <p className='font-medium text-lg ml-5'>Delivery</p>
+                        <p className='font-light text-base ml-5'>{activities.descripcion}</p>
+                    </div>
 
+                </div>
+            )
+        }
+
+        if (activities.tipo === "proyecto") {
+            return (
+                <div className='flex cursor-pointer mt-4 pl-4 bg-blue-100 rounded py-4'>
+                    <div className='bg-cyan-300 rounded shadow py-2 px-2'>
+                        <FiTrello size={40} />
+                    </div>
+                    <div className='flex flex-col'>
+                        <p className='font-medium text-lg ml-5'>Project</p>
+                        <p className='font-light text-base ml-5'>{activities.descripcion}</p>
+                    </div>
+
+                </div>
+            )
+        }
+
+        if (activities.tipo === "lectura") {
+            return (
+                <div className='flex cursor-pointer mt-4 pl-4 bg-red-100 rounded py-4'>
+                    <div className='bg-red-400 rounded shadow py-2 px-2'>
+                        <FiBook size={40} />
+                    </div>
+                    <div className='flex flex-col'>
+                        <p className='font-medium text-lg ml-5'>Lecture</p>
+                        <p className='font-light text-base ml-5'>{activities.descripcion}</p>
+                    </div>
+
+                </div>
+            )
+        }
+
+    }
+
+    function RenderTextActivitiesInsideCourse() {
+        // Obtiene la sección correspondiente
+        var contenido = courseContentInformation[0].subsecciones[0].contenido
+        return (
+            <div>
+                <p>{contenido.texto}</p>
+                {contenido.actividades.map(renderAllActivities)}
+            </div>
+        )
+    }
 
     function RenderCourseContent(section) {
         return (
@@ -118,7 +179,7 @@ const CourseInside = ({ user, isAuthenticated, checkAuthenticated, load_user }) 
                             </div>
                         </AccordionButton>
                         <AccordionPanel>
-                            {section.subsecciones.map(RenderCourseInsideSectionContent)}
+                        {section.subsecciones.map(subseccion => RenderCourseInsideSectionContent(subseccion, section.titulo))}
                         </AccordionPanel>
                     </AccordionItem>
                 </Accordion>
@@ -228,6 +289,7 @@ const CourseInside = ({ user, isAuthenticated, checkAuthenticated, load_user }) 
                             </button>
                         </div>
                         <hr className="h-px my-3 bg-gray-800 border-0 "></hr>
+                        {courseContentInformation.length > 0 && RenderTextActivitiesInsideCourse()}
                     </div>
 
                     <div className='flex-shrink-0 w-full sm:w-auto'>

@@ -40,7 +40,7 @@ function App() {
             <Route path="/configuration" element={<Configuration />}></Route>
             <Route path="/activate/:uid/:token" element={<Verify />} />
             <Route path="/courses/:id/" element={<Course />}></Route>
-            <Route path="/courses/:id/:name" element={<CourseSubsection />}></Route>
+            <Route path="/courses/:id/:section/:subsection/" element={<CourseSubsection />}></Route>
           </Routes>
         </div>
       </Router>
