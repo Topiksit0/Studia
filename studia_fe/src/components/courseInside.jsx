@@ -31,7 +31,6 @@ const CourseInside = ({ user, isAuthenticated, checkAuthenticated, load_user }) 
     const [courseInformation, setCourseInformation] = useState([]);
     const [courseContentInformation, setCourseContentInformation] = useState([]);
     let { id } = useParams();
-    console.log(courseContentInformation)
 
     function handleHome() {
         navigate("/courses");
@@ -106,50 +105,61 @@ const CourseInside = ({ user, isAuthenticated, checkAuthenticated, load_user }) 
         )
     }
     function renderAllActivities(activities) {
-        if (activities.tipo === "evaluación") {
+        if (activities.tipo === "texto") {
             return (
-                <div className='flex cursor-pointer mt-4 pl-4 bg-yellow-100 rounded py-4'>
-                    <div className='bg-amber-300 rounded shadow py-2 px-2'>
-                        <FiFolder size={40} />
-                    </div>
-                    <div className='flex flex-col'>
-                        <p className='font-medium text-lg ml-5'>Delivery</p>
-                        <p className='font-light text-base ml-5'>{activities.descripcion}</p>
-                    </div>
-
+                <div>
+                    <p className='my-5 font-base'>{activities.descripcion}</p>
                 </div>
             )
+
+        } else {
+            if (activities.tipo === "evaluación") {
+                return (
+                    <div className='flex cursor-pointer mt-4 pl-4 bg-yellow-100 rounded py-4'>
+                        <div className='bg-amber-300 rounded shadow py-2 px-2'>
+                            <FiFolder size={40} />
+                        </div>
+                        <div className='flex flex-col'>
+                            <p className='font-medium text-lg ml-5'>Delivery</p>
+                            <p className='font-base text-base ml-5'>{activities.descripcion}</p>
+                        </div>
+
+                    </div>
+                )
+            }
+
+            if (activities.tipo === "proyecto") {
+                return (
+                    <div className='flex cursor-pointer mt-4 pl-4 bg-blue-100 rounded py-4 pb-5'>
+                        <div className='bg-cyan-300 rounded shadow py-2 px-2'>
+                            <FiTrello size={40} />
+                        </div>
+                        <div className='flex flex-col'>
+                            <p className='font-medium text-lg ml-5'>Project</p>
+                            <p className='font-base text-base ml-5'>{activities.descripcion}</p>
+                        </div>
+
+                    </div>
+                )
+            }
+
+            if (activities.tipo === "lectura") {
+                return (
+                    <div className='flex cursor-pointer mt-4 pl-4 bg-red-100 rounded py-4'>
+                        <div className='bg-red-400 rounded shadow py-2 px-2'>
+                            <FiBook size={40} />
+                        </div>
+                        <div className='flex flex-col'>
+                            <p className='font-medium text-lg ml-5'>Lecture</p>
+                            <p className='font-base text-base ml-5'>{activities.descripcion}</p>
+                        </div>
+
+                    </div>
+                )
+            }
         }
 
-        if (activities.tipo === "proyecto") {
-            return (
-                <div className='flex cursor-pointer mt-4 pl-4 bg-blue-100 rounded py-4'>
-                    <div className='bg-cyan-300 rounded shadow py-2 px-2'>
-                        <FiTrello size={40} />
-                    </div>
-                    <div className='flex flex-col'>
-                        <p className='font-medium text-lg ml-5'>Project</p>
-                        <p className='font-light text-base ml-5'>{activities.descripcion}</p>
-                    </div>
 
-                </div>
-            )
-        }
-
-        if (activities.tipo === "lectura") {
-            return (
-                <div className='flex cursor-pointer mt-4 pl-4 bg-red-100 rounded py-4'>
-                    <div className='bg-red-400 rounded shadow py-2 px-2'>
-                        <FiBook size={40} />
-                    </div>
-                    <div className='flex flex-col'>
-                        <p className='font-medium text-lg ml-5'>Lecture</p>
-                        <p className='font-light text-base ml-5'>{activities.descripcion}</p>
-                    </div>
-
-                </div>
-            )
-        }
 
     }
 
@@ -157,9 +167,8 @@ const CourseInside = ({ user, isAuthenticated, checkAuthenticated, load_user }) 
         // Obtiene la sección correspondiente
         var contenido = courseContentInformation[0].subsecciones[0].contenido
         return (
-            <div>
-                <p>{contenido.texto}</p>
-                {contenido.actividades.map(renderAllActivities)}
+            <div className='mb-12'>
+                {contenido.map(renderAllActivities)}
             </div>
         )
     }
@@ -179,7 +188,7 @@ const CourseInside = ({ user, isAuthenticated, checkAuthenticated, load_user }) 
                             </div>
                         </AccordionButton>
                         <AccordionPanel>
-                        {section.subsecciones.map(subseccion => RenderCourseInsideSectionContent(subseccion, section.titulo))}
+                            {section.subsecciones.map(subseccion => RenderCourseInsideSectionContent(subseccion, section.titulo))}
                         </AccordionPanel>
                     </AccordionItem>
                 </Accordion>
@@ -274,8 +283,8 @@ const CourseInside = ({ user, isAuthenticated, checkAuthenticated, load_user }) 
                     </div>
 
                 </aside>
-                
-                <div className='container-fluid h-screen w-screen rounded-tl-3xl bg-[#e7eaf886] flex flex-wrap'>
+
+                <div className='container-fluid h-full w-screen rounded-tl-3xl bg-[#e7eaf886] flex flex-wrap'>
 
                     <div className='flex-1 min-w-0  sm:w-auto mt-8 ml-8 mr-8'>
 
@@ -283,13 +292,16 @@ const CourseInside = ({ user, isAuthenticated, checkAuthenticated, load_user }) 
                         {courseContentInformation[0] && <p className='text-xl mt-5 font-semibold'> {courseContentInformation[0].subsecciones[0].titulo}</p>}
                         <div className='flex flex-row mt-4  items-center'>
                             <p className='text-base font-semibold'>{courseInformation.professor}</p>
-                            <button type="button" class="duration-150 ml-auto flex-shrink-0 flex border focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2 border-gray-600 text-black hover:text-white hover:bg-gray-600 focus:ring-gray-800">
+                            <button type="button" class="duration-150 ml-auto flex-shrink-0 flex border focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2 border-gray-600 text-black hover:text-white hover:bg-indigo-400 hover:border-gray-50 focus:ring-gray-800">
                                 <FiUser className='mr-4' size={20} />
                                 Participants
                             </button>
                         </div>
                         <hr className="h-px my-3 bg-gray-800 border-0 "></hr>
+
                         {courseContentInformation.length > 0 && RenderTextActivitiesInsideCourse()}
+
+
                     </div>
 
                     <div className='flex-shrink-0 w-full sm:w-auto'>

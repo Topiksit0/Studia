@@ -102,50 +102,61 @@ const CourseInsideSubsection = ({ user, isAuthenticated, checkAuthenticated, loa
     }
 
     function renderAllActivities(activities) {
-        if (activities.tipo === "evaluación") {
-            return (
-                <div className='flex cursor-pointer mt-4 pl-4 bg-yellow-100 rounded py-4'>
-                    <div className='bg-amber-300 rounded shadow py-2 px-2'>
-                        <FiFolder size={40} />
-                    </div>
-                    <div className='flex flex-col'>
-                        <p className='font-medium text-lg ml-5'>Delivery</p>
-                        <p className='font-light text-base ml-5'>{activities.descripcion}</p>
-                    </div>
-
+        if (activities.tipo === "texto") {
+            return(
+                <div>
+                    <p className='my-5 font-base'>{activities.descripcion}</p>
                 </div>
             )
+
+        } else {
+            if (activities.tipo === "evaluación") {
+                return (
+                    <div className='flex cursor-pointer mt-4 pl-4 bg-yellow-100 rounded py-4'>
+                        <div className='bg-amber-300 rounded shadow py-2 px-2'>
+                            <FiFolder size={40} />
+                        </div>
+                        <div className='flex flex-col'>
+                            <p className='font-medium text-lg ml-5'>Delivery</p>
+                            <p className='font-base text-base ml-5'>{activities.descripcion}</p>
+                        </div>
+
+                    </div>
+                )
+            }
+
+            if (activities.tipo === "proyecto") {
+                return (
+                    <div className='flex cursor-pointer mt-4 pl-4 bg-blue-100 rounded py-4 pb-5'>
+                        <div className='bg-cyan-300 rounded shadow py-2 px-2'>
+                            <FiTrello size={40} />
+                        </div>
+                        <div className='flex flex-col'>
+                            <p className='font-medium text-lg ml-5'>Project</p>
+                            <p className='font-base text-base ml-5'>{activities.descripcion}</p>
+                        </div>
+
+                    </div>
+                )
+            }
+
+            if (activities.tipo === "lectura") {
+                return (
+                    <div className='flex cursor-pointer mt-4 pl-4 bg-red-100 rounded py-4'>
+                        <div className='bg-red-400 rounded shadow py-2 px-2'>
+                            <FiBook size={40} />
+                        </div>
+                        <div className='flex flex-col'>
+                            <p className='font-medium text-lg ml-5'>Lecture</p>
+                            <p className='font-base text-base ml-5'>{activities.descripcion}</p>
+                        </div>
+
+                    </div>
+                )
+            }
         }
 
-        if (activities.tipo === "proyecto") {
-            return (
-                <div className='flex cursor-pointer mt-4 pl-4 bg-blue-100 rounded py-4'>
-                    <div className='bg-cyan-300 rounded shadow py-2 px-2'>
-                        <FiTrello size={40} />
-                    </div>
-                    <div className='flex flex-col'>
-                        <p className='font-medium text-lg ml-5'>Project</p>
-                        <p className='font-light text-base ml-5'>{activities.descripcion}</p>
-                    </div>
 
-                </div>
-            )
-        }
-
-        if (activities.tipo === "lectura") {
-            return (
-                <div className='flex cursor-pointer mt-4 pl-4 bg-red-100 rounded py-4'>
-                    <div className='bg-red-400 rounded shadow py-2 px-2'>
-                        <FiBook size={40} />
-                    </div>
-                    <div className='flex flex-col'>
-                        <p className='font-medium text-lg ml-5'>Lecture</p>
-                        <p className='font-light text-base ml-5'>{activities.descripcion}</p>
-                    </div>
-
-                </div>
-            )
-        }
 
     }
 
@@ -156,9 +167,8 @@ const CourseInsideSubsection = ({ user, isAuthenticated, checkAuthenticated, loa
         var contenido = subsection_.contenido;
         console.log(contenido)
         return (
-            <div>
-                <p>{contenido.texto}</p>
-                {contenido.actividades.map(renderAllActivities)}
+            <div className='mb-12'>
+                {contenido.map(renderAllActivities)}
             </div>
         )
     }
@@ -275,7 +285,7 @@ const CourseInsideSubsection = ({ user, isAuthenticated, checkAuthenticated, loa
                     </div>
 
                 </aside>
-                <div className='container-fluid h-screen w-screen rounded-tl-3xl bg-[#e7eaf886] flex flex-wrap'>
+                <div className='container-fluid h-full w-screen rounded-tl-3xl bg-[#e7eaf886] flex flex-wrap'>
 
                     <div className='flex-1 min-w-0  sm:w-auto mt-8 ml-8 mr-8'>
 
@@ -284,7 +294,7 @@ const CourseInsideSubsection = ({ user, isAuthenticated, checkAuthenticated, loa
                         <p className='text-xl mt-5 font-semibold'>{subsection}</p>
                         <div className='flex flex-row mt-4  items-center'>
                             <p className='text-base font-semibold'>{courseInformation.professor}</p>
-                            <button type="button" class="duration-150 ml-auto flex-shrink-0 flex border focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2 border-gray-600 text-black hover:text-white hover:bg-gray-600 focus:ring-gray-800">
+                            <button type="button" class="duration-150 ml-auto flex-shrink-0 flex border focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2 border-gray-600 text-black hover:text-white hover:bg-indigo-400 hover:border-gray-50 focus:ring-gray-800">
                                 <FiUser className='mr-4' size={20} />
                                 Participants
                             </button>

@@ -106,7 +106,6 @@ const CoursesHome = ({ user, isAuthenticated, checkAuthenticated, load_user }) =
 
 
   function RenderCourse(course) {
-    console.log("los dato", course)
     return (
       <div className=' '>
         <div className="max-w-sm bg-white  rounded-lg shadow cursor-pointer h-[35rem] shadow2" onClick={() => moveComponent(`/courses/`, course)}>

@@ -27,29 +27,36 @@ class CourseDetail(generics.RetrieveAPIView):
 class ActivitiesDetail(APIView):
     def procesar_objeto(self, objeto):
         lista_secciones = []
-        
+
         for seccion in objeto['section_titles']:
             lista_subsecciones = []
-            
-            for subseccion in seccion['subsecciones']:
-                lista_actividades = []
-                
-                for actividad in subseccion['contenido']['actividades']:
-                   
-                    lista_actividades.append({'tipo': actividad['tipo'], 'descripcion': actividad['descripcion']})
-                
-                lista_subsecciones.append({'titulo': subseccion['titulo'],'fase': subseccion['fase'] ,'contenido': {'texto': subseccion['contenido']['texto'], 'actividades': lista_actividades}})
-            
-            lista_secciones.append({'titulo': seccion['titulo'], 'subsecciones': lista_subsecciones})
-        
-        return lista_secciones
-    
-    def get(self, request, pk):
-        client = MongoClient(settings.MONGODB_SETTINGS['uri'], server_api=ServerApi('1'))      
 
-        db = client['course_activities'] 
-        activities_collection = db['activities']   
-        activity = activities_collection.find_one( {"id": pk} )
+            for subseccion in seccion['subsecciones']:
+                lista_contenido = []
+
+                for actividad in subseccion['contenido']:
+                    if actividad['tipo'] == "texto":
+                        lista_contenido.append(
+                            {'tipo': actividad['tipo'], 'descripcion': actividad['texto']})
+                    else:
+                        lista_contenido.append(
+                            {'tipo': actividad['tipo'], 'descripcion': actividad['descripcion']})
+
+
+                lista_subsecciones.append({'titulo': subseccion['titulo'], 'fase': subseccion['fase'], 'contenido': lista_contenido})
+
+            lista_secciones.append(
+                {'titulo': seccion['titulo'], 'subsecciones': lista_subsecciones})
+
+        return lista_secciones
+
+    def get(self, request, pk):
+        client = MongoClient(
+            settings.MONGODB_SETTINGS['uri'], server_api=ServerApi('1'))
+
+        db = client['course_activities']
+        activities_collection = db['activities']
+        activity = activities_collection.find_one({"id": pk})
 
         if activity is None:
             return Response(status=404)
@@ -57,12 +64,14 @@ class ActivitiesDetail(APIView):
         response_data = {
             'section_titles': activity['secciones']
         }
-        sections_list = self.procesar_objeto(response_data)       
+        sections_list = self.procesar_objeto(response_data)
         return Response(sections_list)
- 
+
+
 class CourseCreate(generics.CreateAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
+
 
 class AddStudentToCourse(APIView):
     def update_student_count(self):
@@ -81,4 +90,3 @@ class AddStudentToCourse(APIView):
             return Response({"message": "Course not found"}, status=status.HTTP_404_NOT_FOUND)
         except UserAccount.DoesNotExist:
             return Response({"message": "User not found"}, status=status.HTTP_404_NOT_FOUND)
-        
