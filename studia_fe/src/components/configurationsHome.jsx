@@ -50,11 +50,11 @@ const ConfigurationsHome = ({user, isAuthenticated, checkAuthenticated, load_use
 
                     <div className=' absolute right-0 flex items-center pb-10 sm:pb-0'>
                         <FiBell size={25} className="mr-8 cursor-pointer" />
-                        <span className="bg-indigo-100 text-indigo-800 text-xs font-medium mr-3 px-2.5 py-0.5 rounded dark:bg-indigo-900 dark:text-indigo-300 invisible sm:visible">Student</span>
+                        <span className="bg-indigo-100 text-indigo-800 text-xs font-medium mr-3 px-2.5 py-0.5 rounded invisible sm:visible">Student</span>
                         {user && <p className='font-semibold mr-5'>{user['name']}</p>}
 
                         <div className='rounded w-14 mr-9'>
-                            <img src="https://media.licdn.com/dms/image/C4E03AQFEOaCX1a2YrA/profile-displayphoto-shrink_100_100/0/1663844200883?e=1686787200&v=beta&t=kK62__WjZnUk90Z_rcA42H5ugHGm1kbSM6nlGrSynLk" className='object-scale-down rounded-lg cursor-pointer' alt="" />
+                        {user && <img src={user['profile_photo']} className='object-scale-down rounded-lg cursor-pointer' alt="" />}
                         </div>
 
                     </div>
@@ -76,7 +76,7 @@ const ConfigurationsHome = ({user, isAuthenticated, checkAuthenticated, load_use
                                 </li>
                             </a>
 
-                            <a href="" className=''>
+                            <a href="/events/timeline" className=''>
                                 <li className='py-3 mt-8 pl-5 hover:bg-indigo-200 transition rounded-lg duration-300'>
                                     <span className='flex font-bold  '>
                                         < FiCalendar size={25} />
@@ -96,7 +96,7 @@ const ConfigurationsHome = ({user, isAuthenticated, checkAuthenticated, load_use
                                 </li>
                             </a>
 
-                            <a href="">
+                            <a href="/qualifications">
                                 <li className='py-3 mt-7 pl-5 mb-6 hover:bg-indigo-200 transition rounded-lg duration-300 '>
                                     <span className='flex  align-middle font-bold '>
                                         < FiCheckCircle size={25} />

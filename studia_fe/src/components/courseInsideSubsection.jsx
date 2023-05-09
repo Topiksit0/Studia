@@ -15,6 +15,8 @@ import { FiFolder } from "react-icons/fi";
 import { FiTrello } from "react-icons/fi";
 import { FiBook } from "react-icons/fi";
 
+import ChatBot from './chatBot';
+
 
 import {
     Accordion,
@@ -23,6 +25,7 @@ import {
     AccordionPanel,
     AccordionIcon,
 } from '@chakra-ui/accordion'
+
 
 
 const CourseInsideSubsection = ({ user, isAuthenticated, checkAuthenticated, load_user }) => {
@@ -38,6 +41,9 @@ const CourseInsideSubsection = ({ user, isAuthenticated, checkAuthenticated, loa
         load_user();
     }, []);
 
+    function handleNavigate(url) {
+        navigate(url);
+    }
     useEffect(callCourseData, [])
     useEffect(() => {
         if (courseContentInformation.length === 0) {
@@ -85,75 +91,176 @@ const CourseInsideSubsection = ({ user, isAuthenticated, checkAuthenticated, loa
             )
         }
     }
+    function convertirFecha(fecha) {
+        const partes = fecha.split("-");
+        return partes[2] + "-" + partes[1] + "-" + partes[0];
+    }
 
     function RenderCourseInsideSectionContent(subsection, titulo) {
         const url = "/courses/" + id + "/" + titulo + "/" + subsection.titulo + "/"
+        if (new Date(convertirFecha(subsection.fecha_inicio)).toISOString() > new Date().toISOString()) {
+            return (
+                <div className='cursor-pointer'>
+                    <p className='text-base font-normal ml-4 pb-5'>
+                        <span>🔒 </span>
+                        {subsection.titulo}
+                        {selectFaseSectionContent(subsection.fase)}
+                    </p>
+                </div>
+            )
+        }
         return (
+
             <div>
                 <a href={url}>
                     <p className='text-base font-normal ml-4 pb-5'>
+                        {subsection.finished === "False" ? (
+                            <span role="img" aria-label="circle">⭕ </span>
+                        ) : (
+                            <span role="img" aria-label="checkmark">✅ </span>
+                        )
+                        }
+
                         {subsection.titulo}
                         {selectFaseSectionContent(subsection.fase)}
                     </p>
 
                 </a>
             </div>
+
         )
     }
 
     function renderAllActivities(activities) {
         if (activities.tipo === "texto") {
-            return(
+            return (
                 <div>
-                    <p className='my-5 font-base'>{activities.descripcion}</p>
+                    <p className='my-5 font-base'>{activities.texto}</p>
                 </div>
             )
 
         } else {
-            if (activities.tipo === "evaluación") {
+            if (activities.tipo === "entrega") {
                 return (
-                    <div className='flex cursor-pointer mt-4 pl-4 bg-yellow-100 rounded py-4'>
+                    <div className='flex cursor-pointer mt-4 pl-4 bg-yellow-100 border-amber-400 border-2 rounded py-4'>
                         <div className='bg-amber-300 rounded shadow py-2 px-2'>
                             <FiFolder size={40} />
                         </div>
                         <div className='flex flex-col'>
                             <p className='font-medium text-lg ml-5'>Delivery</p>
-                            <p className='font-base text-base ml-5'>{activities.descripcion}</p>
+                            <p className='font-base text-base ml-5'>{activities.texto}</p>
                         </div>
 
                     </div>
                 )
             }
 
-            if (activities.tipo === "proyecto") {
+            if (activities.tipo === "lecture") {
                 return (
-                    <div className='flex cursor-pointer mt-4 pl-4 bg-blue-100 rounded py-4 pb-5'>
-                        <div className='bg-cyan-300 rounded shadow py-2 px-2'>
-                            <FiTrello size={40} />
-                        </div>
-                        <div className='flex flex-col'>
-                            <p className='font-medium text-lg ml-5'>Project</p>
-                            <p className='font-base text-base ml-5'>{activities.descripcion}</p>
-                        </div>
+                    <a href={activities.url}>
+                        <div className='flex cursor-pointer mt-4 pl-4 bg-blue-100 border-blue-400 border-2 rounded py-4 pb-5'>
+                            <div className='bg-cyan-300 rounded shadow py-2 px-2'>
+                                <FiTrello size={40} />
+                            </div>
+                            <div className='flex flex-col'>
+                                <p className='font-medium text-lg ml-5'>Lecture</p>
+                                <p className='font-base text-base ml-5'>{activities.texto}</p>
+                            </div>
 
-                    </div>
+                        </div>
+                    </a>
+
                 )
             }
 
-            if (activities.tipo === "lectura") {
+            if (activities.tipo === "peer_review") {
                 return (
-                    <div className='flex cursor-pointer mt-4 pl-4 bg-red-100 rounded py-4'>
+                    <div className='flex cursor-pointer mt-4 pl-4 bg-red-100 border-red-400 border-2 rounded py-4'>
                         <div className='bg-red-400 rounded shadow py-2 px-2'>
                             <FiBook size={40} />
                         </div>
                         <div className='flex flex-col'>
-                            <p className='font-medium text-lg ml-5'>Lecture</p>
-                            <p className='font-base text-base ml-5'>{activities.descripcion}</p>
+                            <p className='font-medium text-lg ml-5'>Peer Review</p>
+                            <p className='font-base text-base ml-5'>{activities.texto}</p>
                         </div>
 
                     </div>
                 )
             }
+
+            if (activities.tipo === "checklist_entrega") {
+                return (
+                    <div className='rounded my-5 '>
+                        <h3 className="mb-4 font-semibold text-lg text-black">Autocomprensión de la tarea</h3>
+                        <ul className=" text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg ">
+                            <li className="w-full border-b border-gray-200 rounded-t-lg ">
+                                <div className="flex items-center pl-3">
+                                    <input id="entender-checkbox" type="checkbox" value="" className=" text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 " />
+                                    <label for="entender-checkbox" className="w-full py-3 ml-2 text-base font-normal text-gray-900 ">🎯 He entendido la actividad que tengo que realizar.</label>
+                                </div>
+                            </li>
+                            <li className="w-full border-b border-gray-200 rounded-t-lg ">
+                                <div className="flex items-center pl-3">
+                                    <input id="empezar-checkbox" type="checkbox" value="" className=" text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500  " />
+                                    <label for="empezar-checkbox" className="w-full py-3 ml-2 text-base font-normal text-gray-900 ">⚡ Sé como empezar la actividad. </label>
+                                </div>
+                            </li>
+                            <li className="w-full border-b border-gray-200 rounded-t-lg ">
+                                <div className="flex items-center pl-3">
+                                    <input id="planificar-checkbox" type="checkbox" value="" className=" text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500  " />
+                                    <label for="planificar-checkbox" className="w-full py-3 ml-2 text-base font-normal text-gray-900 ">📅 He planificado de manera correcta la actividad. </label>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                )
+
+            }
+            if (activities.tipo === "checklist_entrega_final") {
+                return (
+                    <div className='rounded my-5 '>
+                        <h3 className="mb-4 font-semibold text-lg text-black">Valorar actividad</h3>
+                        <ul className=" text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg ">
+                            <li className="w-full border-b border-gray-200 rounded-t-lg ">
+                                <div className="flex items-center pl-3">
+                                    <input id="entender-checkbox" type="checkbox" value="" className=" text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 " />
+                                    <label for="entender-checkbox" className="w-full py-3 ml-2 text-base font-normal text-gray-900 ">🚀 El Peer Review me ha ayudado a mejorar mi primera entrega.</label>
+                                </div>
+                            </li>
+                            <li className="w-full border-b border-gray-200 rounded-t-lg ">
+                                <div className="flex items-center pl-3">
+                                    <input id="empezar-checkbox" type="checkbox" value="" className=" text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500  " />
+                                    <label for="empezar-checkbox" className="w-full py-3 ml-2 text-base font-normal text-gray-900 ">🏫 He aprendido algo realizando esta actividad. </label>
+                                </div>
+                            </li>
+                            <li className="w-full border-b border-gray-200 rounded-t-lg ">
+                                <div className="flex items-center pl-3">
+                                    <input id="planificar-checkbox" type="checkbox" value="" className=" text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500  " />
+                                    <label for="planificar-checkbox" className="w-full py-3 ml-2 text-base font-normal text-gray-900 ">❤️ Me ha gustado realizar esta actividad. </label>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                )
+
+            }
+
+            if (activities.tipo === "archivos") {
+                return (
+                    <div className='flex cursor-pointer mt-4 pl-4 bg-red-100 border-red-400 border-2 rounded py-4'>
+                        <div className='bg-red-400 rounded shadow py-2 px-2'>
+                            <FiBook size={40} />
+                        </div>
+                        <div className='flex flex-col'>
+                            <p className='font-medium text-lg ml-5'>Files</p>
+                            <p className='font-base text-base ml-5'>{activities.texto}</p>
+                        </div>
+
+                    </div>
+                )
+
+            }
+
         }
 
 
@@ -190,7 +297,6 @@ const CourseInsideSubsection = ({ user, isAuthenticated, checkAuthenticated, loa
                         </AccordionButton>
                         <AccordionPanel>
                             {section.subsecciones.map(subseccion => RenderCourseInsideSectionContent(subseccion, section.titulo))}
-
                         </AccordionPanel>
                     </AccordionItem>
                 </Accordion>
@@ -242,7 +348,7 @@ const CourseInsideSubsection = ({ user, isAuthenticated, checkAuthenticated, loa
                                 </li>
                             </a>
 
-                            <a href="" className=''>
+                            <a href="/events/timeline" className=''>
                                 <li className='py-3 mt-8 pl-5 hover:bg-indigo-200 transition rounded-lg duration-300'>
                                     <span className='flex font-bold  '>
                                         < FiCalendar size={25} />
@@ -262,7 +368,7 @@ const CourseInsideSubsection = ({ user, isAuthenticated, checkAuthenticated, loa
                                 </li>
                             </a>
 
-                            <a href="">
+                            <a href="/qualifications">
                                 <li className='py-3 mt-7 pl-5 mb-6 hover:bg-indigo-200 transition rounded-lg duration-300 '>
                                     <span className='flex  align-middle font-bold '>
                                         < FiCheckCircle size={25} />
@@ -285,7 +391,7 @@ const CourseInsideSubsection = ({ user, isAuthenticated, checkAuthenticated, loa
                     </div>
 
                 </aside>
-                <div className='container-fluid h-full w-screen rounded-tl-3xl bg-[#e7eaf886] flex flex-wrap'>
+                <div className='container-fluid min-h-screen w-screen rounded-tl-3xl bg-[#e7eaf886] flex flex-wrap'>
 
                     <div className='flex-1 min-w-0  sm:w-auto mt-8 ml-8 mr-8'>
 
@@ -293,7 +399,8 @@ const CourseInsideSubsection = ({ user, isAuthenticated, checkAuthenticated, loa
 
                         <p className='text-xl mt-5 font-semibold'>{subsection}</p>
                         <div className='flex flex-row mt-4  items-center'>
-                            <p className='text-base font-semibold'>{courseInformation.professor}</p>
+                            <img class="w-8 h-8 rounded-full mr-3" src={courseInformation.professor && courseInformation.professor.profile_photo} alt="Rounded avatar" />
+                            <p className='text-base font-semibold'>{courseInformation.professor && courseInformation.professor.name}</p>
                             <button type="button" class="duration-150 ml-auto flex-shrink-0 flex border focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2 border-gray-600 text-black hover:text-white hover:bg-indigo-400 hover:border-gray-50 focus:ring-gray-800">
                                 <FiUser className='mr-4' size={20} />
                                 Participants
@@ -317,6 +424,7 @@ const CourseInsideSubsection = ({ user, isAuthenticated, checkAuthenticated, loa
 
                 </div>
             </div>
+            <ChatBot />
         </div>
     )
 }

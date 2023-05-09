@@ -35,15 +35,33 @@ class ActivitiesDetail(APIView):
                 lista_contenido = []
 
                 for actividad in subseccion['contenido']:
-                    if actividad['tipo'] == "texto":
-                        lista_contenido.append(
-                            {'tipo': actividad['tipo'], 'descripcion': actividad['texto']})
-                    else:
-                        lista_contenido.append(
-                            {'tipo': actividad['tipo'], 'descripcion': actividad['descripcion']})
 
+                    if actividad['tipo'] == "texto" or actividad['tipo'] == "entrega":
+                        lista_contenido.append(
+                            {'tipo': actividad['tipo'], 'texto': actividad['texto']})
 
-                lista_subsecciones.append({'titulo': subseccion['titulo'], 'fase': subseccion['fase'], 'contenido': lista_contenido})
+                    if actividad['tipo'] == "lecture":
+                        lista_contenido.append(
+                            {'tipo': actividad['tipo'], 'texto': actividad['texto'], 'url': actividad['url']})
+
+                    if actividad['tipo'] == "checklist_entrega":
+                        lista_contenido.append(
+                            {'tipo': 'checklist_entrega'})
+
+                    if actividad['tipo'] == "checklist_entrega_final":
+                        lista_contenido.append(
+                            {'tipo': 'checklist_entrega_final'})
+                        
+                    if actividad['tipo'] == "archivos":
+                        lista_contenido.append(
+                            {'tipo': actividad['tipo'], 'texto': actividad['texto']})
+                        
+                    if actividad['tipo'] == "peer_review":
+                        lista_contenido.append(
+                            {'tipo': actividad['tipo'], 'texto': actividad['texto'], 'peer_id': actividad['peer_id']})
+
+                lista_subsecciones.append(
+                    {'titulo': subseccion['titulo'], 'fase': subseccion['fase'], 'finished': subseccion['finished'], 'fecha_inicio': subseccion['fecha_inicio'], 'fecha_fin': subseccion['fecha_fin'],  'duracion': subseccion['duracion'], 'contenido': lista_contenido})
 
             lista_secciones.append(
                 {'titulo': seccion['titulo'], 'subsecciones': lista_subsecciones})

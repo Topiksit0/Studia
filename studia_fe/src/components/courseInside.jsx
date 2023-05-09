@@ -10,11 +10,9 @@ import { FiSettings } from "react-icons/fi";
 import { FiBarChart } from "react-icons/fi";
 import { FiBell } from "react-icons/fi";
 import { FiUser } from "react-icons/fi";
-
 import { FiFolder } from "react-icons/fi";
 import { FiTrello } from "react-icons/fi";
 import { FiBook } from "react-icons/fi";
-
 import {
     Accordion,
     AccordionItem,
@@ -23,7 +21,7 @@ import {
     AccordionIcon,
 } from '@chakra-ui/accordion'
 
-import { FiChevronDown } from "react-icons/fi";
+import ChatBot from './chatBot';
 
 
 const CourseInside = ({ user, isAuthenticated, checkAuthenticated, load_user }) => {
@@ -31,9 +29,8 @@ const CourseInside = ({ user, isAuthenticated, checkAuthenticated, load_user }) 
     const [courseInformation, setCourseInformation] = useState([]);
     const [courseContentInformation, setCourseContentInformation] = useState([]);
     let { id } = useParams();
-
-    function handleHome() {
-        navigate("/courses");
+    function handleNavigate(url) {
+        navigate(url);
     }
 
     useEffect(() => {
@@ -89,74 +86,137 @@ const CourseInside = ({ user, isAuthenticated, checkAuthenticated, load_user }) 
             )
         }
     }
+    function convertirFecha(fecha) {
+        const partes = fecha.split("-");
+        return partes[2] + "-" + partes[1] + "-" + partes[0];
+    }
 
     function RenderCourseInsideSectionContent(subsection, titulo) {
         const url = "/courses/" + id + "/" + titulo + "/" + subsection.titulo + "/"
+        if (new Date(convertirFecha(subsection.fecha_inicio)).toISOString() > new Date().toISOString()) {
+            return (
+                <div className='cursor-pointer'>
+                    <p className='text-base font-normal ml-4 pb-5'>
+                        <span>🔒 </span>
+                        {subsection.titulo}
+                        {selectFaseSectionContent(subsection.fase)}
+                    </p>
+                </div>
+            )
+        }
         return (
+
             <div>
                 <a href={url}>
                     <p className='text-base font-normal ml-4 pb-5'>
+                        {subsection.finished === "False" ? (
+                            <span role="img" aria-label="circle">⭕ </span>
+                        ) : (
+                            <span role="img" aria-label="checkmark">✅ </span>
+                        )
+                        }
+
                         {subsection.titulo}
                         {selectFaseSectionContent(subsection.fase)}
                     </p>
 
                 </a>
             </div>
+
         )
     }
+
     function renderAllActivities(activities) {
         if (activities.tipo === "texto") {
             return (
                 <div>
-                    <p className='my-5 font-base'>{activities.descripcion}</p>
+                    <p className='my-5 font-base'>{activities.texto}</p>
                 </div>
             )
 
         } else {
-            if (activities.tipo === "evaluación") {
+            if (activities.tipo === "entrega") {
                 return (
-                    <div className='flex cursor-pointer mt-4 pl-4 bg-yellow-100 rounded py-4'>
+                    <div className='flex cursor-pointer mt-4 pl-4 bg-yellow-100 border-amber-400 border-2 rounded py-4'>
                         <div className='bg-amber-300 rounded shadow py-2 px-2'>
                             <FiFolder size={40} />
                         </div>
                         <div className='flex flex-col'>
                             <p className='font-medium text-lg ml-5'>Delivery</p>
-                            <p className='font-base text-base ml-5'>{activities.descripcion}</p>
+                            <p className='font-base text-base ml-5'>{activities.texto}</p>
                         </div>
 
                     </div>
                 )
             }
 
-            if (activities.tipo === "proyecto") {
+            if (activities.tipo === "lecture") {
                 return (
-                    <div className='flex cursor-pointer mt-4 pl-4 bg-blue-100 rounded py-4 pb-5'>
-                        <div className='bg-cyan-300 rounded shadow py-2 px-2'>
-                            <FiTrello size={40} />
-                        </div>
-                        <div className='flex flex-col'>
-                            <p className='font-medium text-lg ml-5'>Project</p>
-                            <p className='font-base text-base ml-5'>{activities.descripcion}</p>
-                        </div>
+                    <a href={activities.url}>
+                        <div className='flex cursor-pointer mt-4 pl-4 bg-blue-100 border-blue-400 border-2 rounded py-4 pb-5'>
+                            <div className='bg-cyan-300 rounded shadow py-2 px-2'>
+                                <FiTrello size={40} />
+                            </div>
+                            <div className='flex flex-col'>
+                                <p className='font-medium text-lg ml-5'>Lecture</p>
+                                <p className='font-base text-base ml-5'>{activities.texto}</p>
+                            </div>
 
-                    </div>
+                        </div>
+                    </a>
+
+
                 )
             }
 
-            if (activities.tipo === "lectura") {
+            if (activities.tipo === "peer_review") {
                 return (
-                    <div className='flex cursor-pointer mt-4 pl-4 bg-red-100 rounded py-4'>
+                    <div className='flex cursor-pointer mt-4 pl-4 bg-red-100 border-red-400 border-2 rounded py-4'>
                         <div className='bg-red-400 rounded shadow py-2 px-2'>
                             <FiBook size={40} />
                         </div>
                         <div className='flex flex-col'>
-                            <p className='font-medium text-lg ml-5'>Lecture</p>
-                            <p className='font-base text-base ml-5'>{activities.descripcion}</p>
+                            <p className='font-medium text-lg ml-5'>Peer Review</p>
+                            <p className='font-base text-base ml-5'>{activities.texto}</p>
                         </div>
 
                     </div>
                 )
             }
+
+            if (activities.tipo === "checklist_entrega") {
+                return (
+                    <div>
+                        <h1>checkslit entrega</h1>
+                    </div>
+                )
+
+            }
+            if (activities.tipo === "checklist_entrega_final") {
+                return (
+                    <div>
+                        <h1>Checklista entra ginal</h1>
+                    </div>
+                )
+
+            }
+
+            if (activities.tipo === "archivos") {
+                return (
+                    <div className='flex cursor-pointer mt-4 pl-4 bg-red-100 border-red-400 border-2 rounded py-4'>
+                        <div className='bg-red-400 rounded shadow py-2 px-2'>
+                            <FiBook size={40} />
+                        </div>
+                        <div className='flex flex-col'>
+                            <p className='font-medium text-lg ml-5'>Files</p>
+                            <p className='font-base text-base ml-5'>{activities.texto}</p>
+                        </div>
+
+                    </div>
+                )
+
+            }
+
         }
 
 
@@ -216,7 +276,7 @@ const CourseInside = ({ user, isAuthenticated, checkAuthenticated, load_user }) 
                         {user && <p className='font-semibold mr-5'>{user['name']}</p>}
 
                         <div className='rounded w-14 mr-9'>
-                            <img src="https://media.licdn.com/dms/image/C4E03AQFEOaCX1a2YrA/profile-displayphoto-shrink_100_100/0/1663844200883?e=1686787200&v=beta&t=kK62__WjZnUk90Z_rcA42H5ugHGm1kbSM6nlGrSynLk" className='object-scale-down rounded-lg cursor-pointer' alt="" />
+                            {user && <img src={user['profile_photo']} className='object-scale-down rounded-lg cursor-pointer' alt="" />}
                         </div>
                     </div>
                     {courseInformation && <h1 className='ml-44 text-2xl font-bold '>{courseInformation.title}</h1>}
@@ -240,7 +300,7 @@ const CourseInside = ({ user, isAuthenticated, checkAuthenticated, load_user }) 
                                 </li>
                             </a>
 
-                            <a href="" className=''>
+                            <a href="/events/timeline" className=''>
                                 <li className='py-3 mt-8 pl-5 hover:bg-indigo-200 transition rounded-lg duration-300'>
                                     <span className='flex font-bold  '>
                                         < FiCalendar size={25} />
@@ -260,7 +320,7 @@ const CourseInside = ({ user, isAuthenticated, checkAuthenticated, load_user }) 
                                 </li>
                             </a>
 
-                            <a href="">
+                            <a href="/qualifications">
                                 <li className='py-3 mt-7 pl-5 mb-6 hover:bg-indigo-200 transition rounded-lg duration-300 '>
                                     <span className='flex  align-middle font-bold '>
                                         < FiCheckCircle size={25} />
@@ -284,14 +344,15 @@ const CourseInside = ({ user, isAuthenticated, checkAuthenticated, load_user }) 
 
                 </aside>
 
-                <div className='container-fluid h-full w-screen rounded-tl-3xl bg-[#e7eaf886] flex flex-wrap'>
+                <div className='container-fluid min-h-screen w-screen rounded-tl-3xl bg-[#e7eaf886] flex flex-wrap'>
 
                     <div className='flex-1 min-w-0  sm:w-auto mt-8 ml-8 mr-8'>
 
                         <img src="https://kinsta.com/wp-content/uploads/2022/03/what-is-postgresql.png" alt="" className='rounded shadow' />
                         {courseContentInformation[0] && <p className='text-xl mt-5 font-semibold'> {courseContentInformation[0].subsecciones[0].titulo}</p>}
                         <div className='flex flex-row mt-4  items-center'>
-                            <p className='text-base font-semibold'>{courseInformation.professor}</p>
+                            <img class="w-8 h-8 rounded-full mr-3" src={courseInformation.professor && courseInformation.professor.profile_photo} alt="Rounded avatar" />
+                            <p className='text-base font-semibold'>{courseInformation.professor && courseInformation.professor.name}</p>
                             <button type="button" class="duration-150 ml-auto flex-shrink-0 flex border focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2 border-gray-600 text-black hover:text-white hover:bg-indigo-400 hover:border-gray-50 focus:ring-gray-800">
                                 <FiUser className='mr-4' size={20} />
                                 Participants
@@ -317,6 +378,7 @@ const CourseInside = ({ user, isAuthenticated, checkAuthenticated, load_user }) 
                 </div>
 
             </div>
+            <ChatBot />
         </div>
     )
 }

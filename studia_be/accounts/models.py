@@ -27,6 +27,7 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_profesor = models.BooleanField(default=False)
+    profile_photo = models.URLField(blank=True, null=True)
 
     objects = UserAccountManager()
 
@@ -34,4 +35,4 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ['user_name', 'name']
     
     def __str__(self):
-        return self.name
+        return f"{self.name} ({self.id}), {self.profile_photo}"

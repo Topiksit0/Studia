@@ -49,7 +49,7 @@ const CoursesHome = ({ user, isAuthenticated, checkAuthenticated, load_user }) =
     }
   });
 
-
+  console.log(courses)
 
 
   function renderSkeleton() {
@@ -118,12 +118,13 @@ const CoursesHome = ({ user, isAuthenticated, checkAuthenticated, load_user }) =
             </div>
             <div className='container flex flex-row space-x-20 justify-center'>
 
-              <div className=' px-2 bg-gray-100 h-[2rem] flex justify-center text-center align-middle space-x-3 rounded'>
-                <FiUser className='my-1 justify-center text-center align-middle' />
-                <p className=' text-lg font-normal'>{course.students.length}</p>
+              <div className=' px-2 bg-gray-100 h-[3rem] flex justify-center text-center align-middle space-x-1 rounded items-center'>
+                <FiUser size={19} className='my-1 justify-center text-center align-middle' />
+                <p className=' text-base font-normal'>{course.students.length}</p>
               </div>
-              <div className=' bg-gray-100 h-[2rem] rounded space-x-3 px-2 '>
-                <p className='text-lg font-normal'>{course.professor}</p>
+              <div className=' flex bg-gray-100 h-[3rem] rounded space-x-1 px-3 items-center'>
+                <img class="w-8 h-8 rounded-full mr-3" src={course.professor['profile_photo']} alt="Rounded avatar" />                
+                <p className='text-base font-normal'>{course.professor['name']}</p>
               </div>
             </div>
 
@@ -169,7 +170,7 @@ const CoursesHome = ({ user, isAuthenticated, checkAuthenticated, load_user }) =
             {user && <p className='font-semibold mr-5'>{user['name']}</p>}
 
             <div className='rounded w-14 mr-9'>
-              <img src="https://media.licdn.com/dms/image/C4E03AQFEOaCX1a2YrA/profile-displayphoto-shrink_100_100/0/1663844200883?e=1686787200&v=beta&t=kK62__WjZnUk90Z_rcA42H5ugHGm1kbSM6nlGrSynLk" className='object-scale-down rounded-lg cursor-pointer' alt="" />
+              {user && <img src={user['profile_photo']} className='object-scale-down rounded-lg cursor-pointer' alt="" />}
             </div>
 
           </div>
@@ -190,7 +191,7 @@ const CoursesHome = ({ user, isAuthenticated, checkAuthenticated, load_user }) =
                 </li>
               </a>
 
-              <a href="" className=''>
+              <a href="/events/timeline" className=''>
                 <li className='py-3 mt-8 pl-5 hover:bg-indigo-200 transition rounded-lg duration-300'>
                   <span className='flex font-bold  '>
                     < FiCalendar size={25} />
@@ -210,7 +211,7 @@ const CoursesHome = ({ user, isAuthenticated, checkAuthenticated, load_user }) =
                 </li>
               </a>
 
-              <a href="">
+              <a href="/qualifications">
                 <li className='py-3 mt-7 pl-5 hover:bg-indigo-200 transition rounded-lg duration-300 '>
                   <span className='flex  align-middle font-bold '>
                     < FiCheckCircle size={25} />
