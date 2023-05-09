@@ -14,10 +14,12 @@ import {
 } from "@chatscope/chat-ui-kit-react";
 
 const Chatbot = () => {
-    const API_KEY = "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"
+    const API_KEY = process.env.REACT_APP_API_KEY;
+    
     const systemMessage = { //  Explain things like you're talking to a software professional with 5 years of experience.
         "role": "system", "content": "Explain things like you're talking to a software professional with 2 years of experience."
     }
+    
 
     const [isExpanded, setIsExpanded] = useState(false);
     const [messages, setMessages] = useState([
@@ -102,6 +104,7 @@ const Chatbot = () => {
                 <MainContainer>
                     <ChatContainer>
                         <MessageList
+                        
                             scrollBehavior="smooth"
                             typingIndicator={isTyping ? <TypingIndicator content="ChatGPT is typing" /> : null}
                         >
