@@ -81,3 +81,23 @@ class QualificationsStudent(generics.ListAPIView):
         activities_collection = db['grades']
         grades_student = activities_collection.find_one({"alumno_id": str(user_id)})
         return Response(grades_student['notas_por_curso'])
+    
+
+class CoursesNews(generics.ListAPIView):
+    serializer_class = CourseSerializer
+
+    def get(self, request, pk):
+        final_list = []
+        user_id = self.kwargs['pk']
+        temp = Course.objects.filter(students__id=user_id)
+        client = MongoClient(
+            settings.MONGODB_SETTINGS['uri'], server_api=ServerApi('1'))
+        db = client['course_activities']
+        activities_collection = db['activities']
+
+        for course in temp:
+            curso_mongo = activities_collection.find_one({"id": course.id})
+            for post in curso_mongo['posts']:
+                final_list.append({ 'title': course.title, 'post': post['msg'],'timestamp': post['timestamp'] ,'professor_name': course.professor.name, 'professor_photo': course.professor.profile_photo})
+        lista_ordenada = sorted(final_list, key=lambda x: x['timestamp'], reverse=True)
+        return Response(lista_ordenada)

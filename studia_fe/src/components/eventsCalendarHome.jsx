@@ -4,6 +4,9 @@ import { checkAuthenticated, load_user } from '../actions/auth';
 import { IconContext } from "react-icons";
 import { Link, useNavigate } from 'react-router-dom';
 
+import 'rsuite/dist/rsuite-no-reset.min.css';
+
+
 import {
     FiGrid,
     FiCalendar,
@@ -16,18 +19,105 @@ import {
     FiFolder,
     FiTrello,
     FiBook,
+    FiClock,
 } from "react-icons/fi";
 
+import { Calendar, Whisper, Popover, Badge, Modal, Input, Button, Placeholder, Form } from 'rsuite';
 
 import './styles/utils.css'
 
-const EventsHome = ({ user, isAuthenticated, checkAuthenticated, load_user }) => {
-    const navigate = useNavigate();
-    const [textSearch, setTextSearch] = useState("");
-    const [timelineInfo, setTimelineInfo] = useState([]);
 
-    function handleHome() {
-        navigate("/courses");
+const EventsCalendarHome = ({ user, isAuthenticated, checkAuthenticated, load_user }) => {
+    const [open, setOpen] = useState(false);
+    const [title, setTitle] = useState('');
+    const [date, setDate] = useState('');
+
+    const handleTitleChange = (value) => {
+        setTitle(value);
+    };
+
+    const handleDateChange = (value) => {
+        setDate(value);
+    };
+
+    const [events, setEventList] = useState(
+        [
+            {
+                title: "Programación 1: Entrega primera version de la práctica 1", time: new Date(2023, 6, 10)
+            },
+            {
+                title: "Programación 1: Evalua a tus compañeros y recibe feedback", time: new Date(2023, 6, 21)
+            },
+            {
+                title: "Programación 1: Entrega final de la práctica 1", time: new Date(2023, 6, 28)
+            }
+        ]
+    );
+
+    const handleOpen = value => {
+        setOpen(true);
+    };
+    const handleClose = () => setOpen(false);
+
+    function handleAddEvent() {
+        const newEvents = [...events];
+        newEvents.push({
+            title: title,
+            time: new Date(date)
+        });
+        setEventList(newEvents)
+    }
+
+    function getTodoList(date) {
+        return events.filter((item) => {
+            return (
+                item.time.getFullYear() === date.getFullYear() &&
+                item.time.getMonth() === date.getMonth() &&
+                item.time.getDate() === date.getDate()
+            );
+        });
+    }
+
+
+    function renderCell(date) {
+        const list = getTodoList(date);
+        const displayList = list.filter((item, index) => index < 2);
+
+        if (list.length) {
+            const moreCount = list.length - displayList.length;
+            const moreItem = (
+                <li>
+                    <Whisper
+                        placement="top"
+                        trigger="click"
+                        speaker={
+                            <Popover>
+                                {list.map((item, index) => (
+                                    <p key={index}>
+                                        <strong>{item.title}</strong>
+                                    </p>
+                                ))}
+                            </Popover>
+                        }
+                    >
+                        <a>{moreCount} more</a>
+                    </Whisper>
+                </li>
+            );
+
+            return (
+                <ul className="calendar-todo-list">
+                    {displayList.map((item, index) => (
+                        <li className='font-medium' key={index}>
+                            <Badge /> {item.title}
+                        </li>
+                    ))}
+                    {moreCount ? moreItem : null}
+                </ul>
+            );
+        }
+
+        return null;
     }
 
     useEffect(() => {
@@ -35,87 +125,6 @@ const EventsHome = ({ user, isAuthenticated, checkAuthenticated, load_user }) =>
         load_user();
 
     }, []);
-
-    useEffect(() => {
-        callCourseData();
-    }, [user]);
-
-
-    function callCourseData() {
-
-        if (user) {
-            const link = "http://localhost:8000/api/accounts/users/" + user['id'] + "/courses/timeline/";
-            fetch(link)
-                .then((res) => res.json())
-                .then((data) => {
-                    setTimelineInfo(data);
-                })
-                .catch((error) => console.error(error));
-        }
-    }
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
-    };
-
-    const handleChangeTextSearch = (event) => {
-        setTextSearch(event.target.value);
-    };
-
-    function renderTimelineEvents(event) {
-        return (
-            <div>
-                <h1 className='text-lg font-medium'>{event.fecha_fin_entrega}</h1>
-                {event.actividades.map(renderTimelineEventsByDate)}
-                <hr className="h-px my-8 bg-black border-0"></hr>
-            </div>
-        )
-    }
-
-    function renderTimelineEventsByDate(eventActividades) {
-        if (eventActividades.tipo === "entrega") {
-            return (
-                <div className='flex my-5 ml-5'>
-                    <div className='bg-amber-300 rounded shadow py-2 px-2 h-[3.6rem] w-[3.6rem]'>
-                        <FiFolder size={40} />
-                    </div>
-                    <div className='flex flex-col'>
-                        <h1 className='font-medium text-base ml-5 text-indigo-500'>{eventActividades.titulo}</h1>
-                        <h1 className='font-medium text-base ml-5 '>{eventActividades.texto}</h1>
-                    </div>
-                </div>
-            )
-        }
-
-        if (eventActividades.tipo === "lecture") {
-            return (
-                <div className='flex my-5 ml-5'>
-                    <div className='bg-cyan-300 rounded shadow py-2 px-2 h-[3.6rem] w-[3.6rem]'>
-                        <FiTrello size={40} />
-                    </div>
-                    <div className='flex flex-col'>
-                        <h1 className='font-medium text-base ml-5 text-indigo-500'>{eventActividades.titulo}</h1>
-                        <h1 className='font-medium text-base ml-5 '>{eventActividades.texto}</h1>
-                    </div>
-                </div>
-            )
-        }
-
-        if (eventActividades.tipo === "peer_review") {
-            return (
-                <div className='flex my-5 ml-5'>
-                    <div className='bg-red-400 rounded shadow py-2 px-2 h-[3.6rem] w-[3.6rem]'>
-                        <FiBook size={40} />
-                    </div>
-                    <div className='flex flex-col'>
-                        <h1 className='font-medium text-base ml-5 text-indigo-500'>{eventActividades.titulo}</h1>
-                        <h1 className='font-medium text-base ml-5 '>{eventActividades.texto}</h1>
-                    </div>
-
-                </div>
-            )
-        }
-    }
 
     return (
         <div className='h-screen w-full bg-white'>
@@ -214,54 +223,49 @@ const EventsHome = ({ user, isAuthenticated, checkAuthenticated, load_user }) =>
                 <div className='container-fluid h-screen w-full rounded-tl-3xl bg-[#e7eaf886]'>
                     <div className='p-9 px-12 font-bold text-2xl'>
                         <div className='flex'>
-                            <div name='maindiv' className='bg-white rounded-xl p-5 mt-3 border border-black w-auto flex-grow'>
-                                <h1 className=''>Timeline</h1>
+                            <div name='maindiv' className='bg-white rounded-xl p-5 mt-3 border border-black w-auto flex-grow '>
                                 <div className='flex'>
-                                    <div className="mt-8 ">
-                                        <select className="w-full p-2.5 text-base appearance-none bg-[#e7eaf886] border rounded-md shadow-sm font-normal border-black ">
-                                            <option>Next 90 days</option>
-                                            <option>Next 30 days</option>
-                                            <option>Next week</option>
-                                            <option>Today</option>
-                                        </select>
-                                    </div>
+                                    <h1 className=''>Calendar</h1>
+                                    <button onClick={() => handleOpen()} className='ml-auto bg-indigo-300 mr-3 font-medium rounded text-base px-3'>Add event</button>
 
-                                    <div className="mt-8 mx-5">
-                                        <select className="w-full p-2.5 text-base bg-[#e7eaf886] appearance-none border rounded-md shadow-sm font-normal border-black">
-                                            <option>Sort by Courses</option>
-                                            <option>Sort by Date</option>
-                                        </select>
-                                    </div>
-                                    <div className="ml-auto mt-8  mx-5 right-0 min-w-[20rem]">
-                                        <form onSubmit={handleSubmit} className="">
-                                            <div className="flex items-center w-full p-2.5 text-base bg-[#e7eaf886] appearance-none border rounded-md shadow-sm font-normal border-black">
-                                                <input
-                                                    className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
-                                                    type="text"
-                                                    placeholder="Search by activity type or name"
-                                                    value={textSearch}
-                                                    onChange={handleChangeTextSearch}
-                                                />
-                                                <button
-                                                    type="submit"
-                                                >
-                                                    <FiArrowRight size={18} />
-                                                </button>
-                                            </div>
-                                        </form>
-                                    </div>
+                                    <Modal size='sm' open={open} onClose={handleClose}>
+                                        <Modal.Header>
+                                            <Modal.Title>Add Event</Modal.Title>
+                                        </Modal.Header>
+                                        <Modal.Body>
+                                            <Form.Group >
+                                                <Form.ControlLabel>Title</Form.ControlLabel>
+                                                <Input value={title} onChange={handleTitleChange} />
+                                            </Form.Group >
+                                            <Form.Group >
+                                                <Form.ControlLabel>Date</Form.ControlLabel>
+                                                <Input type='date' value={date} onChange={handleDateChange} />
+                                            </Form.Group >
+                                        </Modal.Body>
+                                        <Modal.Footer>
+                                            <Button onClick={handleClose} appearance="subtle">
+                                                Cancel
+                                            </Button>
+                                            <Button onClick={handleAddEvent} appearance="primary">
+                                                Add Event
+                                            </Button>
+                                        </Modal.Footer>
+                                    </Modal>
+                                </div>
+
+                                <div className='font-normal'>
+                                    <Calendar bordered renderCell={renderCell} />
+
 
                                 </div>
-                                <hr className="h-px my-8 bg-black border-0"></hr>
-                                {timelineInfo.map(renderTimelineEvents)}
 
                             </div>
                             <div name='others' className='flex flex-col right-0 ml-6 mr-10'>
 
-                                <Link to={"/events/calendar"}>
+                                <Link to={"/events/timeline"}>
                                     <div className='bg-white rounded-lg border border-black my-3 py-2 px-4 flex'>
-                                        <h1 className='text-base mr-3'>Calendar</h1>
-                                        <FiCalendar className='ml-auto' />
+                                        <h1 className='text-base mr-3'>Timeline</h1>
+                                        <FiClock className='ml-auto' />
                                     </div>
                                 </Link>
 
@@ -293,4 +297,4 @@ const mapStateToProps = state => ({
 
 
 
-export default connect(mapStateToProps, { checkAuthenticated, load_user })(EventsHome);
+export default connect(mapStateToProps, { checkAuthenticated, load_user })(EventsCalendarHome);

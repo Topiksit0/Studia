@@ -15,11 +15,11 @@ import {
 
 const Chatbot = () => {
     const API_KEY = process.env.REACT_APP_API_KEY;
-    
+
     const systemMessage = { //  Explain things like you're talking to a software professional with 5 years of experience.
         "role": "system", "content": "Explain things like you're talking to a software professional with 2 years of experience."
     }
-    
+
 
     const [isExpanded, setIsExpanded] = useState(false);
     const [messages, setMessages] = useState([
@@ -99,12 +99,13 @@ const Chatbot = () => {
         <div data-dial-init className="fixed right-10 bottom-10">
             <div
                 id="speed-dial-menu-dropdown"
-                className={` mb-4 space-y-2  h-[40vmin] w-80 shadow transition-all duration-300 ${isExpanded ? '' : 'hidden'}`}>
+                className={`mb-4 space-y-2 w-80 shadow transition-all duration-300 ${isExpanded ? 'h-[40vmin]' : 'h-0 overflow-hidden'}`}
+            >
 
                 <MainContainer>
                     <ChatContainer>
                         <MessageList
-                        
+
                             scrollBehavior="smooth"
                             typingIndicator={isTyping ? <TypingIndicator content="ChatGPT is typing" /> : null}
                         >
@@ -121,7 +122,7 @@ const Chatbot = () => {
                 data-dial-toggle="speed-dial-menu-dropdown"
                 aria-controls="speed-dial-menu-dropdown"
                 aria-expanded={isExpanded}
-                className="flex items-center justify-center ml-auto text-white bg-blue-600 rounded-full w-14 h-14 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 focus:outline-none"
+                className="flex shadow-lg items-center justify-center ml-auto text-white bg-blue-600 rounded-full w-14 h-14 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 focus:outline-none"
                 onClick={() => setIsExpanded(!isExpanded)}
             >
                 <TbRobot size={30} />

@@ -24,6 +24,24 @@ class CourseDetail(generics.RetrieveAPIView):
     serializer_class = CourseSerializer
 
 
+class NewsDetail(APIView):
+    def get(self, request, pk):
+        client = MongoClient(
+            settings.MONGODB_SETTINGS['uri'], server_api=ServerApi('1'))
+
+        db = client['course_activities']
+        activities_collection = db['activities']
+        activity = activities_collection.find_one({"id": pk})
+
+        if activity is None:
+            return Response(status=404)
+        
+        response_data = {
+            'news': activity['posts'],
+            'course_id': activity['id']
+        }
+        return Response(response_data)
+
 class ActivitiesDetail(APIView):
     def procesar_objeto(self, objeto):
         lista_secciones = []
