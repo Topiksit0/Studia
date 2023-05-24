@@ -105,11 +105,12 @@ const CoursesHome = ({ user, isAuthenticated, checkAuthenticated, load_user }) =
   }
 
 
+
   function RenderCourse(course) {
     return (
       <div className=' '>
         <div className="max-w-sm bg-white  rounded-lg shadow cursor-pointer h-[35rem] shadow2" onClick={() => moveComponent(`/courses/`, course)}>
-          <img className="rounded-t-lg w-full h-[13rem] object-cover" src="https://i.blogs.es/389033/programming/1366_2000.jpg" alt="" />
+          <img className="rounded-t-lg w-full h-[13rem] object-cover" src={course.course_photo} alt="" />
           <div className="p-3 flex flex-col justify-center items-center">
             <h1>{course.title}</h1>
             <p className='text-xs font-normal text-gray-400'>{course.course_type}</p>
@@ -235,7 +236,7 @@ const CoursesHome = ({ user, isAuthenticated, checkAuthenticated, load_user }) =
           </div>
 
         </aside>
-        <div className='container-fluid h-screen w-full rounded-tl-3xl bg-[#e7eaf886] '>
+        <div className='container-fluid w-full rounded-tl-3xl bg-[#e7eaf886] '>
           <div className='p-9 px-12 font-bold text-2xl'>
             <h2>My Courses</h2>
             <div className='flex flex-wrap py-11 sm:space-y-0 space-y-10  sm:space-x-12 space-x-0'>

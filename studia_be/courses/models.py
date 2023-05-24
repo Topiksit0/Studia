@@ -5,6 +5,7 @@ from accounts.models import UserAccount
 
 class Course(models.Model):
     title = models.CharField(max_length=255)
+    course_photo = models.URLField(blank=True, null=True)
     description = models.TextField()
     course_type = models.TextField()
     start_date = models.DateField()

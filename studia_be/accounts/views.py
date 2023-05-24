@@ -46,8 +46,10 @@ class ActivitiesTimeline(generics.ListAPIView):
         db = client['course_activities']
         activities_collection = db['activities']
         activities_by_date = {}
-        for course in temp:
+        for course in temp:   
             curso_mongo = activities_collection.find_one({"id": course.id})
+            if(curso_mongo is None):
+                continue
             for section in curso_mongo['secciones']:
                 for subsection in section['subsecciones']:
                     if subsection['finished'] == 'False':
@@ -97,6 +99,8 @@ class CoursesNews(generics.ListAPIView):
 
         for course in temp:
             curso_mongo = activities_collection.find_one({"id": course.id})
+            if(curso_mongo is None):
+                continue
             for post in curso_mongo['posts']:
                 final_list.append({ 'title': course.title, 'post': post['msg'],'timestamp': post['timestamp'] ,'professor_name': course.professor.name, 'professor_photo': course.professor.profile_photo})
         lista_ordenada = sorted(final_list, key=lambda x: x['timestamp'], reverse=True)

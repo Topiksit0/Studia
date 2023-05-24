@@ -62,13 +62,10 @@ class ActivitiesDetail(APIView):
                         lista_contenido.append(
                             {'tipo': actividad['tipo'], 'texto': actividad['texto'], 'url': actividad['url']})
 
-                    if actividad['tipo'] == "checklist_entrega":
+                    if actividad['tipo'] == "cuestionario":
                         lista_contenido.append(
-                            {'tipo': 'checklist_entrega'})
+                            {'tipo': actividad['tipo'], 'texto': actividad['texto'], 'htmlcode': actividad['htmlcode']})
 
-                    if actividad['tipo'] == "checklist_entrega_final":
-                        lista_contenido.append(
-                            {'tipo': 'checklist_entrega_final'})
                         
                     if actividad['tipo'] == "archivos":
                         lista_contenido.append(

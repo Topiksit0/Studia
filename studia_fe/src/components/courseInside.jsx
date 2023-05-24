@@ -150,6 +150,14 @@ const CourseInside = ({ user, isAuthenticated, checkAuthenticated, load_user }) 
                 )
             }
 
+            if (activities.tipo === "cuestionario") {
+                return (
+                    <div className='flex justify-center'>
+                        <div dangerouslySetInnerHTML={{ __html: activities.htmlcode }}></div>
+                    </div>
+                )
+            }
+
             if (activities.tipo === "lecture") {
                 return (
                     <a href={activities.url}>
@@ -182,23 +190,6 @@ const CourseInside = ({ user, isAuthenticated, checkAuthenticated, load_user }) 
 
                     </div>
                 )
-            }
-
-            if (activities.tipo === "checklist_entrega") {
-                return (
-                    <div>
-                        <h1>checkslit entrega</h1>
-                    </div>
-                )
-
-            }
-            if (activities.tipo === "checklist_entrega_final") {
-                return (
-                    <div>
-                        <h1>Checklista entra ginal</h1>
-                    </div>
-                )
-
             }
 
             if (activities.tipo === "archivos") {

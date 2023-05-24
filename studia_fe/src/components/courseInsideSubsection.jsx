@@ -261,6 +261,14 @@ const CourseInsideSubsection = ({ user, isAuthenticated, checkAuthenticated, loa
 
             }
 
+            if (activities.tipo === "cuestionario") {
+                return (
+                    <div className='flex justify-center mt-5'>
+                        <div dangerouslySetInnerHTML={{ __html: activities.htmlcode }}></div>
+                    </div>
+                )
+            }
+
         }
 
 

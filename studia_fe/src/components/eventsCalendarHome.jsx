@@ -43,13 +43,22 @@ const EventsCalendarHome = ({ user, isAuthenticated, checkAuthenticated, load_us
     const [events, setEventList] = useState(
         [
             {
-                title: "Programación 1: Entrega primera version de la práctica 1", time: new Date(2023, 6, 10)
+                title: "Programación 1: Primea entrega tarea 2", time: new Date(2023, 6, 21)
             },
             {
-                title: "Programación 1: Evalua a tus compañeros y recibe feedback", time: new Date(2023, 6, 21)
-            },
+                title: "Programación 1: peer review geometría en el espacio", time: new Date(2023, 6, 28)
+            }
+            ,
             {
-                title: "Programación 1: Entrega final de la práctica 1", time: new Date(2023, 6, 28)
+                title: "Historia del Cine: peer review trabajo cine", time: new Date(2023, 6, 28)
+            }
+            ,
+            {
+                title: "Historia del Cine: Primera entrega 'efectos de camara'", time: new Date(2023, 6, 23)
+            }
+            ,
+            {
+                title: "Historia del Cine: Planifica el trabajo 'efectos de camara'", time: new Date(2023, 6, 10)
             }
         ]
     );

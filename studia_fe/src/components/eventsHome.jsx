@@ -211,7 +211,7 @@ const EventsHome = ({ user, isAuthenticated, checkAuthenticated, load_user }) =>
                     </div>
 
                 </aside>
-                <div className='container-fluid h-screen w-full rounded-tl-3xl bg-[#e7eaf886]'>
+                <div className='container-fluid h-full w-full rounded-tl-3xl bg-[#e7eaf886]'>
                     <div className='p-9 px-12 font-bold text-2xl'>
                         <div className='flex'>
                             <div name='maindiv' className='bg-white rounded-xl p-5 mt-3 border border-black w-auto flex-grow'>
