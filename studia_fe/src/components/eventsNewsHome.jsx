@@ -1,29 +1,80 @@
-import { useEffect, React } from 'react';
+import { useEffect, React, useState } from 'react';
 import { connect } from 'react-redux';
 import { checkAuthenticated, load_user } from '../actions/auth';
 import { IconContext } from "react-icons";
 import { Link, useNavigate } from 'react-router-dom';
-import { FiGrid } from "react-icons/fi";
-import { FiCalendar } from "react-icons/fi";
-import { FiCheckCircle } from "react-icons/fi";
-import { FiSettings } from "react-icons/fi";
-import { FiBarChart } from "react-icons/fi";
-import { FiBell } from "react-icons/fi";
+
+import {
+    FiGrid,
+    FiCalendar,
+    FiCheckCircle,
+    FiSettings,
+    FiBarChart,
+    FiBell,
+    FiUsers,
+    FiArrowRight,
+    FiFolder,
+    FiTrello,
+    FiBook,
+    FiClock,
+} from "react-icons/fi";
+
 
 import './styles/utils.css'
 
-const ConfigurationsHome = ({user, isAuthenticated, checkAuthenticated, load_user} ) => {
+const EventsNews = ({ user, isAuthenticated, checkAuthenticated, load_user }) => {
     const navigate = useNavigate();
-
-    function handleHome() {
-        navigate("/courses");
-    }
+    const [textSearch, setTextSearch] = useState("");
+    const [newsInfo, setNewsInfo] = useState([]);
 
     useEffect(() => {
         checkAuthenticated();
         load_user();
-    
-      }, []);
+
+    }, []);
+
+    useEffect(() => {
+        callNewsData();
+    }, [user]);
+
+
+    function callNewsData() {
+        if (user) {
+            const link = "http://localhost:8000/api/accounts/users/" + user['id'] + "/courses/news/";
+            fetch(link)
+                .then((res) => res.json())
+                .then((data) => {
+                    setNewsInfo(data);
+                })
+                .catch((error) => console.error(error));
+        }
+    }
+
+    function renderNews(news) {
+        return (
+            <div>
+
+
+                <div className='my-5'>
+                    <div className='flex mt-4 border-black border rounded p-3 items-center justify-center '>
+                        <div className='w-[100px] h-[100px] flex items-center pl-3'>
+                            <img src={news.professor_photo} className='rounded' alt="" />
+                        </div>
+                        <div className='flex flex-col w-1/4 items-center '>
+                            <p className='text-blue-500 font-medium text-lg'>{news.title}</p>
+                            <p className='font-medium text-base'>{news.professor_name}</p>
+                        </div>
+                        <div className='container'>
+                            <p className='font-medium text-base'>{news.post}</p>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        )
+    }
+
 
     return (
         <div className='h-screen w-full bg-white'>
@@ -54,7 +105,7 @@ const ConfigurationsHome = ({user, isAuthenticated, checkAuthenticated, load_use
                         {user && <p className='font-semibold mr-5'>{user['name']}</p>}
 
                         <div className='rounded w-14 mr-9'>
-                        {user && <img src={user['profile_photo']} className='object-scale-down rounded-lg cursor-pointer' alt="" />}
+                            {user && <img src={user['profile_photo']} className='object-scale-down rounded-lg cursor-pointer' alt="" />}
                         </div>
 
                     </div>
@@ -76,18 +127,17 @@ const ConfigurationsHome = ({user, isAuthenticated, checkAuthenticated, load_use
                                 </li>
                             </a>
 
-                            <a href="/events/timeline" className=''>
-                                <li className='py-3 mt-8 pl-5 hover:bg-indigo-200 transition rounded-lg duration-300'>
-                                    <span className='flex font-bold  '>
-                                        < FiCalendar size={25} />
-                                        <h2 className='px-4 '>Events</h2>
-                                    </span>
-
+                            <a href="" className=''>
+                                <li className='bg-gradient-to-r from-[#657DE9] to-[#6E66D6] rounded-lg py-3 mt-7'>
+                                    <span className='flex px-5'>     <IconContext.Provider value={{ color: 'white', size: '25px' }}>
+                                        <FiCalendar />
+                                    </IconContext.Provider>
+                                        <h1 className='pl-2 text-white '>Events</h1></span>
                                 </li>
                             </a>
 
                             <a href="">
-                                <li className='py-3 mt-7 pl-5 hover:bg-indigo-200 transition rounded-lg duration-300'>
+                                <li className='py-3 mt-8 pl-5 hover:bg-indigo-200 transition rounded-lg duration-300'>
                                     <span className='flex font-bold  '>
                                         < FiBarChart size={25} />
                                         <h2 className='px-4'>Dashboard</h2>
@@ -106,23 +156,46 @@ const ConfigurationsHome = ({user, isAuthenticated, checkAuthenticated, load_use
                                 </li>
                             </a>
 
-                            <a href="" className='py-10'>
-                                <li className='bg-gradient-to-r from-[#657DE9] to-[#6E66D6] rounded-lg py-3 '>
-                                    <span className='flex px-5'>     <IconContext.Provider value={{ color: 'white', size: '25px' }}>
-                                        <FiSettings />
-                                    </IconContext.Provider>
-                                        <h1 className='pl-2 text-white '>Configuration</h1></span>
+
+                            <a href="/configuration" className=''>
+                                <li className='py-3 mt-7 pl-5 hover:bg-indigo-200 transition rounded-lg duration-300'>
+                                    <span className='flex font-bold  '>
+                                        < FiSettings size={25} />
+                                        <h2 className='px-4 '>Configuration</h2>
+                                    </span>
+
                                 </li>
                             </a>
                         </ul>
                     </div>
 
                 </aside>
-                <div className='container-fluid h-screen w-full rounded-tl-3xl bg-[#e7eaf886] '>
+                <div className='container-fluid h-screen w-full rounded-tl-3xl bg-[#e7eaf886]'>
                     <div className='p-9 px-12 font-bold text-2xl'>
-                        <h2>Configuration</h2>
+                        <div className='flex'>
+                            <div name='maindiv' className='bg-white rounded-xl p-5 mt-3 border border-black w-auto flex-grow'>
+                                <h1 className=''>News</h1>
+                                <hr className="h-px my-8 bg-black border-0"></hr>
+                                {newsInfo.map(renderNews)}
+                            </div>
+                            <div name='others' className='flex flex-col right-0 ml-6 mr-10'>
 
+                                <Link to={"/events/calendar"}>
+                                    <div className='bg-white rounded-lg border border-black my-3 py-2 px-4 flex'>
+                                        <h1 className='text-base mr-3'>Calendar</h1>
+                                        <FiCalendar className='ml-auto' />
+                                    </div>
+                                </Link>
 
+                                <Link to={"/events/timeline"}>
+                                    <div className='bg-white rounded-lg border border-black my-3 py-2 px-4 flex'>
+                                        <h1 className='text-base mr-3'>Timeline</h1>
+                                        <FiClock className='ml-auto' />
+                                    </div>
+                                </Link>
+
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -137,9 +210,9 @@ const ConfigurationsHome = ({user, isAuthenticated, checkAuthenticated, load_use
 const mapStateToProps = state => ({
     isAuthenticated: state.auth.isAuthenticated,
     user: state.auth.user
-  });
-  
-  
-  
-  
-  export default connect(mapStateToProps, { checkAuthenticated, load_user })(ConfigurationsHome);
+});
+
+
+
+
+export default connect(mapStateToProps, { checkAuthenticated, load_user })(EventsNews);

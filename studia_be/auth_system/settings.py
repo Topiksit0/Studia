@@ -15,6 +15,9 @@ from pathlib import Path
 from datetime import timedelta
 from django.core.management.utils import get_random_secret_key
 import os
+import pymongo
+from pymongo import uri_parser
+from django.conf import settings
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -50,7 +53,8 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'courses.apps.CoursesConfig',
     'rest_framework_simplejwt',
-    'rest_framework_simplejwt.token_blacklist'
+    'rest_framework_simplejwt.token_blacklist',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -100,6 +104,8 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:9000"
 ]
 
+
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -112,10 +118,17 @@ DATABASES = {
 
 
 
+uri = ''
+
+MONGODB_SETTINGS = {
+    'uri': os.getenv('MONGODB_URL')
+}
+
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'jhinstoppls@gmail.com'
+EMAIL_HOST_USER = 'studiawip@gmail.com'
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = True
 
@@ -202,6 +215,14 @@ DJOSER = {
 }
 
 AUTH_USER_MODEL = 'accounts.UserAccount'
+
+AZURE_ACCOUNT_NAME = 'studia'
+AZURE_ACCOUNT_KEY = os.getenv('AZURE_STORAGE_ACCESS_KEY')
+AZURE_CONTAINER = 'studiaimages'
+AZURE_SSL = True
+
+DEFAULT_FILE_STORAGE = 'storages.backends.azure_storage.AzureStorage'
+STATICFILES_STORAGE = 'storages.backends.azure_storage.AzureStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

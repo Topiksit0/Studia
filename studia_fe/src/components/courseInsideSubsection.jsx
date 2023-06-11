@@ -10,9 +10,14 @@ import { FiSettings } from "react-icons/fi";
 import { FiBarChart } from "react-icons/fi";
 import { FiBell } from "react-icons/fi";
 import { FiUser } from "react-icons/fi";
+
 import { FiFolder } from "react-icons/fi";
 import { FiTrello } from "react-icons/fi";
 import { FiBook } from "react-icons/fi";
+
+import ChatBot from './chatBot';
+
+
 import {
     Accordion,
     AccordionItem,
@@ -21,31 +26,30 @@ import {
     AccordionIcon,
 } from '@chakra-ui/accordion'
 
-import ChatBot from './chatBot';
 
 
-const CourseInside = ({ user, isAuthenticated, checkAuthenticated, load_user }) => {
+const CourseInsideSubsection = ({ user, isAuthenticated, checkAuthenticated, load_user }) => {
     const navigate = useNavigate();
     const [courseInformation, setCourseInformation] = useState([]);
     const [courseContentInformation, setCourseContentInformation] = useState([]);
     let { id } = useParams();
-    function handleNavigate(url) {
-        navigate(url);
-    }
+    let { subsection } = useParams();
+    let { section } = useParams();
 
     useEffect(() => {
         checkAuthenticated();
         load_user();
     }, []);
 
+    function handleNavigate(url) {
+        navigate(url);
+    }
     useEffect(callCourseData, [])
-
     useEffect(() => {
         if (courseContentInformation.length === 0) {
             callCourseSectionData();
         }
     });
-
     function callCourseData() {
         const link = "http://localhost:8000/api/courses/" + id + "/";
         fetch(link)
@@ -64,6 +68,7 @@ const CourseInside = ({ user, isAuthenticated, checkAuthenticated, load_user }) 
                 setCourseContentInformation(data);
             })
     }
+
 
     function selectFaseSectionContent(str) {
         if (str === "Forethought") {
@@ -150,14 +155,6 @@ const CourseInside = ({ user, isAuthenticated, checkAuthenticated, load_user }) 
                 )
             }
 
-            if (activities.tipo === "cuestionario") {
-                return (
-                    <div className='flex justify-center'>
-                        <div dangerouslySetInnerHTML={{ __html: activities.htmlcode }}></div>
-                    </div>
-                )
-            }
-
             if (activities.tipo === "lecture") {
                 return (
                     <a href={activities.url}>
@@ -172,7 +169,6 @@ const CourseInside = ({ user, isAuthenticated, checkAuthenticated, load_user }) 
 
                         </div>
                     </a>
-
 
                 )
             }
@@ -192,6 +188,63 @@ const CourseInside = ({ user, isAuthenticated, checkAuthenticated, load_user }) 
                 )
             }
 
+            if (activities.tipo === "checklist_entrega") {
+                return (
+                    <div className='rounded my-5 '>
+                        <h3 className="mb-4 font-semibold text-lg text-black">Autocomprensión de la tarea</h3>
+                        <ul className=" text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg ">
+                            <li className="w-full border-b border-gray-200 rounded-t-lg ">
+                                <div className="flex items-center pl-3">
+                                    <input id="entender-checkbox" type="checkbox" value="" className=" text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 " />
+                                    <label for="entender-checkbox" className="w-full py-3 ml-2 text-base font-normal text-gray-900 ">🎯 He entendido la actividad que tengo que realizar.</label>
+                                </div>
+                            </li>
+                            <li className="w-full border-b border-gray-200 rounded-t-lg ">
+                                <div className="flex items-center pl-3">
+                                    <input id="empezar-checkbox" type="checkbox" value="" className=" text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500  " />
+                                    <label for="empezar-checkbox" className="w-full py-3 ml-2 text-base font-normal text-gray-900 ">⚡ Sé como empezar la actividad. </label>
+                                </div>
+                            </li>
+                            <li className="w-full border-b border-gray-200 rounded-t-lg ">
+                                <div className="flex items-center pl-3">
+                                    <input id="planificar-checkbox" type="checkbox" value="" className=" text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500  " />
+                                    <label for="planificar-checkbox" className="w-full py-3 ml-2 text-base font-normal text-gray-900 ">📅 He planificado de manera correcta la actividad. </label>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                )
+
+            }
+            if (activities.tipo === "checklist_entrega_final") {
+                return (
+                    <div className='rounded my-5 '>
+                        <h3 className="mb-4 font-semibold text-lg text-black">Valorar actividad</h3>
+                        <ul className=" text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg ">
+                            <li className="w-full border-b border-gray-200 rounded-t-lg ">
+                                <div className="flex items-center pl-3">
+                                    <input id="entender-checkbox" type="checkbox" value="" className=" text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 " />
+                                    <label for="entender-checkbox" className="w-full py-3 ml-2 text-base font-normal text-gray-900 ">🚀 El Peer Review me ha ayudado a mejorar mi primera entrega.</label>
+                                </div>
+                            </li>
+                            <li className="w-full border-b border-gray-200 rounded-t-lg ">
+                                <div className="flex items-center pl-3">
+                                    <input id="empezar-checkbox" type="checkbox" value="" className=" text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500  " />
+                                    <label for="empezar-checkbox" className="w-full py-3 ml-2 text-base font-normal text-gray-900 ">🏫 He aprendido algo realizando esta actividad. </label>
+                                </div>
+                            </li>
+                            <li className="w-full border-b border-gray-200 rounded-t-lg ">
+                                <div className="flex items-center pl-3">
+                                    <input id="planificar-checkbox" type="checkbox" value="" className=" text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500  " />
+                                    <label for="planificar-checkbox" className="w-full py-3 ml-2 text-base font-normal text-gray-900 ">❤️ Me ha gustado realizar esta actividad. </label>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                )
+
+            }
+
             if (activities.tipo === "archivos") {
                 return (
                     <div className='flex cursor-pointer mt-4 pl-4 bg-red-100 border-red-400 border-2 rounded py-4'>
@@ -208,6 +261,14 @@ const CourseInside = ({ user, isAuthenticated, checkAuthenticated, load_user }) 
 
             }
 
+            if (activities.tipo === "cuestionario") {
+                return (
+                    <div className='flex justify-center mt-5'>
+                        <div dangerouslySetInnerHTML={{ __html: activities.htmlcode }}></div>
+                    </div>
+                )
+            }
+
         }
 
 
@@ -216,13 +277,17 @@ const CourseInside = ({ user, isAuthenticated, checkAuthenticated, load_user }) 
 
     function RenderTextActivitiesInsideCourse() {
         // Obtiene la sección correspondiente
-        var contenido = courseContentInformation[0].subsecciones[0].contenido
+        const section_ = courseContentInformation.find(seccion => seccion.titulo === section);
+        const subsection_ = section_.subsecciones.find(subseccion => subseccion.titulo === subsection);
+        var contenido = subsection_.contenido;
+        console.log(contenido)
         return (
             <div className='mb-12'>
                 {contenido.map(renderAllActivities)}
             </div>
         )
     }
+
 
     function RenderCourseContent(section) {
         return (
@@ -249,7 +314,6 @@ const CourseInside = ({ user, isAuthenticated, checkAuthenticated, load_user }) 
     }
 
 
-
     return (
         <div className='h-screen w-full bg-white'>
             <nav className="h-[8rem] bg-white">
@@ -262,15 +326,16 @@ const CourseInside = ({ user, isAuthenticated, checkAuthenticated, load_user }) 
                     </button>
                     <h1 className='p-10 sm:px-16 font-bold text-3xl italic leading-none tracking-tight cursor-pointer'>Studia <span className='text-pink-500 text-4xl '>.</span></h1>
                     <div className=' absolute right-0 flex items-center pb-10 sm:pb-0'>
-                        <FiBell size={25} className="mr-8 cursor-pointer" />
+                        <FiBell size={25} className="mr-8 cursor-pointer sm:visible collapse" />
                         <span className="bg-indigo-100 text-indigo-800 text-xs font-medium mr-3 px-2.5 py-0.5 rounded dark:bg-indigo-900 dark:text-indigo-300 invisible sm:visible">Student</span>
                         {user && <p className='font-semibold mr-5'>{user['name']}</p>}
 
                         <div className='rounded w-14 mr-9'>
-                            {user && <img src={user['profile_photo']} className='object-scale-down rounded-lg cursor-pointer' alt="" />}
+                            <img src="https://media.licdn.com/dms/image/C4E03AQFEOaCX1a2YrA/profile-displayphoto-shrink_100_100/0/1663844200883?e=1686787200&v=beta&t=kK62__WjZnUk90Z_rcA42H5ugHGm1kbSM6nlGrSynLk" className='object-scale-down rounded-lg cursor-pointer' alt="" />
                         </div>
                     </div>
-                    {courseInformation && <h1 className='ml-44 text-2xl font-bold '>{courseInformation.title}</h1>}
+
+                    {courseInformation && <h1 className='ml-44 text-2xl font-bold sm:visible collapse'>{courseInformation.title}</h1>}
                 </div>
 
 
@@ -334,13 +399,13 @@ const CourseInside = ({ user, isAuthenticated, checkAuthenticated, load_user }) 
                     </div>
 
                 </aside>
-
                 <div className='container-fluid min-h-screen w-screen rounded-tl-3xl bg-[#e7eaf886] flex flex-wrap'>
 
                     <div className='flex-1 min-w-0  sm:w-auto mt-8 ml-8 mr-8'>
 
                         <img src="https://kinsta.com/wp-content/uploads/2022/03/what-is-postgresql.png" alt="" className='rounded shadow' />
-                        {courseContentInformation[0] && <p className='text-xl mt-5 font-semibold'> {courseContentInformation[0].subsecciones[0].titulo}</p>}
+
+                        <p className='text-xl mt-5 font-semibold'>{subsection}</p>
                         <div className='flex flex-row mt-4  items-center'>
                             <img class="w-8 h-8 rounded-full mr-3" src={courseInformation.professor && courseInformation.professor.profile_photo} alt="Rounded avatar" />
                             <p className='text-base font-semibold'>{courseInformation.professor && courseInformation.professor.name}</p>
@@ -350,13 +415,12 @@ const CourseInside = ({ user, isAuthenticated, checkAuthenticated, load_user }) 
                             </button>
                         </div>
                         <hr className="h-px my-3 bg-gray-800 border-0 "></hr>
-
                         {courseContentInformation.length > 0 && RenderTextActivitiesInsideCourse()}
-
-
                     </div>
 
+
                     <div className='flex-shrink-0 w-full sm:w-auto'>
+
                         <div className='mt-8 bg-white rounded-lg  px-5 py-5  sm:mr-9 sm:right-0 sm:w-[30rem] w-full shadow-md sm:visible collapse'>
                             <p className='text-xl font-medium'>Course content</p>
                             <hr className="h-px my-8 bg-gray-400 border-0"></hr>
@@ -367,13 +431,11 @@ const CourseInside = ({ user, isAuthenticated, checkAuthenticated, load_user }) 
 
 
                 </div>
-
             </div>
             <ChatBot />
         </div>
     )
 }
-
 
 const mapStateToProps = state => ({
     isAuthenticated: state.auth.isAuthenticated,
@@ -381,4 +443,6 @@ const mapStateToProps = state => ({
 });
 
 
-export default connect(mapStateToProps, { checkAuthenticated, load_user })(CourseInside);
+
+
+export default connect(mapStateToProps, { checkAuthenticated, load_user })(CourseInsideSubsection);
