@@ -19,7 +19,7 @@ class UserAccountManager(BaseUserManager):
         extra_fields.setdefault('is_superuser', True)
 
         return self.create_user(email, password, **extra_fields)
-
+    
 class UserAccount(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=255, unique=True)
     user_name = models.CharField(max_length=255, unique=True)

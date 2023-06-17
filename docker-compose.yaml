@@ -1,0 +1,33 @@
+version: '3'
+services:
+  db:
+    image: postgres
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    expose:
+      - 5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgresadmin
+      POSTGRES_DB: postgres
+    ports:
+      - 5432:5432
+
+  frontend:
+    build:
+      context: /studia_fe
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+
+  backend:
+    build:
+      context: /studia_be
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+
+volumes:
+  db_data:

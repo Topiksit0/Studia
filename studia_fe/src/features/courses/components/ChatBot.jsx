@@ -13,7 +13,7 @@ import {
     TypingIndicator,
 } from "@chatscope/chat-ui-kit-react";
 
-const Chatbot = () => {
+export const Chatbot = () => {
     const API_KEY = process.env.REACT_APP_API_KEY;
 
     const systemMessage = { //  Explain things like you're talking to a software professional with 5 years of experience.
@@ -131,5 +131,3 @@ const Chatbot = () => {
         </div>
     );
 };
-
-export default Chatbot;
