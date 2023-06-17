@@ -3,6 +3,7 @@ import { Outlet } from 'react-router-dom';
 import { Spinner } from '../shared/elements/Spinner';
 import { CoursesRoutes } from '../features/courses/screens'; 
 import { EventsRoutes } from '../features/events/screens';
+import { QualificationsRoutes } from '../features/qualifications/screens';
 
 
 const App = () => {
@@ -27,6 +28,7 @@ const App = () => {
       children: [
         { path: 'courses/*', element: <CoursesRoutes /> },
         { path: 'events/*', element: <EventsRoutes /> },
+        { path: 'qualifications/*', element: <QualificationsRoutes /> },
       ],
     },
   ];

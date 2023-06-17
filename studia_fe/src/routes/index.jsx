@@ -19,11 +19,7 @@ export const AppRoutes = () => {
             element: <Page404Screen />,
         }
     ];
-    console.log(isAuthenticated)
     const routes = isAuthenticated ? protectedRoutes : publicRoutes;
-
-    console.log(routes);
-    
     const element = useRoutes([...routes, ...commonRoutes]);
 
     return <>{element}</>;
