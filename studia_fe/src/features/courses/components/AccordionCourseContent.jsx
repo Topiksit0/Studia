@@ -18,19 +18,19 @@ export const AccordionCourseContent = ({ courseContentInformation, setCourseSubs
         if (str === "Forethought") {
             return (
 
-                <span className="  text-xs absolute right-0 mr-20 font-medium px-2.5 py-0.5 rounded bg-green-800 text-green-400 ">{str}</span>
+                <span className="  text-xs absolute right-0 mr-20 font-medium px-2.5 py-0.5 rounded bg-green-800 text-white ">{str}</span>
 
             )
         } else if (str === "Performance") {
             return (
 
-                <span className="text-xs absolute right-0 mr-20 font-medium px-2.5 py-0.5 rounded bg-yellow-600 text-yellow-200 ">{str}</span>
+                <span className="text-xs absolute right-0 mr-20 font-medium px-2.5 py-0.5 rounded bg-yellow-600 text-white ">{str}</span>
 
             )
         } else if (str === "Self-reflection") {
             return (
 
-                <span className="text-xs absolute right-0 mr-20 font-medium px-2.5 py-0.5 rounded bg-red-600 text-red-200 ">{str}</span>
+                <span className="text-xs absolute right-0 mr-20 font-medium px-2.5 py-0.5 rounded bg-red-600 text-white ">{str}</span>
 
             )
         }

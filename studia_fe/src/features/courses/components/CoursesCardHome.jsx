@@ -1,6 +1,6 @@
 import React from 'react'
 import { FiUser } from "react-icons/fi";
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 export const CoursesCardHome = (course) => {
     course = course.course

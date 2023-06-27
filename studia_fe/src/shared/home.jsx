@@ -11,23 +11,18 @@ import './styles/home.css'
 
 
 
-const Home = () => {    
+const Home = () => {
     AuthHandler();
-    
+
     return (
         <div className='bg-[#f2f2f2]'>
             <div class="overflow-x-hidden antialiased h-full">
                 <header class="relative z-50 w-full h-24">
                     <div
                         class="container flex items-center justify-center h-full max-w-6xl px-8 mx-auto sm:justify-between xl:px-0">
-
                         <a href="/" class="relative flex flex-row items-center h-5 h-full font-black leading-none">
-
                             <span class="ml-3 flex flex-row text-xl text-gray-800 "> Studia <span class="text-pink-500">.</span> </span>
                         </a>
-
-
-
                         <div
                             class="absolute left-0 flex-col items-center justify-center hidden w-full pb-8 mt-48 border-b border-gray-200 md:relative md:w-auto md:bg-transparent md:border-none md:mt-0 md:flex-row md:p-0 md:items-end md:flex md:justify-between">
 
@@ -39,8 +34,6 @@ const Home = () => {
                                         <stop stop-color="#657DE9" offset="0%" />
                                         <stop stop-color="#1C0FD7" offset="100%" />
                                     </linearGradient>
-
-
 
                                     <path
                                         d="M159.107 107.829H656.55c17.83 0 24.296 1.856 30.815 5.342 6.518 3.487 11.634 8.602 15.12 15.12 3.486 6.52 5.343 12.985 5.343 30.816V656.55c0 17.83-1.857 24.296-5.343 30.815-3.486 6.518-8.602 11.634-15.12 15.12-6.519 3.486-12.985 5.343-30.815 5.343H159.107c-17.83 0-24.297-1.857-30.815-5.343-6.519-3.486-11.634-8.602-15.12-15.12-3.487-6.519-5.343-12.985-5.343-30.815V159.107c0-17.83 1.856-24.297 5.342-30.815 3.487-6.519 8.602-11.634 15.12-15.12 6.52-3.487 12.985-5.343 30.816-5.343z"
@@ -86,14 +79,12 @@ const Home = () => {
 
                             <div class="flex-col hidden mt-12 sm:flex lg:mt-24">
                                 <div class="flex flex-wrap gap-x-8 h-[11rem] gap-8 ">
-                                    <a href="/register">
+                                    <a href="/auth/register">
                                         <div className='shadow-lg  bg-white grid text-center cursor-pointer rounded-md w-40'>
-
-                                            <div className=' from-[#657DE9] h-[12rem] to-[#6e66d6] bg-gradient-to-r rounded-md flex flex-col  '>
+                                            <div className=' from-[#657DE9] h-[12rem] to-[#6e66d6] shadow2 bg-gradient-to-r rounded-md flex flex-col  '>
                                                 <div>
                                                     <FaSchool size={50} className='inline-grid text-white my-3' />
                                                 </div>
-
                                                 <h1 className='font-semibold text-white px-3'> New student?</h1>
                                                 <p className='text-xs text-white py-2  px-3'>If you are a student and you have just enrolled, create your credentials.</p>
                                             </div>
@@ -101,7 +92,7 @@ const Home = () => {
                                     </a>
 
                                     <a href="https://www.ub.edu/campusvirtualub/ca/content/et-cal-ajuda">
-                                        <div className='shadow-lg  bg-white grid text-center cursor-pointer rounded-md w-40'>
+                                        <div className='shadow-lg  bg-white grid text-center cursor-pointer  shadow2 rounded-md w-40'>
                                             <div className=' from-[#657DE9] h-[12rem] to-[#6e66d6] bg-gradient-to-r rounded-md flex flex-col'>
                                                 <div>
                                                     <MdSchool size={50} className='inline text-white my-3' />
@@ -114,7 +105,7 @@ const Home = () => {
                                     </a>
 
                                     <a href="https://forms.office.com/pages/responsepage.aspx?id=qzwxosOxOk-7ESFXRH3btJgz-3XbAEBHsUehETyC1ApUQjJKSEhPNVlWV1pXRlYwTlVVT0cwMElIOC4u">
-                                        <div className='shadow-lg  bg-white grid text-center cursor-pointer   rounded-md w-40'>
+                                        <div className='shadow-lg  bg-white grid text-center cursor-pointer shadow2  rounded-md w-40'>
                                             <div className=' from-[#657DE9] h-[12rem] to-[#6e66d6] bg-gradient-to-r rounded-md flex flex-col'>
                                                 <div>
                                                     <RiSurveyFill className='inline text-white my-3' size={50} />
