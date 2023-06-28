@@ -1,10 +1,10 @@
 import { useEffect, useState, React } from 'react';
-import { connect, useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 import { checkAuthenticated, load_user } from '../../../actions/auth';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { FiUser } from "react-icons/fi";
 
-import { ActivitiesText, ActivitiesLecture, ActivitiesDelivery, ActivitiesPeerReview, ActivitiesQuestionnaire, ActivitiesFiles } from '../components/Activities';
+import { ActivitiesText, ActivitiesLecture, ActivitiesDelivery, ActivitiesPeerReview, ActivitiesQuestionnaire } from '../components/Activities';
 
 import { Sidebar } from '../../../shared/elements/Sidebar';
 import { Navbar } from '../../../shared/elements/Navbar';
@@ -14,7 +14,7 @@ import { Chatbot } from '../components/ChatBot';
 
 
 const CourseInside = ({ user, isAuthenticated, checkAuthenticated, load_user }) => {
-  const navigate = useNavigate();
+  const [courseOrFiles, setcourseOrFiles] = useState('course');
   const [courseInformation, setCourseInformation] = useState([]);
   const [courseContentInformation, setCourseContentInformation] = useState([]);
   const [courseSubsection, setCourseSubsection] = useState([]);
@@ -26,7 +26,6 @@ const CourseInside = ({ user, isAuthenticated, checkAuthenticated, load_user }) 
     entrega: ActivitiesDelivery,
     lecture: ActivitiesLecture,
     peer_review: ActivitiesPeerReview,
-    archivos: ActivitiesFiles,
     cuestionario: ActivitiesQuestionnaire,
   };
 
@@ -35,9 +34,6 @@ const CourseInside = ({ user, isAuthenticated, checkAuthenticated, load_user }) 
     load_user();
   }, []);
 
-  function handleNavigate(url) {
-    navigate(url);
-  }
   useEffect(callCourseData, [])
   useEffect(() => {
     if (courseContentInformation.length === 0) {
@@ -65,13 +61,12 @@ const CourseInside = ({ user, isAuthenticated, checkAuthenticated, load_user }) 
       })
   }
 
-
   function renderAllActivities(activities) {
-      const Component = componentMap[activities.tipo];
-      if (Component) {
-        return <Component activitie={activities} />;
-      }
-      return null;
+    const Component = componentMap[activities.tipo];
+    if (Component) {
+      return <Component activitie={activities} />;
+    }
+    return null;
   }
 
   function RenderTextActivitiesInsideCourse() {
@@ -85,6 +80,14 @@ const CourseInside = ({ user, isAuthenticated, checkAuthenticated, load_user }) 
     )
   }
 
+  function RenderFilesInsideCourse() {
+    return(
+      <div className='py-7 flex flex-col items-center justify-center'>
+        <img className='opacity-50' src="https://liferay-support.zendesk.com/hc/article_attachments/360032795211/empty_state.gif" alt="" />
+        <h2 className='py-3 font-medium text-gray-600'>There are no files to show</h2> 
+      </div>
+    )
+  }
 
 
   return (
@@ -93,11 +96,8 @@ const CourseInside = ({ user, isAuthenticated, checkAuthenticated, load_user }) 
       <div className='flex flex-wrap-reverse sm:flex-nowrap bg-white'>
         <Sidebar section={'courses'} />
         <div className='container-fluid min-h-screen w-screen rounded-tl-3xl bg-[#e7eaf886] flex flex-wrap'>
-
           <div className='flex-1 min-w-0  sm:w-auto mt-8 ml-8 mr-8'>
-
             <img src="https://kinsta.com/wp-content/uploads/2022/03/what-is-postgresql.png" alt="" className='rounded shadow' />
-
             <p className='text-xl mt-5 font-semibold'>{courseSubsection}</p>
             <div className='flex flex-row mt-4  items-center'>
               <img class="w-8 h-8 rounded-full mr-3" src={courseInformation.professor && courseInformation.professor.profile_photo} alt="Rounded avatar" />
@@ -107,8 +107,27 @@ const CourseInside = ({ user, isAuthenticated, checkAuthenticated, load_user }) 
                 Participants
               </button>
             </div>
-            <hr className="h-px my-3 bg-gray-800 border-0 "></hr>
-            {courseContentInformation.length > 0 && RenderTextActivitiesInsideCourse()}
+            <div className='flex flex-row mt-4  items-center space-x-8 ml-5'>
+              <button
+                className={`font-medium text-gray-600 hover:text-black pb-3 ${courseOrFiles === 'course'
+                  ? 'text-[black] border-b-2 border-black'
+                  : ''
+                  }`}
+                onClick={() => setcourseOrFiles('course')}>
+                Course
+              </button>
+              <button
+                className={`font-medium text-gray-600 hover:text-black pb-3 ${courseOrFiles === 'files'
+                  ? 'text-[black] border-b-2 border-black'
+                  : ''
+                  }`}
+                onClick={() => setcourseOrFiles('files')}>
+                Files
+              </button>
+            </div>
+            <hr className="h-px  bg-gray-600 border-0 mb-6"></hr>
+            {courseOrFiles === 'course' && courseContentInformation.length > 0 && RenderTextActivitiesInsideCourse()}
+            {courseOrFiles === 'files' && RenderFilesInsideCourse()}
           </div>
           <AccordionCourseContent {...{ courseContentInformation, setCourseSubsection, setCourseSection }} />
         </div>
@@ -122,8 +141,5 @@ const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated,
   user: state.auth.user
 });
-
-
-
 
 export default connect(mapStateToProps, { checkAuthenticated, load_user })(CourseInside);

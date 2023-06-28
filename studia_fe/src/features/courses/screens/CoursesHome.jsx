@@ -17,12 +17,9 @@ const CoursesHome = ({ user, isAuthenticated, checkAuthenticated, load_user }) =
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const navigate = useNavigate();
-
   useEffect(() => {
     checkAuthenticated();
     load_user();
-
   }, []);
 
   useEffect(() => {

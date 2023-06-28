@@ -35,12 +35,13 @@ class NewsDetail(APIView):
 
         if activity is None:
             return Response(status=404)
-        
+
         response_data = {
             'news': activity['posts'],
             'course_id': activity['id']
         }
         return Response(response_data)
+
 
 class ActivitiesDetail(APIView):
     def procesar_objeto(self, objeto):
@@ -54,26 +55,29 @@ class ActivitiesDetail(APIView):
 
                 for actividad in subseccion['contenido']:
 
-                    if actividad['tipo'] == "texto" or actividad['tipo'] == "entrega":
+                    if actividad['tipo'] == "texto":
                         lista_contenido.append(
                             {'tipo': actividad['tipo'], 'texto': actividad['texto']})
+                        
+                    if actividad['tipo'] == "entrega":
+                        lista_contenido.append(
+                            {'tipo': actividad['tipo'], 'texto': actividad['texto'], 'fecha_fin_entrega': actividad['fecha_fin_entrega'], 'completed':actividad['completed'], 'evaluated':actividad['evaluated']}) 
 
                     if actividad['tipo'] == "lecture":
                         lista_contenido.append(
-                            {'tipo': actividad['tipo'], 'texto': actividad['texto'], 'url': actividad['url']})
+                            {'tipo': actividad['tipo'], 'texto': actividad['texto'], 'url': actividad['url'], 'completed':actividad['completed']})
 
                     if actividad['tipo'] == "cuestionario":
                         lista_contenido.append(
                             {'tipo': actividad['tipo'], 'texto': actividad['texto'], 'htmlcode': actividad['htmlcode']})
 
-                        
                     if actividad['tipo'] == "archivos":
                         lista_contenido.append(
                             {'tipo': actividad['tipo'], 'texto': actividad['texto']})
-                        
+
                     if actividad['tipo'] == "peer_review":
                         lista_contenido.append(
-                            {'tipo': actividad['tipo'], 'texto': actividad['texto'], 'peer_id': actividad['peer_id']})
+                            {'tipo': actividad['tipo'], 'texto': actividad['texto'], 'peer_id': actividad['peer_id'], 'fecha_fin_entrega': actividad['fecha_fin_entrega'], 'completed':actividad['completed'], 'evaluated':actividad['evaluated']})
 
                 lista_subsecciones.append(
                     {'titulo': subseccion['titulo'], 'fase': subseccion['fase'], 'finished': subseccion['finished'], 'fecha_inicio': subseccion['fecha_inicio'], 'fecha_fin': subseccion['fecha_fin'],  'duracion': subseccion['duracion'], 'contenido': lista_contenido})
