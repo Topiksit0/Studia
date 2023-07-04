@@ -1,0 +1,40 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+
+
+.footer {
+  background-color: #0c4783;
+  color: #fff;
+}
+
+.footer-wave-path {
+  fill: #ffffff;
+}
+
+.footer-content {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1230px;
+  padding: 40px 15px 150px;
+  position: relative;
+}
+
+.shadow2  {
+  transition: .5s ease;
+}
+
+.shadow2:hover{
+  box-shadow:
+      1px 1px #373737,
+      2px 2px #373737,
+      3px 3px #373737,
+      4px 4px #373737,
+      5px 5px #373737,
+      6px 6px #373737;
+  -webkit-transform: translateX(-3px);
+  transform: translateX(-3px);
+  transition: .5s ease;
+}
