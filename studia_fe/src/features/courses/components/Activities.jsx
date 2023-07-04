@@ -37,8 +37,8 @@ export const ActivitiesLecture = ({ activitie }) => {
 
 export const ActivitiesQuestionnaire = ({ activitie }) => {
     return (
-        <div>
-
+        <div className='flex justify-center'>
+            <div dangerouslySetInnerHTML={{ __html: activitie.htmlcode }}></div>
         </div>
     )
 }

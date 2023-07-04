@@ -3,7 +3,7 @@ from accounts.serializers import UserCreateSerializer
 from .models import Course, UserAccount
 
 class CourseSerializer(serializers.ModelSerializer):
-    students = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    students = UserCreateSerializer(many=True, read_only=True)
     professor = UserCreateSerializer()
     
     class Meta:

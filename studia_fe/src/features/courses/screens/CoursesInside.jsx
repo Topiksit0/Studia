@@ -5,6 +5,8 @@ import { useParams } from 'react-router-dom';
 import { FiUser } from "react-icons/fi";
 
 import { ActivitiesText, ActivitiesLecture, ActivitiesDelivery, ActivitiesPeerReview, ActivitiesQuestionnaire } from '../components/Activities';
+import { ProfessorData } from '../components/ProfessorData';
+import { Nothing404 } from '../components/Nothing404';
 
 import { Sidebar } from '../../../shared/elements/Sidebar';
 import { Navbar } from '../../../shared/elements/Navbar';
@@ -14,8 +16,9 @@ import { Chatbot } from '../components/ChatBot';
 
 
 const CourseInside = ({ user, isAuthenticated, checkAuthenticated, load_user }) => {
-  const [courseOrFiles, setcourseOrFiles] = useState('course');
+  const [courseInsideSectionType, setcourseInsideSectionType] = useState('course');
   const [courseInformation, setCourseInformation] = useState([]);
+  const [files, setFiles] = useState([]);
   const [courseContentInformation, setCourseContentInformation] = useState([]);
   const [courseSubsection, setCourseSubsection] = useState([]);
   const [courseSection, setCourseSection] = useState([]);
@@ -40,6 +43,7 @@ const CourseInside = ({ user, isAuthenticated, checkAuthenticated, load_user }) 
       callCourseSectionData();
     }
   });
+
   function callCourseData() {
     const link = "http://localhost:8000/api/courses/" + courseId + "/";
     fetch(link)
@@ -81,12 +85,34 @@ const CourseInside = ({ user, isAuthenticated, checkAuthenticated, load_user }) 
   }
 
   function RenderFilesInsideCourse() {
-    return(
-      <div className='py-7 flex flex-col items-center justify-center'>
-        <img className='opacity-50' src="https://liferay-support.zendesk.com/hc/article_attachments/360032795211/empty_state.gif" alt="" />
-        <h2 className='py-3 font-medium text-gray-600'>There are no files to show</h2> 
-      </div>
+    if (files.length === 0) {
+      return (
+        <Nothing404 />
+      )
+    }
+  }
+
+  function RenderParticipantsInsideCourseHandler(students) {
+    return (
+      <button className='bg-white rounded flex p-3 items-center space-x-3 shadow w-[14rem]'>
+        <img src={students.profile_photo} alt="" className='rounded w-14 h-14'/>
+        <p className='font-medium'>{students.name}</p>
+      </button>
     )
+  }
+
+  function RenderParticipantsInsideCourse() {
+    if (courseInformation.students.length === 0) {
+      return (
+        <Nothing404 />
+      )
+    } else {
+      return (
+        <div className='flex space-x-8'>
+          {courseInformation.students.map(RenderParticipantsInsideCourseHandler)}
+        </div>
+      )
+    }
   }
 
 
@@ -99,37 +125,41 @@ const CourseInside = ({ user, isAuthenticated, checkAuthenticated, load_user }) 
           <div className='flex-1 min-w-0  sm:w-auto mt-8 ml-8 mr-8'>
             <img src="https://kinsta.com/wp-content/uploads/2022/03/what-is-postgresql.png" alt="" className='rounded shadow' />
             <p className='text-xl mt-5 font-semibold'>{courseSubsection}</p>
-            <div className='flex flex-row mt-4  items-center'>
-              <img class="w-8 h-8 rounded-full mr-3" src={courseInformation.professor && courseInformation.professor.profile_photo} alt="Rounded avatar" />
-              <p className='text-base font-semibold'>{courseInformation.professor && courseInformation.professor.name}</p>
-              <button type="button" class="duration-150 ml-auto flex-shrink-0 flex border focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2 border-gray-600 text-black hover:text-white hover:bg-indigo-400 hover:border-gray-50 focus:ring-gray-800">
-                <FiUser className='mr-4' size={20} />
-                Participants
-              </button>
-            </div>
-            <div className='flex flex-row mt-4  items-center space-x-8 ml-5'>
+            <div className='flex flex-row mt-8  items-center space-x-8 ml-5'>
               <button
-                className={`font-medium text-gray-600 hover:text-black pb-3 ${courseOrFiles === 'course'
-                  ? 'text-[black] border-b-2 border-black'
-                  : ''
+                className={`font-medium hover:text-black pb-3 ${courseInsideSectionType === 'course' ? 'text-black border-b-2 border-black' : 'text-gray-500'
                   }`}
-                onClick={() => setcourseOrFiles('course')}>
+                onClick={() => setcourseInsideSectionType('course')}
+              >
                 Course
               </button>
               <button
-                className={`font-medium text-gray-600 hover:text-black pb-3 ${courseOrFiles === 'files'
-                  ? 'text-[black] border-b-2 border-black'
-                  : ''
+                className={`font-medium hover:text-black pb-3 ${courseInsideSectionType === 'files' ? 'text-black border-b-2 border-black' : 'text-gray-500'
                   }`}
-                onClick={() => setcourseOrFiles('files')}>
+                onClick={() => setcourseInsideSectionType('files')}
+              >
                 Files
+              </button>
+
+              <button
+                className={`font-medium hover:text-black pb-3 ${courseInsideSectionType === 'participants' ? 'text-black border-b-2 border-black' : 'text-gray-500'
+                  }`}
+                onClick={() => setcourseInsideSectionType('participants')}
+              >
+                Participants
               </button>
             </div>
             <hr className="h-px  bg-gray-600 border-0 mb-6"></hr>
-            {courseOrFiles === 'course' && courseContentInformation.length > 0 && RenderTextActivitiesInsideCourse()}
-            {courseOrFiles === 'files' && RenderFilesInsideCourse()}
+            {courseInsideSectionType === 'course' && courseContentInformation.length > 0 && RenderTextActivitiesInsideCourse()}
+            {courseInsideSectionType === 'files' && RenderFilesInsideCourse()}
+            {courseInsideSectionType === 'participants' && RenderParticipantsInsideCourse()}
           </div>
-          <AccordionCourseContent {...{ courseContentInformation, setCourseSubsection, setCourseSection }} />
+          <div>
+            <AccordionCourseContent {...{ courseContentInformation, setCourseSubsection, setCourseSection }} />
+            {courseInformation && courseInformation.professor && (
+              <ProfessorData professor={courseInformation.professor} />
+            )}
+          </div>
         </div>
       </div>
       <Chatbot />

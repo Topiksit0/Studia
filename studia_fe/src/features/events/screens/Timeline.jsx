@@ -69,7 +69,7 @@ const TimelineEvents = ({ user, isAuthenticated, checkAuthenticated, load_user }
                         <FiFolder size={40} />
                     </div>
                     <div className='flex flex-col'>
-                        <h1 className='font-medium text-base ml-5 text-indigo-500'>{eventActividades.titulo}</h1>
+                        <h1 className='font-medium text-base ml-5 text-indigo-700'>{eventActividades.titulo}</h1>
                         <h1 className='font-medium text-base ml-5 '>{eventActividades.texto}</h1>
                     </div>
                 </div>
@@ -83,7 +83,7 @@ const TimelineEvents = ({ user, isAuthenticated, checkAuthenticated, load_user }
                         <FiTrello size={40} />
                     </div>
                     <div className='flex flex-col'>
-                        <h1 className='font-medium text-base ml-5 text-indigo-500'>{eventActividades.titulo}</h1>
+                        <h1 className='font-medium text-base ml-5 text-indigo-700'>{eventActividades.titulo}</h1>
                         <h1 className='font-medium text-base ml-5 '>{eventActividades.texto}</h1>
                     </div>
                 </div>
@@ -97,7 +97,7 @@ const TimelineEvents = ({ user, isAuthenticated, checkAuthenticated, load_user }
                         <FiBook size={40} />
                     </div>
                     <div className='flex flex-col'>
-                        <h1 className='font-medium text-base ml-5 text-indigo-500'>{eventActividades.titulo}</h1>
+                        <h1 className='font-medium text-base ml-5 text-indigo-700'>{eventActividades.titulo}</h1>
                         <h1 className='font-medium text-base ml-5 '>{eventActividades.texto}</h1>
                     </div>
 
@@ -144,7 +144,9 @@ const TimelineEvents = ({ user, isAuthenticated, checkAuthenticated, load_user }
                                                 />
                                                 <button
                                                     type="submit"
+                                                    value="daw"
                                                 >
+                                                    
                                                     <FiArrowRight size={18} />
                                                 </button>
                                             </div>

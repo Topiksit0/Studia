@@ -44,30 +44,28 @@ export const AccordionCourseContent = ({ courseContentInformation, setCourseSubs
     function RenderCourseInsideSectionContent(subsection, titulo) {
         if (new Date(convertirFecha(subsection.fecha_inicio)).toISOString() > new Date().toISOString()) {
             return (
-                <div className='cursor-pointer'>
-                    <p className='text-base font-normal ml-4 pb-5'>
+                <div className='flex cursor-pointer my-1 hover:border-l-4 items-center py-3 '>
+                    <p className='text-base font-normal ml-4 '>
                         <span>🔒 </span>
-                        {subsection.titulo}
-                        {selectFaseSectionContent(subsection.fase)}
                     </p>
+                    <span className='truncate w-2/4 ml-3'>{subsection.titulo}</span>
+                    {selectFaseSectionContent(subsection.fase)}
                 </div>
             )
         }
         return (
-            <div onClick={() => handleSections(titulo, subsection.titulo)}>
-                <p className='text-base font-normal ml-4 pb-5'>
+            <div className='flex cursor-pointer my-1 hover:border-l-4 items-center py-3 ' onClick={() => handleSections(titulo, subsection.titulo)}>
+                <p className='text-base font-normal ml-4   '>
                     {subsection.finished === "False" ? (
                         <span role="img" aria-label="circle">⭕ </span>
                     ) : (
                         <span role="img" aria-label="checkmark">✅ </span>
-                    )
-                    }
+                    )}
 
-                    {subsection.titulo}
-                    {selectFaseSectionContent(subsection.fase)}
                 </p>
+                <span className='truncate w-2/4 ml-3'>{subsection.titulo}</span>
+                {selectFaseSectionContent(subsection.fase)}
             </div>
-
         )
     }
 
@@ -81,7 +79,6 @@ export const AccordionCourseContent = ({ courseContentInformation, setCourseSubs
                                 <h2 className='text-lg font-medium   ml-4'>
                                     {section.titulo}
                                     <AccordionIcon className='absolute right-0 mr-20 ' />
-
                                 </h2>
                             </div>
                         </AccordionButton>

@@ -161,8 +161,6 @@ const CalendarEvent = ({ user, isAuthenticated, checkAuthenticated, load_user })
 
                                 <div className='font-normal'>
                                     <Calendar bordered renderCell={renderCell} />
-
-
                                 </div>
 
                             </div>

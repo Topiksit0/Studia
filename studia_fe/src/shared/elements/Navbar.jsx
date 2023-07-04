@@ -13,16 +13,6 @@ export const Navbar = (props) => {
                         </svg>
                     </button>
                     <h1 className='p-10 sm:px-16 font-bold text-3xl italic leading-none tracking-tight cursor-pointer'>Studia <span className='text-pink-500 text-4xl '>.</span></h1>
-                    <form className='px-48 invisible sm:visible'>
-                        <label htmlFor="default-search " className="mb-2 text-sm font-medium text-black sr-only ">Search</label>
-                        <div className="relative w-80">
-                            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                <svg aria-hidden="true" className="w-5 h-5 text-black " fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                            </div>
-                            <input type="search" id="default-search" className="block w-full p-4 pl-10 text-sm placeholder-black bg-[#e7eaf886] rounded-lg" placeholder="Search for knowledge" required>
-                            </input>
-                        </div>
-                    </form>
                     <div className=' absolute right-0 flex items-center pb-10 sm:pb-0'>
                         <FiBell size={25} className="mr-8 cursor-pointer" />
                         <span className="bg-indigo-100 text-indigo-800 text-xs font-medium mr-3 px-2.5 py-0.5 rounded invisible sm:visible">Student</span>

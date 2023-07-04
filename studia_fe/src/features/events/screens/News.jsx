@@ -45,7 +45,7 @@ const NewsEvent = ({ user, isAuthenticated, checkAuthenticated, load_user }) => 
                             <img src={news.professor_photo} className='rounded' alt="" />
                         </div>
                         <div className='flex flex-col w-1/4 items-center '>
-                            <p className='text-blue-500 font-medium text-lg'>{news.title}</p>
+                            <p className='text-blue-700 font-medium text-lg'>{news.title}</p>
                             <p className='font-medium text-base'>{news.professor_name}</p>
                         </div>
                         <div className='container'>

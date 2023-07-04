@@ -10,8 +10,8 @@ export const CoursesCardHome = (course) => {
                 <div className="max-w-sm bg-white  rounded-lg shadow cursor-pointer h-[35rem] shadow2">
                     <img className="rounded-t-lg w-full h-[13rem] object-cover" src={course.course_photo} alt="" />
                     <div className="p-3 flex flex-col justify-center items-center">
-                        <h1>{course.title}</h1>
-                        <p className='text-xs font-normal text-gray-400'>{course.course_type}</p>
+                        <h3>{course.title}</h3>
+                        <p className='text-xs  font-normal text-gray-700'>{course.course_type}</p>
                         <div className='container bg-gray-100 py-1.5 my-6 rounded '>
                         </div>
                         <div className='container flex flex-row space-x-20 justify-center'>
