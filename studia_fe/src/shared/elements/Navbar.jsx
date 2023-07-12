@@ -1,7 +1,13 @@
-import React from 'react'
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FiBell } from "react-icons/fi";
 
 export const Navbar = (props) => {
+    const navigate = useNavigate();
+    let link = '';
+    if(props.user){
+        link = '/app/profile/' + props.user.id + '/';
+    }
     return (
         <div>
             <nav className="h-[8rem] bg-white">
@@ -17,9 +23,9 @@ export const Navbar = (props) => {
                         <FiBell size={25} className="mr-8 cursor-pointer" />
                         <span className="bg-indigo-100 text-indigo-800 text-xs font-medium mr-3 px-2.5 py-0.5 rounded invisible sm:visible">Student</span>
                         {props.user && <p className='font-semibold mr-5'>{props.user['name']}</p>}
-                        <div className='rounded w-14 mr-9'>
+                        <button onClick={() => navigate(link)} className='rounded w-14 mr-9'>
                             {props.user && <img src={props.user['profile_photo']} className='object-scale-down rounded-lg cursor-pointer' alt="" />}
-                        </div>
+                        </button>
                     </div>
                 </div>
             </nav>

@@ -4,7 +4,7 @@ import { Spinner } from '../shared/elements/Spinner';
 import { CoursesRoutes } from '../features/courses/screens'; 
 import { EventsRoutes } from '../features/events/screens';
 import { QualificationsRoutes } from '../features/qualifications/screens';
-
+import { UserProfileRoutes } from '../features/userProfile/screens';
 
 const App = () => {
     return (
@@ -29,6 +29,7 @@ const App = () => {
         { path: 'courses/*', element: <CoursesRoutes /> },
         { path: 'events/*', element: <EventsRoutes /> },
         { path: 'qualifications/*', element: <QualificationsRoutes /> },
+        { path: 'profile/*', element: <UserProfileRoutes /> },
       ],
     },
   ];

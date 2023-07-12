@@ -28,6 +28,8 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     is_profesor = models.BooleanField(default=False)
     profile_photo = models.URLField(blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+    university = models.CharField(max_length=255, blank=True, null=True)
 
     objects = UserAccountManager()
 
