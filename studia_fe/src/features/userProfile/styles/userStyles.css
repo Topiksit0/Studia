@@ -1,0 +1,24 @@
+.cardGlass {
+    backdrop-filter: blur(25px) saturate(200%);
+    -webkit-backdrop-filter: blur(25px) saturate(200%);
+    background-color: rgba(61, 61, 61, 0.75);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.125);
+}
+
+.shadow2 {
+    transition: .5s ease;
+}
+
+.shadow2:hover {
+    box-shadow:
+        1px 1px #373737,
+        2px 2px #373737,
+        3px 3px #373737,
+        4px 4px #373737,
+        5px 5px #373737,
+        6px 6px #373737;
+    -webkit-transform: translateX(-3px);
+    transform: translateX(-3px);
+    transition: .5s ease;
+}
