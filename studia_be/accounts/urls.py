@@ -9,6 +9,7 @@ app_name = 'accountprofile'
 
 urlpatterns = [
     path('users/<int:pk>/', views.UserDetail.as_view(),name="user_detail"),
+    path('users/<int:pk>/update/', views.UserUpdate.as_view(), name="user_update"),
     path('users/', views.UserListAPIView.as_view(), name='user_list'),
     path('users/<int:pk>/courses/', views.CourseList.as_view(), name='user_course_list'),
     path('users/<int:pk>/courses/timeline/', views.ActivitiesTimeline.as_view(), name='timeline_course_list'),

@@ -1,9 +1,12 @@
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework import generics, status
+from rest_framework.generics import UpdateAPIView
 from rest_framework.decorators import api_view
 from accounts.models import UserAccount
-from accounts.serializers import UserCreateSerializer
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
+from accounts.serializers import UserCreateSerializer, UserUpdateSerializer
 from courses.serializers import CourseSerializer
 from courses.models import Course
 from django.conf import settings
@@ -27,6 +30,30 @@ class UserListAPIView(generics.ListAPIView):
     serializer_class = UserCreateSerializer
 
 
+class UserUpdate(UpdateAPIView):
+    queryset = UserAccount.objects.all()
+    serializer_class = UserUpdateSerializer
+    lookup_field = 'pk'
+
+    def update(self, request, *args, **kwargs):
+        user = UserAccount.objects.get(pk=kwargs['pk'])
+        username = request.data.get('user_name', '').lower()
+        if not request.data or all(value == '' for value in request.data.values()):
+            return Response("No update values provided.", status=status.HTTP_400_BAD_REQUEST)
+        for i in UserAccount.objects.all():
+            if i.user_name.lower() == username and i.id != user.id:
+                return Response("Username already exists.", status=status.HTTP_400_BAD_REQUEST)
+
+        user.name = request.data.get('name', user.name)
+        user.description = request.data.get('description', user.description)
+        user.university = request.data.get('university', user.university)
+        user.user_name = request.data.get('user_name', user.user_name)
+        user.profile_photo = request.data.get('profile_photo', user.profile_photo)
+        user.landscape_photo = request.data.get('landscape_photo', user.landscape_photo)
+        user.save()
+        return HttpResponse(user, status=status.HTTP_200_OK)
+
+
 class CourseList(generics.ListAPIView):
     serializer_class = CourseSerializer
 
@@ -46,9 +73,9 @@ class ActivitiesTimeline(generics.ListAPIView):
         db = client['course_activities']
         activities_collection = db['activities']
         activities_by_date = {}
-        for course in temp:   
+        for course in temp:
             curso_mongo = activities_collection.find_one({"id": course.id})
-            if(curso_mongo is None):
+            if (curso_mongo is None):
                 continue
             for section in curso_mongo['secciones']:
                 for subsection in section['subsecciones']:
@@ -63,14 +90,16 @@ class ActivitiesTimeline(generics.ListAPIView):
                                     texto = content['texto']
                                     fecha_fin_entrega = content['fecha_fin_entrega']
                                     if fecha_fin_entrega not in activities_by_date:
-                                        activities_by_date[fecha_fin_entrega] = []
+                                        activities_by_date[fecha_fin_entrega] = [
+                                        ]
                                     activities_by_date[fecha_fin_entrega].append(
                                         {'titulo': title, 'tipo': tipo, 'texto': texto})
         sorted_activities = sorted(activities_by_date.items(
         ), key=lambda x: datetime.strptime(x[0], '%d-%m-%Y'))
         lista_ordenada = [{'fecha_fin_entrega': key, 'actividades': value}
-                        for key, value in sorted_activities]
+                          for key, value in sorted_activities]
         return Response(lista_ordenada)
+
 
 class QualificationsStudent(generics.ListAPIView):
     serializer_class = CourseSerializer
@@ -78,12 +107,13 @@ class QualificationsStudent(generics.ListAPIView):
     def get(self, request, pk):
         user_id = self.kwargs['pk']
         client = MongoClient(
-        settings.MONGODB_SETTINGS['uri'], server_api=ServerApi('1'))
+            settings.MONGODB_SETTINGS['uri'], server_api=ServerApi('1'))
         db = client['course_activities']
         activities_collection = db['grades']
-        grades_student = activities_collection.find_one({"alumno_id": str(user_id)})
+        grades_student = activities_collection.find_one(
+            {"alumno_id": str(user_id)})
         return Response(grades_student['notas_por_curso'])
-    
+
 
 class CoursesNews(generics.ListAPIView):
     serializer_class = CourseSerializer
@@ -99,9 +129,11 @@ class CoursesNews(generics.ListAPIView):
 
         for course in temp:
             curso_mongo = activities_collection.find_one({"id": course.id})
-            if(curso_mongo is None):
+            if (curso_mongo is None):
                 continue
             for post in curso_mongo['posts']:
-                final_list.append({ 'title': course.title, 'post': post['msg'],'timestamp': post['timestamp'] ,'professor_name': course.professor.name, 'professor_photo': course.professor.profile_photo})
-        lista_ordenada = sorted(final_list, key=lambda x: x['timestamp'], reverse=True)
+                final_list.append({'title': course.title, 'post': post['msg'], 'timestamp': post['timestamp'],
+                                  'professor_name': course.professor.name, 'professor_photo': course.professor.profile_photo})
+        lista_ordenada = sorted(
+            final_list, key=lambda x: x['timestamp'], reverse=True)
         return Response(lista_ordenada)

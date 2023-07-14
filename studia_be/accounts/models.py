@@ -30,6 +30,7 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     profile_photo = models.URLField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     university = models.CharField(max_length=255, blank=True, null=True)
+    landscape_photo = models.URLField(blank=True, null=True)
 
     objects = UserAccountManager()
 
