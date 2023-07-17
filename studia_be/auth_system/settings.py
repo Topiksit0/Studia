@@ -89,6 +89,8 @@ TEMPLATES = [
     },
 ]
 
+CORS_ALLOW_ALL_ORIGINS = True
+
 WSGI_APPLICATION = 'auth_system.wsgi.application'
 
 
@@ -105,7 +107,27 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:9000"
 ]
 
+CORS_ALLOWED_HEADERS = [
+    'content-disposition',  # Agrega 'content-disposition' a la lista de cabeceras permitidas
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
 
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
 
 DATABASES = {
     'default': {

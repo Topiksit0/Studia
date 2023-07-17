@@ -20,10 +20,10 @@ export const Navbar = (props) => {
                         </svg>
                     </button>
                     <h1 className='p-10 sm:px-16 font-bold text-3xl italic leading-none tracking-tight cursor-pointer'>Studia <span className='text-pink-500 text-4xl '>.</span></h1>
-                    <div className=' absolute right-0 flex items-center pb-10 sm:pb-0'>
-                        <FiBell size={25} className="mr-8 cursor-pointer" />
-                        <Tag User={props.user} />
-                        {props.user && <p className='font-semibold mr-5'>{props.user['name']}</p>}
+                    <div className=' absolute right-0 flex items-center '>
+                        <FiBell size={25} className="lg:mr-8 mr-4 cursor-pointer" />
+                        <Tag className={'hidden lg:block'} User={props.user} />
+                        {props.user && <p className='font-semibold mr-5 hidden lg:block'>{props.user['name']}</p>}
                         <button onClick={() => navigate(link)} className='rounded w-14 mr-9'>
                             {props.user && <img src={props.user['profile_photo']} className='object-scale-down rounded-lg cursor-pointer' alt="" />}
                         </button>

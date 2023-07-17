@@ -1,29 +1,17 @@
 import { useEffect, useState, React } from 'react';
-
 import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { checkAuthenticated, load_user } from '../../../actions/auth';
 import { Sidebar } from '../../../shared/elements/Sidebar';
 import { Navbar } from '../../../shared/elements/Navbar';
 import { Tag } from '../../../shared/elements/Tag';
-import Swal from 'sweetalert2';
-import userStyles from '../styles/userStyles.css';
-
 import { EditPanel } from '../components/EditPanel';
 import { CoursesCardsProfile } from '../components/CoursesCardsProfile';
 
 const UserProfile = ({ user, isAuthenticated, checkAuthenticated, load_user }) => {
   const [courses, setCourses] = useState([]);
-
-  const [description, setDescription] = useState();
-  const [university, setUniversity] = useState();
-  const [username, setUsername] = useState();
-  const [name, setName] = useState();
-  const [profilePhoto, setProfilePhoto] = useState();
-  const [landscapePhoto, setLandscapePhoto] = useState();
-
-
   const [showModal, setShowModal] = useState(false);
+
   const handleOpenModal = () => {
     setShowModal(true);
   };
@@ -31,94 +19,8 @@ const UserProfile = ({ user, isAuthenticated, checkAuthenticated, load_user }) =
     setShowModal(false);
   };
 
-  const resetValues = () => {
-    setDescription("");
-    setUniversity("");
-    setUsername("");
-    setName("");
-  };
-
   const [userProfile, setUserProfile] = useState([]);
-  const [editing, setEditing] = useState(false);
   let { uid } = useParams();
-
-
-  function editPanelFire() {
-
-
-
-  }
-
-  function endEditing() {
-
-    const userData = {
-      description: description,
-      university: university,
-      user_name: username,
-      name: name,
-      profile_photo: profilePhoto,
-      landscape_photo: landscapePhoto,
-    };
-    const Toast = Swal.mixin({
-      toast: true,
-      position: 'top-end',
-      showConfirmButton: false,
-      timer: 3000,
-      timerProgressBar: true,
-      didOpen: (toast) => {
-        toast.addEventListener('mouseenter', Swal.stopTimer)
-        toast.addEventListener('mouseleave', Swal.resumeTimer)
-      }
-    })
-
-
-    Swal.fire({
-      title: 'Are you sure?',
-      text: "Your changes will be saved!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Accept'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        fetch(`http://localhost:8000/api/accounts/users/${uid}/update/`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(userData)
-        })
-          .then(response => {
-            if (response.ok) {
-              Toast.fire({
-                icon: 'success',
-                text: 'Changes saved.',
-                title: 'Success!'
-              })
-            } else {
-              response.text().then(errorMessage => {
-                Toast.fire({
-                  icon: 'error',
-                  text: errorMessage,
-                  title: 'Error!'
-                });
-              });
-            }
-          })
-          .catch(error => {
-            Toast.fire({
-              icon: 'error',
-              text: 'Something went wrong.' + error,
-              title: 'Error!'
-            })
-          });
-      }
-      resetValues();
-      setEditing(false);
-    })
-  }
-
 
   function renderCourseCard(course) {
     return (
@@ -171,7 +73,7 @@ const UserProfile = ({ user, isAuthenticated, checkAuthenticated, load_user }) =
             <main className="profile-page">
               <section className="relative block h-96">
                 <div
-                  className="absolute top-0 w-full h-full bg-center bg-cover rounded-tl-3xl"
+                  className="absolute top-0 w-full h-full bg-center bg-cover lg:rounded-tl-3xl"
                   style={{
                     backgroundImage: `url(${userProfile.landscape_photo})`
                   }}
@@ -179,7 +81,7 @@ const UserProfile = ({ user, isAuthenticated, checkAuthenticated, load_user }) =
                 >
                   <span
                     id="blackOverlay"
-                    className="w-full h-full absolute opacity-50 bg-black rounded-tl-3xl"
+                    className="w-full h-full absolute opacity-50 bg-black lg:rounded-tl-3xl"
                   />
                 </div>
 
@@ -199,15 +101,15 @@ const UserProfile = ({ user, isAuthenticated, checkAuthenticated, load_user }) =
                           </div>
                         </div>
 
-                        <div className="w-full lg:w-4/12 px-4 lg:order-2 lg:text-right lg:self-center">
+                        <div className="w-full lg:w-4/12 px-4  flex justify-end lg:order-2 lg:text-right lg:self-center">
                           <button name='editButton' onClick={handleOpenModal}
-                            className={`p-2.5 m-4 mt-8 bg-indigo-500 rounded-xl hover:rounded-3xl hover:bg-indigo-600  text-white ${user.id !== userProfile.id ? 'invisible opacity-0' : ''}`}
+                            className={`p-2.5 lg:m-4 mt-8 bg-indigo-500 rounded-xl hover:rounded-3xl hover:bg-indigo-600  text-white ${user.id !== userProfile.id ? 'invisible opacity-0' : ''}`}
                           >
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                               <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                             </svg>
                           </button>
-                          {showModal && <EditPanel onClose={handleCloseModal} userProfile={userProfile} />}
+                          {showModal && <EditPanel onClose={handleCloseModal} userProfile={userProfile} uid={uid} />}
                         </div>
                         <div className="w-full lg:w-4/12 px-4 lg:order-1">
                         </div>
@@ -215,7 +117,7 @@ const UserProfile = ({ user, isAuthenticated, checkAuthenticated, load_user }) =
                       <div className="text-center mt-12">
                         <h3 className="text-4xl font-semibold leading-normal text-blueGray-800 flex items-center justify-center text-center">
                           {userProfile && userProfile.name}
-                          <Tag User={userProfile} />
+                          <Tag className={'hidden lg:visible'} User={userProfile} />
                         </h3>
 
                         <h3 className="text-xl font-medium leading-normal text-blueGray-500 mb-7">
