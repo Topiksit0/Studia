@@ -8,7 +8,7 @@ import SidebarSetting from '../components/SidebarSetting';
 import { SettingContent } from '../components/SettingContent';
 
 const Settings = ({ user, isAuthenticated, checkAuthenticated, load_user }) => {
-
+  const [selectedOption, setSelectedOption] = useState('help');
   useEffect(() => {
     checkAuthenticated();
     load_user();
@@ -24,10 +24,10 @@ const Settings = ({ user, isAuthenticated, checkAuthenticated, load_user }) => {
           <div className=' font-bold text-2xl h-full '>
             <div className='flex h-full  space-x-5'>
               <div className=' w-96 h-full rounded-tl-3xl flex flex-col '>
-                <SidebarSetting />
+                <SidebarSetting  selectedOption={selectedOption} setSelectedOption={setSelectedOption}/>
               </div>
               <div className='p-2 w-full'>
-                <SettingContent />
+                <SettingContent selectedOption={selectedOption}/>
               </div>
 
             </div>
