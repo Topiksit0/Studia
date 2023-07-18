@@ -1,0 +1,15 @@
+/* Agregar esta parte en tu hoja de estilos CSS o en tu archivo Tailwind CSS personalizado */
+@keyframes logoutHoverAnimation {
+  0% {
+    transform: translateX(0);
+    color: #000;
+  }
+  50% {
+    transform: translateX(-5px);
+    color: #f472b6; /* Cambiar al color que desees durante la animación */
+  }
+  100% {
+    transform: translateX(0);
+    color: #000;
+  }
+}

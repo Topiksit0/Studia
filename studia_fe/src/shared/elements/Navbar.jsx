@@ -21,7 +21,8 @@ export const Navbar = (props) => {
                     </button>
                     <h1 className='p-10 sm:px-16 font-bold text-3xl italic leading-none tracking-tight cursor-pointer'>Studia <span className='text-pink-500 text-4xl '>.</span></h1>
                     <div className=' absolute right-0 flex items-center '>
-                        <FiBell size={25} className="lg:mr-8 mr-4 cursor-pointer" />
+                        
+                        <FiBell size={25} className="lg:mr-8 mr-4 cursor-pointer " />
                         <Tag className={'hidden lg:block'} User={props.user} />
                         {props.user && <p className='font-semibold mr-5 hidden lg:block'>{props.user['name']}</p>}
                         <button onClick={() => navigate(link)} className='rounded w-14 mr-9'>

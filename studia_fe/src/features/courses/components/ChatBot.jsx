@@ -96,21 +96,22 @@ export const Chatbot = () => {
     }
 
     return (
-        <div data-dial-init className="fixed right-10 bottom-10">
+        <div data-dial-init className="fixed right-10 bottom-10 ">
             <div
                 id="speed-dial-menu-dropdown"
-                className={`mb-4 space-y-2 w-80 shadow transition-all duration-300 ${isExpanded ? 'h-[40vmin]' : 'h-0 overflow-hidden'}`}
+                className={`bg-white shadow transform scale-0 opacity-0 mb-5 transition-transform  duration-200 ${isExpanded ? 'scale-100 h-96 opacity-100' : ''
+                    }`}
             >
 
-                <MainContainer>
-                    <ChatContainer>
+                <MainContainer className=''>
+                    <ChatContainer className=''>
                         <MessageList
-
+                            
                             scrollBehavior="smooth"
                             typingIndicator={isTyping ? <TypingIndicator content="ChatGPT is typing" /> : null}
                         >
                             {messages.map((message, i) => {
-                                return <Message key={i} model={message} />
+                                return <Message className='' key={i} model={message} />
                             })}
                         </MessageList>
                         <MessageInput placeholder="Type message here" onSend={handleSend} />

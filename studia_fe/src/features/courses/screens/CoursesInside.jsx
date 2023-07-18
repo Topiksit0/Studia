@@ -1,7 +1,7 @@
 import { useEffect, useState, React } from 'react';
 import { connect } from 'react-redux';
 import { checkAuthenticated, load_user } from '../../../actions/auth';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { FiUser } from "react-icons/fi";
 
 import { ActivitiesText, ActivitiesLecture, ActivitiesDelivery, ActivitiesPeerReview, ActivitiesQuestionnaire } from '../components/Activities';
@@ -23,6 +23,7 @@ const CourseInside = ({ user, isAuthenticated, checkAuthenticated, load_user }) 
   const [courseSubsection, setCourseSubsection] = useState([]);
   const [courseSection, setCourseSection] = useState([]);
   let { courseId } = useParams();
+  const navigate = useNavigate();
 
   const componentMap = {
     texto: ActivitiesText,
@@ -94,7 +95,7 @@ const CourseInside = ({ user, isAuthenticated, checkAuthenticated, load_user }) 
 
   function RenderParticipantsInsideCourseHandler(students) {
     return (
-      <button className='bg-white rounded flex p-3 items-center space-x-3 shadow w-[14rem]'>
+      <button className='bg-white rounded flex p-3 items-center space-x-3 shadow w-[14rem]' onClick={() => navigate(`/app/profile/${students.id}/`)}>
         <img src={students.profile_photo} alt="" className='rounded w-14 h-14'/>
         <p className='font-medium'>{students.name}</p>
       </button>

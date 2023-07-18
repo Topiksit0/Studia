@@ -117,7 +117,7 @@ const UserProfile = ({ user, isAuthenticated, checkAuthenticated, load_user }) =
                       <div className="text-center mt-12">
                         <h3 className="text-4xl font-semibold leading-normal text-blueGray-800 flex items-center justify-center text-center">
                           {userProfile && userProfile.name}
-                          <Tag className={'hidden lg:visible'} User={userProfile} />
+                          <Tag className={'hidden lg:block'} User={userProfile} />
                         </h3>
 
                         <h3 className="text-xl font-medium leading-normal text-blueGray-500 mb-7">

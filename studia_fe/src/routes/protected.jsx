@@ -5,6 +5,7 @@ import { CoursesRoutes } from '../features/courses/screens';
 import { EventsRoutes } from '../features/events/screens';
 import { QualificationsRoutes } from '../features/qualifications/screens';
 import { UserProfileRoutes } from '../features/userProfile/screens';
+import { SettingsRoutes } from '../features/settings/screens';
 
 const App = () => {
     return (
@@ -30,6 +31,7 @@ const App = () => {
         { path: 'events/*', element: <EventsRoutes /> },
         { path: 'qualifications/*', element: <QualificationsRoutes /> },
         { path: 'profile/*', element: <UserProfileRoutes /> },
+        { path: 'settings/*', element: <SettingsRoutes /> },
       ],
     },
   ];
