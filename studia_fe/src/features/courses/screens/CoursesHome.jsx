@@ -2,13 +2,13 @@ import { useEffect, useState, React } from 'react';
 import { connect } from 'react-redux';
 import { checkAuthenticated, load_user } from '../../../actions/auth';
 
-
+import { motion } from 'framer-motion';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css'
 import '../styles/utils.css'
 import { useNavigate } from 'react-router-dom';
 
-import { Sidebar } from '../../../shared/elements/Sidebar'; 
+import { Sidebar } from '../../../shared/elements/Sidebar';
 import { CoursesCardHome } from '../components/CoursesCardHome';
 import { Navbar } from '../../../shared/elements/Navbar';
 
@@ -16,6 +16,12 @@ const CoursesHome = ({ user, isAuthenticated, checkAuthenticated, load_user }) =
 
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const variants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 },
+  };
+  const transition = { duration: 0.6 };
 
   useEffect(() => {
     checkAuthenticated();
@@ -108,9 +114,9 @@ const CoursesHome = ({ user, isAuthenticated, checkAuthenticated, load_user }) =
         <div className='container-fluid w-full rounded-tl-3xl bg-[#e7eaf886] '>
           <div className='p-9 px-12 font-bold text-2xl'>
             <h2>My Courses</h2>
-            <div className='flex flex-wrap py-11 sm:space-y-0 space-y-10  sm:space-x-12 space-x-0'>
+            <motion.div className='flex flex-wrap py-11 sm:space-y-0 space-y-10  sm:space-x-12 space-x-0' initial="hidden" animate="visible" exit="hidden" variants={variants} transition={transition}>
               {loading ? renderSkeleton() : courses.map(RenderCourse)}
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>
