@@ -35,7 +35,7 @@ export const Sidebar = (props) => {
 
     return (
         <div>
-            <aside id="default-sidebar" className=" top-0 left-0 w-[33vmin] h-screen transition-transform -translate-x-full sm:translate-x-0 z-50" aria-label="Sidebar">
+            <aside id="default-sidebar" className=" top-0 left-0 w-[30vmin] h-screen transition-transform -translate-x-full sm:translate-x-0 z-50" aria-label="Sidebar">
                 <div className="h-full px-12 py-4 overflow-y-auto bg-white ">
                     <ul className="space-y-96 font-medium py-12 ">
                         <a href="/app/courses" className='pt-6'>

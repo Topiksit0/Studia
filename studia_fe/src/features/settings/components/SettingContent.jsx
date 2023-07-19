@@ -1,4 +1,6 @@
 import React from 'react'
+import { SettingsBreadcrumb } from './SettingsBreadcrumb';
+
 export const SettingContent = ({ selectedOption }) => {
     const contactMethods = [
         {
@@ -37,7 +39,7 @@ export const SettingContent = ({ selectedOption }) => {
                             <div className="max-w-lg gap-24  lg:flex lg:max-w-none">
                                 <div className="max-w-lg space-y-3">
                                     <h3 className="text-indigo-600 font-semibold">
-                                        Contact
+                                    <SettingsBreadcrumb index={'Help'}/>
                                     </h3>
                                     <p className="text-gray-800 text-3xl font-semibold sm:text-4xl">
                                         Let us know how we can help
