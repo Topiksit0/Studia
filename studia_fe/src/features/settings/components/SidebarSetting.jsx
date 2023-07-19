@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
-import { FiUser, FiBell, FiLogOut, FiLock } from 'react-icons/fi';
-import { FaLanguage  } from 'react-icons/fa';   
-import { GrLanguage } from 'react-icons/gr';
+import { FiBell, FiLogOut, FiLock } from 'react-icons/fi';
+import { FaLanguage } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 import { BiHelpCircle } from 'react-icons/bi';
+import Swal from 'sweetalert2'
+import { connect } from 'react-redux';
+import { logout } from '../../../actions/auth'
 
-const SidebarSetting = ({ selectedOption, setSelectedOption }) => {
+const SidebarSetting = ({ logout, selectedOption, isAuthenticated, setSelectedOption }) => {
     const [isOpen, setIsOpen] = useState(false);
+    const navigate = useNavigate();
     const handleOptionChange = (option) => {
         setSelectedOption(option); // Actualizar el estado en el componente padre
     };
@@ -14,9 +18,39 @@ const SidebarSetting = ({ selectedOption, setSelectedOption }) => {
         setIsOpen((prevIsOpen) => !prevIsOpen);
     };
 
+    function logOut() {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You will need to login again!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, get me out!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                logout();
+                navigate('/');
+                Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                }).fire({
+                    icon: 'success',
+                    title: 'Logged out successfully'
+                })
+            }
+        })
+    }
+
     return (
         <>
-            {/* Botón del desplegable en pantallas de móvil */}
             <button
                 onClick={toggleDropdown}
                 className='block sm:hidden p-4 text-blue-600'
@@ -64,7 +98,7 @@ const SidebarSetting = ({ selectedOption, setSelectedOption }) => {
                         <BiHelpCircle className='w-5 h-5' />
                         <h1 className='text-base pb-1 font-medium'>Help</h1>
                     </button>
-                    <button className='flex items-center gap-2 hover:text-indigo-600 hover:translate-x-[5px] transition-all'>
+                    <button className='flex items-center gap-2 hover:text-indigo-600 hover:translate-x-[5px] transition-all' onClick={() => logOut()}>
                         <FiLogOut className='w-5 h-5' />
                         <h1 className='text-base pb-1 font-medium'>Logout</h1>
                     </button>
@@ -74,4 +108,8 @@ const SidebarSetting = ({ selectedOption, setSelectedOption }) => {
     );
 };
 
-export default SidebarSetting;
+const mapStateToProps = state => ({
+    isAuthenticated: state.auth.isAuthenticated
+});
+
+export default connect(mapStateToProps, { logout })(SidebarSetting); 

@@ -1,5 +1,6 @@
 import React from 'react'
 import { SettingsBreadcrumb } from './SettingsBreadcrumb';
+import { NotImplemented } from '../../../shared/elements/NotImplemented';
 
 export const SettingContent = ({ selectedOption }) => {
     const contactMethods = [
@@ -25,10 +26,33 @@ export const SettingContent = ({ selectedOption }) => {
         <div>
             {selectedOption === 'password' && (
                 <div>
+                    <main className='py-14 text-base'>
+                        <div className="max-w-screen-xl  px-4 text-gray-600 md:px-8">
+                            <SettingsBreadcrumb index={'Change password'} />
+                           
+                        </div>
+                    </main>
                 </div>
             )}
             {selectedOption === 'language' && (
                 <div>
+                    <main className='py-14 text-base'>
+                        <div className="max-w-screen-xl  px-4 text-gray-600 md:px-8">
+                            <SettingsBreadcrumb index={'Language'} />
+                            <NotImplemented/>
+                        </div>
+                    </main>
+                </div>
+            )}
+
+            {selectedOption === 'notification' && (
+                <div>
+                    <main className='py-14 text-base'>
+                        <div className="max-w-screen-xl  px-4 text-gray-600 md:px-8">
+                            <SettingsBreadcrumb index={'Notification preferences'} />
+                            <NotImplemented/>
+                        </div>
+                    </main>
                 </div>
             )}
 
@@ -39,33 +63,36 @@ export const SettingContent = ({ selectedOption }) => {
                             <div className="max-w-lg gap-24  lg:flex lg:max-w-none">
                                 <div className="max-w-lg space-y-3">
                                     <h3 className="text-indigo-600 font-semibold">
-                                    <SettingsBreadcrumb index={'Help'}/>
+                                        <SettingsBreadcrumb index={'Help'} />
                                     </h3>
-                                    <p className="text-gray-800 text-3xl font-semibold sm:text-4xl">
+                                    <div>
+
+                                    </div>
+                                    <p className="text-gray-800 py-10 text-3xl sm:text-4xl font-bold">
                                         Let us know how we can help
                                     </p>
-                                    <p className='font-normal'>
-                                        We’re here to help and answer any question you might have, We look forward to hearing from you! Please fill out the form, or use the contact information bellow .
+                                    <p className='font-medium'>
+                                        We’re here to help and answer any question you might have, We look forward to hearing from you! Please fill out the form, or use the contact information below.
                                     </p>
                                     <div>
                                         <ul className="mt-6 flex flex-wrap gap-x-10 gap-y-6 items-center">
                                             {
                                                 contactMethods.map((item, idx) => (
-                                                    <li key={idx} className="flex items-center gap-x-3">
+                                                    <li key={idx} className="flex items-center gap-x-3 mt-6">
                                                         <div className="flex-none text-gray-400 ">
                                                             {item.icon}
                                                         </div>
-                                                        <p className='font-medium'>{item.contact}</p>
+                                                        <p className='font-normal '>{item.contact}</p>
                                                     </li>
                                                 ))
                                             }
                                         </ul>
                                     </div>
                                 </div>
-                                <div className="flex-1 mt-12 sm:max-w-lg lg:max-w-md bg-white rounded p-7 shadow-lg">
+                                <div className="flex-1 mt-20 sm:max-w-lg lg:max-w-md bg-white rounded p-7 shadow-lg ">
                                     <form
-                                    method='POST'
-                                    action='https://getform.io/f/f2dc89ec-4d74-4789-a837-8411ebbeb789'
+                                        method='POST'
+                                        action='https://getform.io/f/f2dc89ec-4d74-4789-a837-8411ebbeb789'
                                         className="space-y-5"
                                     >
                                         <div>
