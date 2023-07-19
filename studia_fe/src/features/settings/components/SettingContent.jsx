@@ -1,5 +1,6 @@
 import React from 'react'
 import { SettingsBreadcrumb } from './SettingsBreadcrumb';
+import { motion } from 'framer-motion';
 import { NotImplemented } from '../../../shared/elements/NotImplemented';
 
 export const SettingContent = ({ selectedOption }) => {
@@ -22,42 +23,49 @@ export const SettingContent = ({ selectedOption }) => {
             contact: "Barcelona."
         },
     ]
+    const variants = {
+        hidden: { opacity: 0, y: 20 },
+        visible: { opacity: 1, y: 0 },
+    };
+
+
+    const transition = { duration: 0.3 };
     return (
         <div>
             {selectedOption === 'password' && (
-                <div>
-                    <main className='py-14 text-base'>
-                        <div className="max-w-screen-xl  px-4 text-gray-600 md:px-8">
+                <motion.div initial="hidden" animate="visible" exit="hidden" variants={variants} transition={transition}>
+                    <main className="py-14 text-base">
+                        <div className="max-w-screen-xl px-4 text-gray-600 md:px-8">
                             <SettingsBreadcrumb index={'Change password'} />
-                           
+                            
                         </div>
                     </main>
-                </div>
+                </motion.div>
             )}
             {selectedOption === 'language' && (
-                <div>
-                    <main className='py-14 text-base'>
-                        <div className="max-w-screen-xl  px-4 text-gray-600 md:px-8">
+                <motion.div initial="hidden" animate="visible" exit="hidden" variants={variants} transition={transition}>
+                    <main className="py-14 text-base">
+                        <div className="max-w-screen-xl px-4 text-gray-600 md:px-8">
                             <SettingsBreadcrumb index={'Language'} />
-                            <NotImplemented/>
+                            <NotImplemented />
                         </div>
                     </main>
-                </div>
+                </motion.div>
             )}
 
             {selectedOption === 'notification' && (
-                <div>
-                    <main className='py-14 text-base'>
-                        <div className="max-w-screen-xl  px-4 text-gray-600 md:px-8">
+                <motion.div initial="hidden" animate="visible" exit="hidden" variants={variants} transition={transition}>
+                    <main className="py-14 text-base">
+                        <div className="max-w-screen-xl px-4 text-gray-600 md:px-8">
                             <SettingsBreadcrumb index={'Notification preferences'} />
-                            <NotImplemented/>
+                            <NotImplemented />
                         </div>
                     </main>
-                </div>
+                </motion.div>
             )}
 
             {selectedOption === 'help' && (
-                <div>
+                <motion.div initial="hidden" animate="visible" exit="hidden" variants={variants} transition={transition}>
                     <main className="py-14 text-base">
                         <div className="max-w-screen-xl  px-4 text-gray-600 md:px-8">
                             <div className="max-w-lg gap-24  lg:flex lg:max-w-none">
@@ -133,7 +141,7 @@ export const SettingContent = ({ selectedOption }) => {
                             </div>
                         </div>
                     </main>
-                </div>
+                </motion.div>
             )}
         </div>
     );
