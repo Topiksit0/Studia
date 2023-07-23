@@ -1,12 +1,21 @@
 import { useEffect, useState, React } from 'react';
 import { SettingsBreadcrumb } from './SettingsBreadcrumb';
 import { motion } from 'framer-motion';
+import Swal from 'sweetalert2';
 import { NotImplemented } from '../../../shared/elements/NotImplemented';
+import { useSelector } from 'react-redux';
 
-export const SettingContent = ({ selectedOption }) => {
+export const SettingContent = ({ selectedOption, user, setSelectedOption }) => {
     const [isOldPasswordHidden, setOldPasswordHidden] = useState(true)
     const [isNewPasswordHidden, setNewPasswordHidden] = useState(true)
     const [isNewRePasswordHidden, setNewRePasswordHidden] = useState(true)
+
+    const [currentPassword, setCurrentPassword] = useState('')
+    const [newPassword, setNewPassword] = useState('')
+    const [newPasswordRepeat, setNewPasswordRepeat] = useState('')
+
+    const accessToken = useSelector(state => state.auth.access);
+
     const contactMethods = [
         {
             icon:
@@ -26,11 +35,71 @@ export const SettingContent = ({ selectedOption }) => {
             contact: "Barcelona."
         },
     ]
+
     const variants = {
         hidden: { opacity: 0, y: 20 },
         visible: { opacity: 1, y: 0 },
     };
     const transition = { duration: 0.3 };
+
+    function changePasswordButton() {
+        fetch(`http://localhost:8000/api/accounts/users/${user.id}/change-password/`, {
+            method: 'POST',
+            withCredentials: true,
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            },
+            body: JSON.stringify({
+                current_password: currentPassword,
+                new_password: newPassword,
+                new_password_repeat: newPasswordRepeat,
+            }),
+        }).then((response) => {
+            if (response.ok) {
+                Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                }).fire({
+                    icon: 'success',
+                    text: 'Password has been updated',
+                    title: 'Success!'
+                })
+                setSelectedOption('help')
+            } else {
+                response.json().then((data) => {
+                    console.log();
+                    Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    }).fire({
+                        icon: 'error',
+                        text: data['detail'],
+                        title: 'Failure'
+                    })
+                });
+            }
+        }
+        ).catch((error) => {
+            console.error('Error de red al intentar cambiar la contraseña:', error);
+        });
+    }
+
     return (
         <div>
             {selectedOption === 'password' && (
@@ -65,6 +134,7 @@ export const SettingContent = ({ selectedOption }) => {
                                             <input
                                                 type={isOldPasswordHidden ? "password" : "text"}
                                                 placeholder="Enter your old password"
+                                                onChange={(e) => setCurrentPassword(e.target.value)}
                                                 className="w-full pr-12 pl-3 py-2 text-gray-500  outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
                                             />
                                         </div>
@@ -95,6 +165,7 @@ export const SettingContent = ({ selectedOption }) => {
                                             <input
                                                 type={isNewPasswordHidden ? "password" : "text"}
                                                 placeholder="Enter your new password"
+                                                onChange={(e) => setNewPassword(e.target.value)}
                                                 className="w-full pr-12 pl-3 py-2 text-gray-500  outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
                                             />
                                         </div>
@@ -124,11 +195,17 @@ export const SettingContent = ({ selectedOption }) => {
                                             <input
                                                 type={isNewRePasswordHidden ? "password" : "text"}
                                                 placeholder="Rewrite your password"
+                                                onChange={(e) => setNewPasswordRepeat(e.target.value)}
                                                 className="w-full pr-12 pl-3 py-2 text-gray-500  outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
                                             />
                                         </div>
                                     </div>
                                 </div >
+                                <button onClick={changePasswordButton}
+                                    className="px-3 mt-8 py-1.5 text-sm text-white duration-150 bg-indigo-600 rounded-lg hover:bg-indigo-700 active:shadow-lg"
+                                >
+                                    Save Changes
+                                </button>
                             </div>
                         </div>
                     </main>

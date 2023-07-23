@@ -25,18 +25,16 @@ load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-#secretodo
+# secretodo
 SECRET_KEY = get_random_secret_key()
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -89,10 +87,10 @@ TEMPLATES = [
     },
 ]
 
-CORS_ALLOW_ALL_ORIGINS = True
 
 WSGI_APPLICATION = 'auth_system.wsgi.application'
 
+CORS_ALLOW_CREDENTIALS = True
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
@@ -138,7 +136,6 @@ DATABASES = {
         'HOST': 'localhost',
     }
 }
-
 
 
 uri = ''
@@ -205,15 +202,13 @@ SIMPLE_JWT = {
 
 
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny'
-    ],
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny'
+    ],
 }
-
-
 
 
 DJOSER = {

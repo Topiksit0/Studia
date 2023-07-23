@@ -4,6 +4,8 @@ import Swal from 'sweetalert2';
 import { FiEdit } from "react-icons/fi";
 import axios from 'axios';
 
+import '../styles/userStyles.css';
+
 export const EditPanel = ({ onClose, userProfile, uid }) => {
 
     const inputRefLandscape = useRef(null);
@@ -50,7 +52,7 @@ export const EditPanel = ({ onClose, userProfile, uid }) => {
                 return response.data.image_url;
             } catch (error) {
                 console.error('Error al cargar la imagen:', error);
-                return null; 
+                return null;
             }
         } else {
             console.warn('No se ha seleccionado una imagen.');
@@ -161,9 +163,9 @@ export const EditPanel = ({ onClose, userProfile, uid }) => {
     };
 
     return (
-        <div className=' '>
-            <Modal backdrop='static' keyboard={false} open={open} onClose={handleClose}>
-                <Modal.Header>
+        <div>
+            <Modal backdrop='static' data-dismiss="modal" keyboard={false} open={open} onClose={handleClose} >
+                <Modal.Header closeButton="false" >
                     <button className='w-full' onClick={handleLandscapePhoto}>
                         <input type="file" ref={inputRefLandscape} onChange={handleLandscapePhotoChange} style={{ display: 'none' }} />
                         <div className='flex items-center relative'>
@@ -215,8 +217,8 @@ export const EditPanel = ({ onClose, userProfile, uid }) => {
                         </div>
                     </button>
                 </Modal.Header>
-                <Modal.Body>
-                    <div className='flex flex-col'>
+                <Modal.Body className='!overflow-y-hidden' >
+                    <div className='flex flex-col '>
                         <div class="mb-6">
                             <label for="name" class="block mb-2 text-sm font-medium text-gray-900 ">Name</label>
                             <textarea onChange={handleChangeName} type="name" id="name" class="shadow-sm resize-none  border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  " >
@@ -244,14 +246,17 @@ export const EditPanel = ({ onClose, userProfile, uid }) => {
 
                     </div>
                 </Modal.Body>
-                <Modal.Footer>
-                    <Button onClick={handleEdit} appearance="primary">
-                        Save Changes
-                    </Button>
-                    <Button onClick={handleClose} appearance="subtle">
-                        Cancel
-                    </Button>
-                </Modal.Footer>
+                <div className='mt-4'>
+                    <Modal.Footer className=''>
+                        <Button onClick={handleEdit} appearance="primary" >
+                            Save Changes
+                        </Button>
+                        <Button onClick={handleClose} appearance="subtle">
+                            Cancel
+                        </Button>
+                    </Modal.Footer>
+                </div>
+
             </Modal>
         </div>
     )

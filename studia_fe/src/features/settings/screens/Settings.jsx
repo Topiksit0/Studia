@@ -27,7 +27,7 @@ const Settings = ({ user, isAuthenticated, checkAuthenticated, load_user }) => {
                 <SidebarSetting  selectedOption={selectedOption} setSelectedOption={setSelectedOption}/>
               </div>
               <div className='p-2 w-full'>
-                <SettingContent selectedOption={selectedOption}/>
+                <SettingContent selectedOption={selectedOption} user={user} setSelectedOption={setSelectedOption}/>
               </div>
 
             </div>

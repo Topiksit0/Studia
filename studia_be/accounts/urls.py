@@ -1,5 +1,6 @@
 from django.urls import path
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework.routers import SimpleRouter
 from django.urls import path, include, re_path
 from django.views.generic import TemplateView
 from rest_framework.documentation import include_docs_urls
@@ -20,4 +21,5 @@ urlpatterns = [
     path('users/<int:pk>/courses/news/',
          views.CoursesNews.as_view(), name='courses_news'),
     path('users/upload_image/', views.upload_image_to_azure, name='upload_image'),
+    path('users/<int:pk>/change-password/', views.ChangePasswordView.as_view(), name='change-password'),
 ]

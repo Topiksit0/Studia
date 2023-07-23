@@ -22,3 +22,12 @@
     transform: translateX(-3px);
     transition: .5s ease;
 }
+
+.rs-btn-close {   
+    display: none; 
+}
+
+.rs-modal-header{
+    padding-right: 0px;
+
+}

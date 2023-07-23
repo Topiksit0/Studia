@@ -3,13 +3,22 @@ from rest_framework.response import Response
 from rest_framework import generics, status
 from rest_framework.generics import UpdateAPIView
 from rest_framework.decorators import api_view
+from django.contrib.auth import get_user_model
+from password_strength import PasswordPolicy
+import re
+from django.contrib.auth.hashers import check_password
 import uuid
+from django.contrib.auth.models import User
 from datetime import datetime
 from accounts.models import UserAccount
 from django.http import HttpResponse
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from django.shortcuts import get_object_or_404
 from accounts.serializers import UserCreateSerializer, UserUpdateSerializer
 from courses.serializers import CourseSerializer
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 from courses.models import Course
 import sys
 from django.conf import settings
@@ -35,36 +44,84 @@ class UserListAPIView(generics.ListAPIView):
     queryset = UserAccount.objects.all()
     serializer_class = UserCreateSerializer
 
+
+class ChangePasswordView(APIView):
+
+    def post(self, request, *args, **kwargs):
+        user = UserAccount.objects.get(pk=kwargs['pk'])
+        current_password = request.data.get("current_password")
+        new_password = request.data.get("new_password")
+        new_password_repeat = request.data.get("new_password_repeat")
+
+        # Verificar que la contraseña actual coincida
+        if not check_password(current_password, user.password):
+            return Response({"detail": ["Your old password is not correct."]}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Verificar que la nueva contraseña y su repetición coincidan
+        if new_password != new_password_repeat:
+            return Response({"detail": ["Passwords do not match."]}, status=status.HTTP_400_BAD_REQUEST)
+
+        if not is_password_secure(new_password):
+            return Response({"detail": ["Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one digit, and one special character."]}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Cambiar la contraseña y guardar el usuario
+        user.set_password(new_password)
+        user.save()
+
+        return Response({"detail": "Contraseña actualizada correctamente."}, status=status.HTTP_200_OK)
+
+
+def is_password_secure(password):
+        # Utilizar expresiones regulares para verificar los criterios de seguridad
+        # Longitud mínima de 8 caracteres
+        if len(password) < 8:
+            return False
+        
+        # Al menos una letra mayúscula, una minúscula, un número y un carácter especial
+        if not re.search(r'[A-Z]', password):
+            return False
+        if not re.search(r'[a-z]', password):
+            return False
+        if not re.search(r'\d', password):
+            return False
+        if not re.search(r'[!@#$%^&*(),.?":{}|<>]', password):
+            return False
+
+        return True
+
 def generate_unique_suffix():
     unique_id = uuid.uuid4().hex[:6]
     timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
     return f"_{timestamp}_{unique_id}"
 
+
 @csrf_exempt
 def upload_image_to_azure(request):
     if request.method == 'POST' and request.FILES.get('image'):
-        image_file = request.FILES['image'] 
+        image_file = request.FILES['image']
         try:
-            blob_service_client = BlobServiceClient.from_connection_string(os.environ.get('AZURE_CONNECTION_STRING'))
-            container_client = blob_service_client.get_container_client('studiaimages')
+            blob_service_client = BlobServiceClient.from_connection_string(
+                os.environ.get('AZURE_CONNECTION_STRING'))
+            container_client = blob_service_client.get_container_client(
+                'studiaimages')
             blob_name = image_file.name
             if container_client.get_blob_client(blob_name).exists():
-                    unique_suffix = generate_unique_suffix()
-                    blob_name = f"{os.path.splitext(blob_name)[0]}{unique_suffix}{os.path.splitext(blob_name)[1]}"    
+                unique_suffix = generate_unique_suffix()
+                blob_name = f"{os.path.splitext(blob_name)[0]}{unique_suffix}{os.path.splitext(blob_name)[1]}"
             blob_client = container_client.get_blob_client(blob_name)
             content_type = image_file.content_type
             content_settings = ContentSettings(content_type=content_type)
-            blob_client.upload_blob(image_file, content_settings=content_settings)
-            
+            blob_client.upload_blob(
+                image_file, content_settings=content_settings)
+
             # URL pública de la imagen cargada
             image_url = f"https://studia.blob.core.windows.net/studiaimages/{blob_name}"
-            
+
             return JsonResponse({'message': 'Imagen cargada exitosamente.', 'image_url': image_url})
         except Exception as e:
             return JsonResponse({'error': 'Ocurrio un error al cargar la imagen.', 'detail': str(e)}, status=500)
     else:
         return JsonResponse({'error': 'Se esperaba una solicitud POST con una imagen.'}, status=400)
-
 
 
 class UserUpdate(UpdateAPIView):
@@ -85,13 +142,13 @@ class UserUpdate(UpdateAPIView):
         user.university = request.data.get('university', user.university)
         user.user_name = request.data.get('user_name', user.user_name)
 
-        if(request.data.get('profile_photo', user.profile_photo) != '' and request.data.get('profile_photo', user.profile_photo) != None):
+        if (request.data.get('profile_photo', user.profile_photo) != '' and request.data.get('profile_photo', user.profile_photo) != None):
             user.profile_photo = request.data.get(
                 'profile_photo', user.profile_photo)
-        if(request.data.get('landscape_photo', user.landscape_photo) != '' and request.data.get('landscape_photo', user.landscape_photo) != None):
+        if (request.data.get('landscape_photo', user.landscape_photo) != '' and request.data.get('landscape_photo', user.landscape_photo) != None):
             user.landscape_photo = request.data.get(
                 'landscape_photo', user.landscape_photo)
-            
+
         user.save()
         return HttpResponse(user, status=status.HTTP_200_OK)
 
