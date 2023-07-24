@@ -1,5 +1,6 @@
 import { useEffect, React, useState } from 'react';
 import { connect } from 'react-redux';
+import { motion } from 'framer-motion';
 import { checkAuthenticated, load_user } from '../../../actions/auth';
 
 
@@ -15,6 +16,11 @@ import { Sidebar } from '../../../shared/elements/Sidebar';
 import { Navbar } from '../../../shared/elements/Navbar';
 
 const Qualifications = ({ user, isAuthenticated, checkAuthenticated, load_user }) => {
+    const variants = {
+        hidden: { opacity: 0, y: 20 },
+        visible: { opacity: 1, y: 0 },
+    };
+    const transition = { duration: 0.3 };
     const [qualifications, setQualifications] = useState([]);
 
     useEffect(() => {
@@ -41,56 +47,68 @@ const Qualifications = ({ user, isAuthenticated, checkAuthenticated, load_user }
         }
     }
 
+    function RenderGradesFromData(grades) {
+        const maxCalificacion = 10; // Reemplaza con el valor máximo posible para la calificación
 
-    function RenderQualifications(curso_grade) {
+        // Calcula la opacidad en función de la calificación (por ejemplo, 0.2 para calificación 2 y 1.0 para calificación 10)
+        const opacity = Math.max(grades.calificacion / maxCalificacion, 0.35); // Opacidad mínima de 0.2
+
+        const style = {
+            backgroundColor: `rgba(59, 130, 246, ${opacity})`, // Azul base de Tailwind CSS
+            borderRadius: '0.5rem',
+            width: '2rem',
+            height: '2rem',
+            color: 'white',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+        };
+
         return (
-            <div className='border border-black bg-white rounded my-6 py-6'>
-                <Accordion allowMultiple>
-                    <AccordionItem>
-                        <AccordionButton>
-                            <div className='' >
-                                <h2 className='text-lg font-medium   ml-4'>
-                                    <AccordionIcon className=' ' />
-                                    {curso_grade.curso_title}
-
-                                </h2>
-                            </div>
-                        </AccordionButton>
-                        <AccordionPanel>
-                            <div className='flex flex-col mt-4'>
-                                {curso_grade.notas.map(RenderQualificationsNotas)}
-                            </div>
-
-                        </AccordionPanel>
-                    </AccordionItem>
-                </Accordion>
+            <div style={style} className='text-sm'>
+                {grades.calificacion}
             </div>
-
-        )
+        );
     }
 
-    function RenderQualificationsNotas(notas) {
-        return (
-            <div className='px-12'>
-                <div className='container flex py-2 my-2 px-6 rounded space-x-7 bg-indigo-100'>
-                    <p className='font-normal text-base flex w-1/4'>{notas.descripcion}</p>
+    function RenderQualifications(curso_grade) {
+        const maxCalificacion = 10; // Reemplaza con el valor máximo posible para la calificación
+        let blueValue = 240 - (curso_grade.nota_media_provisional / maxCalificacion) * 190;
+        if (blueValue >= 164) {
+            blueValue = 155;
+        }
 
-                    <div className='w-1/4 justify-center text-center items-center flex'>
-                        <span className="bg-indigo-600 text-indigo-200 text-xs font-medium  w-[3rem] py-0.5 rounded ">{notas.calificacion}</span>
+        const color = `rgba(${blueValue}, ${blueValue}, 255, 1)`;
+
+        const style = {
+            color: color,
+        };
+
+        return (
+            <div className='flex space-x-6'>
+                <div className='bg-white rounded-lg font-medium text-lg py-5 my-2 grid grid-cols-5 w-full flex items-center'>
+                    <div className='flex items-center'>
+                        <h1 className='font-sans ml-5'>{curso_grade.course_title}</h1>
+                    </div>
+                    <div className='flex items-center space-x-2'>
+                        <img className='w-8 h-8 rounded-full' src={curso_grade.professor_photo} alt="" />
+                        <p className='text-base font-normal'>{curso_grade.professor_name}</p>
+                    </div>
+                    <div className='col-span-2 flex space-x-3'>
+                        {curso_grade.notas.map(RenderGradesFromData)}
+                    </div>
+                    <div className='text-right mr-5'>
+                        <p className='text-base font-normal'>{curso_grade.last_updated}</p>
                     </div>
 
-
-
-
-                    <p className='font-normal text-base flex w-1/4 overflow-hidden overflow-ellipsis whitespace-nowrap'>{notas.comentarios}</p>
-                    <p className=' font-bold text-base flex w-1/4 text-center justify-end'>{notas.ponderacion}</p>
+                </div>
+                <div className=' bg-white rounded-lg text-base font-normal grid grid-cols-1  items-center justify-center text-center py-5 my-2 w-[10rem] '>
+                    <p style={style} className='font-bold'>{curso_grade.nota_media_provisional}</p>
                 </div>
             </div>
 
         )
     }
-
-
     return (
         <div className='h-screen w-full bg-white'>
             <Navbar user={user} />
@@ -99,15 +117,20 @@ const Qualifications = ({ user, isAuthenticated, checkAuthenticated, load_user }
                 <div className='container-fluid h-screen w-full rounded-tl-3xl bg-[#e7eaf886] '>
                     <div className='p-9 px-12 font-bold text-2xl'>
                         <h2>Qualifications</h2>
-                        <div className='mt-8'>
+                        <div className='mt-12'>
+                            <div className='grid grid-cols-6 font-normal text-sm pl-6 mb-2'>
+                                <p className=''>Course</p>
+                                <p className=''>Professor</p>
+                                <p className='col-span-2 ml-6'>Grades</p>
+                                <p className=' text-right'>Last updated</p>
+                                <p className=' text-right mr-12'>Average</p>
+                            </div>
                             {qualifications.map(RenderQualifications)}
                         </div>
+
                     </div>
                 </div>
-
             </div>
-
-
         </div>
     )
 }

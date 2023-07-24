@@ -23,7 +23,7 @@ const Settings = ({ user, isAuthenticated, checkAuthenticated, load_user }) => {
         <div className='container-fluid w-full rounded-tl-3xl bg-[#e7eaf886] '>
           <div className=' font-bold text-2xl h-full '>
             <div className='flex h-full  space-x-5'>
-              <div className=' w-96 h-full rounded-tl-3xl flex flex-col '>
+              <div className=' w-96 h-full rounded-tl-3xl flex flex-col'>
                 <SidebarSetting  selectedOption={selectedOption} setSelectedOption={setSelectedOption}/>
               </div>
               <div className='p-2 w-full'>

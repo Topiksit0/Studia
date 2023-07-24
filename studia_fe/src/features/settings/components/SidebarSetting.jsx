@@ -71,7 +71,7 @@ const SidebarSetting = ({ logout, selectedOption, isAuthenticated, setSelectedOp
                 </svg>
             </button>
 
-            <div className={`lg:rounded-tl-3xl h-full bg-[#eaedfa] p-9 text-base space-y-6 border-r border-[#b7bcd4] ${isOpen ? 'block' : 'hidden sm:block'}`}>
+            <div className={`lg:rounded-tl-3xl h-full bg-[#eaedfa] pl-12 p-9 text-base space-y-6 border-r border-[#b7bcd4] ${isOpen ? 'block' : 'hidden sm:block'}`}>
                 <h1 className='text-2xl pb-6'>Settings</h1>
                 <div className='space-y-4'>
                     <h1 className='text-lg pb-1'>User Account</h1>

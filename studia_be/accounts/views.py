@@ -72,22 +72,20 @@ class ChangePasswordView(APIView):
 
 
 def is_password_secure(password):
-        # Utilizar expresiones regulares para verificar los criterios de seguridad
-        # Longitud mínima de 8 caracteres
-        if len(password) < 8:
-            return False
-        
-        # Al menos una letra mayúscula, una minúscula, un número y un carácter especial
-        if not re.search(r'[A-Z]', password):
-            return False
-        if not re.search(r'[a-z]', password):
-            return False
-        if not re.search(r'\d', password):
-            return False
-        if not re.search(r'[!@#$%^&*(),.?":{}|<>]', password):
-            return False
+    if len(password) < 8:
+        return False
 
-        return True
+    if not re.search(r'[A-Z]', password):
+        return False
+    if not re.search(r'[a-z]', password):
+        return False
+    if not re.search(r'\d', password):
+        return False
+    if not re.search(r'[!@#$%^&*(),.?":{}|<>]', password):
+        return False
+
+    return True
+
 
 def generate_unique_suffix():
     unique_id = uuid.uuid4().hex[:6]
@@ -211,7 +209,53 @@ class QualificationsStudent(generics.ListAPIView):
         activities_collection = db['grades']
         grades_student = activities_collection.find_one(
             {"alumno_id": str(user_id)})
-        return Response(grades_student['notas_por_curso'])
+
+        data = [self.process_course_data(x)
+                for x in grades_student['notas_por_curso']]
+        return Response(data)
+
+    def process_course_data(self, course_data):
+        course_id = course_data['curso_id']
+        course = Course.objects.get(pk=course_id)
+        notas = [i['calificacion'] for i in course_data['notas']]
+        ponderaciones = [i['ponderacion'] for i in course_data['notas']]
+        evaluadores_ids = [i['evaluador_id'] for i in course_data['notas']]
+        evaluadores = UserAccount.objects.filter(pk__in=evaluadores_ids)
+
+        list_notas = []
+        for i in course_data['notas']:
+            print('i', i)
+            evaluador_id = i['evaluador_id']
+            evaluador = evaluadores.get(pk=evaluador_id)
+            nota_data = {
+                'descripcion': i['descripcion'],
+                'calificacion': i['calificacion'],
+                'comentarios': i['comentarios'],
+                'fecha_entrega': i['fecha_entrega'],
+                'evaluador_name': evaluador.name,
+                'evaluador_photo': evaluador.profile_photo,
+            }
+            list_notas.append(nota_data)
+
+        nota_media_provisional = self.calcular_nota_media_provisional(
+            notas, ponderaciones)
+
+        return {
+            'professor_name': course.professor.name,
+            'professor_photo': course.professor.profile_photo,
+            'course_title': course.title,
+            'last_updated': course_data['last_updated'],
+            'notas': list_notas,
+            'nota_media_provisional': nota_media_provisional,
+        }
+
+    def calcular_nota_media_provisional(self, notas_disponibles, ponderaciones):
+        notas_disponibles = [float(nota) for nota in notas_disponibles]
+        ponderaciones = [float(ponderacion) for ponderacion in ponderaciones]
+
+        nota_media_provisional = sum(
+            nota * ponderacion for nota, ponderacion in zip(notas_disponibles, ponderaciones))
+        return round(nota_media_provisional, 2)
 
 
 class CoursesNews(generics.ListAPIView):
