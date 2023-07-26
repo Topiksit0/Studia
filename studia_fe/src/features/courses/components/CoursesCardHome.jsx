@@ -2,13 +2,12 @@ import React from 'react'
 import { FiUser } from "react-icons/fi";
 import { Link } from 'react-router-dom';
 
-export const CoursesCardHome = (course) => {
-    course = course.course
+export const CoursesCardHome = ({course}) => {
     return (
         <>
             <Link to={`/app/courses/${course.id}`}>
                 <div className="max-w-sm bg-white  rounded-lg shadow cursor-pointer h-[35rem] shadow2">
-                    <img className="rounded-t-lg w-full h-[13rem] object-cover" src={course.course_photo} alt="" />
+                    <img className="rounded-t-lg w-full h-[13rem] object-cover" src={course.cover.url} alt="" />
                     <div className="p-3 flex flex-col justify-center items-center">
                         <h3>{course.title}</h3>
                         <p className='text-xs  font-normal text-gray-700'>{course.course_type}</p>
@@ -21,7 +20,7 @@ export const CoursesCardHome = (course) => {
                                 <p className=' text-base font-normal'>{course.students.length}</p>
                             </div>
                             <div className=' flex bg-gray-100 h-[3rem] rounded space-x-1 px-3 items-center'>
-                                <img class="w-8 h-8 rounded-full mr-3" src={course.professor['profile_photo']} alt="Rounded avatar" />
+                                <img class="w-8 h-8 rounded-full mr-3" src={course.professor['profile_photo'].url} alt="Rounded avatar" />
                                 <p className='text-base font-normal'>{course.professor['name']}</p>
                             </div>
                         </div>
@@ -31,7 +30,6 @@ export const CoursesCardHome = (course) => {
                     </div>
                 </div>
             </Link>
-
         </>
     )
 }

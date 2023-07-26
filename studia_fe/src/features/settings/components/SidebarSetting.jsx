@@ -4,14 +4,13 @@ import { FaLanguage } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { BiHelpCircle } from 'react-icons/bi';
 import Swal from 'sweetalert2'
-import { connect } from 'react-redux';
-import { logout } from '../../../actions/auth'
+import { removeToken } from "../../../helpers";
 
-const SidebarSetting = ({ logout, selectedOption, isAuthenticated, setSelectedOption }) => {
+const SidebarSetting = ({ setSelectedOption }) => {
     const [isOpen, setIsOpen] = useState(false);
     const navigate = useNavigate();
     const handleOptionChange = (option) => {
-        setSelectedOption(option); // Actualizar el estado en el componente padre
+        setSelectedOption(option); 
     };
 
     const toggleDropdown = () => {
@@ -29,7 +28,7 @@ const SidebarSetting = ({ logout, selectedOption, isAuthenticated, setSelectedOp
             confirmButtonText: 'Yes, get me out!'
         }).then((result) => {
             if (result.isConfirmed) {
-                logout();
+                removeToken();
                 navigate('/');
                 Swal.mixin({
                     toast: true,
@@ -108,8 +107,4 @@ const SidebarSetting = ({ logout, selectedOption, isAuthenticated, setSelectedOp
     );
 };
 
-const mapStateToProps = state => ({
-    isAuthenticated: state.auth.isAuthenticated
-});
-
-export default connect(mapStateToProps, { logout })(SidebarSetting); 
+export default SidebarSetting; 

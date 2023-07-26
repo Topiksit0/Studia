@@ -1,102 +1,41 @@
 import { useEffect, useState, React } from 'react';
-import { connect } from 'react-redux';
-import { checkAuthenticated, load_user } from '../../../actions/auth';
-
 import { motion } from 'framer-motion';
-import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css'
 import '../styles/utils.css'
-import { useNavigate } from 'react-router-dom';
-
+import { useAuthContext } from "../../../context/AuthContext";
 import { Sidebar } from '../../../shared/elements/Sidebar';
 import { CoursesCardHome } from '../components/CoursesCardHome';
 import { Navbar } from '../../../shared/elements/Navbar';
+import { Spin } from "antd";
+import { API } from "../../../constant";
 
-const CoursesHome = ({ user, isAuthenticated, checkAuthenticated, load_user }) => {
-
+const CoursesHome = () => {
   const [courses, setCourses] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const variants = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0 },
   };
   const transition = { duration: 0.6 };
+  const { user } = useAuthContext();
+
+  const fetchCoursesCards = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch(`${API}/users/${user.id}?populate=courses.cover,courses.students,courses.professor,courses.professor.profile_photo&fields[]=courses`);
+      const data = await response.json();
+      setCourses(data ?? []);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    checkAuthenticated();
-    load_user();
-  }, []);
-
-  useEffect(() => {
-    function callApi() {
-      if (user) {
-        const link = "http://localhost:8000/api/accounts/users/" + user['id'] + "/courses/";
-        fetch(link)
-          .then((res) => res.json())
-          .then((data) => {
-            setCourses(data);
-            setLoading(false);
-          })
-          .catch((error) => console.error(error));
-      }
-    }
-
-    if (loading) {
-      callApi();
-    }
-  });
-
-
-
-  function renderSkeleton() {
-    return (
-      <div className='py-10 flex flex-wrap'>
-        <div className='w-96'>
-          <SkeletonTheme height={'10rem'} baseColor="#c7d2fe">
-            <Skeleton count={1} />
-          </SkeletonTheme>
-          <div className='py-5'>
-            <SkeletonTheme baseColor="#c7d2fe">
-              <Skeleton count={9} />
-            </SkeletonTheme>
-
-          </div>
-
-        </div>
-
-
-        <div className='w-96 ml-8'>
-          <SkeletonTheme height={'10rem'} baseColor="#c7d2fe">
-            <Skeleton count={1} />
-          </SkeletonTheme>
-          <div className='py-5'>
-            <SkeletonTheme baseColor="#c7d2fe">
-              <Skeleton count={9} />
-            </SkeletonTheme>
-
-          </div>
-
-        </div>
-
-
-        <div className='w-96 ml-8'>
-          <SkeletonTheme height={'10rem'} baseColor="#c7d2fe">
-            <Skeleton count={1} />
-          </SkeletonTheme>
-          <div className='py-5'>
-            <SkeletonTheme baseColor="#c7d2fe">
-              <Skeleton count={9} />
-            </SkeletonTheme>
-
-          </div>
-
-        </div>
-
-      </div>
-    )
-  }
-
+    fetchCoursesCards();
+  }, [user]);
 
   function RenderCourse(course) {
     return (
@@ -104,29 +43,25 @@ const CoursesHome = ({ user, isAuthenticated, checkAuthenticated, load_user }) =
     )
   }
 
-
-
   return (
     <div className='h-screen w-full bg-white'>
-      <Navbar user={user} />
+      <Navbar />
       <div className='flex flex-wrap-reverse sm:flex-nowrap bg-white'>
         <Sidebar section={'courses'} />
         <div className='container-fluid w-full rounded-tl-3xl bg-[#e7eaf886] '>
           <div className='p-9 px-12 font-bold text-2xl'>
             <h2>My Courses</h2>
             <motion.div className='flex flex-wrap py-11 sm:space-y-0 space-y-10  sm:space-x-12 space-x-0' initial="hidden" animate="visible" exit="hidden" variants={variants} transition={transition}>
-              {loading ? renderSkeleton() : courses.map(RenderCourse)}
+              {isLoading && <Spin size="large" />}
+              {courses.courses && courses.courses.map(RenderCourse)}
             </motion.div>
           </div>
         </div>
       </div>
     </div>
   )
+  
 }
 
-const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated,
-  user: state.auth.user
-});
 
-export default connect(mapStateToProps, { checkAuthenticated, load_user })(CoursesHome);
+export default CoursesHome;

@@ -2,13 +2,14 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FiBell } from "react-icons/fi";
 import { Tag } from './Tag';
+import { useAuthContext } from "../../context/AuthContext";
 
-export const Navbar = (props) => {
+export const Navbar = () => {
     const navigate = useNavigate();
-    let link = '';
-    if (props.user) {
-        link = '/app/profile/' + props.user.id + '/';
-    }
+    const { user } = useAuthContext();
+
+    console.log(user)
+
     return (
         <div>
             <nav className="h-[8rem] bg-white">
@@ -21,12 +22,20 @@ export const Navbar = (props) => {
                     </button>
                     <h1 className='p-10 sm:px-16 font-bold text-3xl italic leading-none tracking-tight cursor-pointer'>Studia <span className='text-pink-500 text-4xl '>.</span></h1>
                     <div className=' absolute right-0 flex items-center '>
-                        
+
                         <FiBell size={25} className="lg:mr-8 mr-4 cursor-pointer " />
-                        <Tag className={'hidden lg:block'} User={props.user} />
-                        {props.user && <p className='font-semibold mr-5 hidden lg:block'>{props.user['name']}</p>}
-                        <button onClick={() => navigate(link)} className='rounded w-14 mr-9'>
-                            {props.user && <img src={props.user['profile_photo']} className='object-scale-down rounded-lg cursor-pointer' alt="" />}
+                        <Tag className={'hidden lg:block'} User={user} />
+                        {user && <p className='font-semibold mr-5 hidden lg:block'>{user['name']}</p>}
+                        <button onClick={() => navigate(`/app/profile/${user.id}/`)} className='rounded w-14 mr-9'>
+                            {user && user['profile_photo'] ? (
+                                <img
+                                    src={user['profile_photo'].url}
+                                    className='object-scale-down rounded-lg cursor-pointer'
+                                    alt=""
+                                />
+                            ) : (
+                                <div></div>
+                            )}
                         </button>
                     </div>
                 </div>

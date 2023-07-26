@@ -2,115 +2,101 @@ import React, { useState } from 'react'
 import '../styles/login.css'
 import { BsFillArrowLeftSquareFill } from 'react-icons/bs'
 import { Link, useNavigate } from 'react-router-dom';
-import { connect, useStore } from 'react-redux'
-import { login } from '../../../actions/auth'
+import { useAuthContext } from "../../../context/AuthContext";
+import { Spin } from "antd";
+import { API } from "../../../constant";
+import { Toast } from "../../../shared/elements/Toasts";
+import { setToken } from "../../../helpers";
 
-const Login = ({ login }) => {
-
+const Login = () => {
     const navigate = useNavigate();
-    const store = useStore();
-
     const [formData, setFormData] = useState({
         email: '',
         password: ''
     });
-
-    const Swal = require('sweetalert2')
-    const Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-            toast.addEventListener('mouseenter', Swal.stopTimer)
-            toast.addEventListener('mouseleave', Swal.resumeTimer)
-        }
-    })
-
     const { email, password } = formData;
-
     const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
 
-    const handleSubmit = e => {
-        e.preventDefault();
-        getData(email, password)
-            .then((data) => console.log(data));
+    const { setUser } = useAuthContext();
+    const [isLoading, setIsLoading] = useState(false);
+
+    const loginAccount = async () => {
+        setIsLoading(true);
+        try {
+            const value = {
+                identifier: email,
+                password: password,
+            };
+            const response = await fetch(`${API}/auth/local`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(value),
+            });
+
+            const data = await response.json();
+            if (data?.error) {
+                throw data?.error;
+            } else {
+                setToken(data.jwt);
+                setUser(data.user);
+
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Signed in successfully'
+                })
+                navigate("/app/courses");
+            }
+        } catch (error) {
+            console.error(error);
+            Toast.fire({
+                icon: 'error',
+                text: error,
+                title: 'Something went wrong'
+            })
+        } finally {
+            setIsLoading(false);
+        }
     };
 
-    async function getData(email, password) {
-        try {
-            const data = await login(email, password)
-
-        } catch (error) {
-            console.log(error)
-
-        }
-
-        if (store.getState().auth.isAuthenticated) {
-            Toast.fire({
-                icon: 'success',
-                title: 'Signed in successfully'
-            })
-            navigate("/app/courses");
-        }
-    }
 
     return (
         <div className="">
-
-
             <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.js" defer></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.4.2/zxcvbn.js"></script>
-
-
             <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/5.3.45/css/materialdesignicons.min.css')</style>
 
             <div className="min-w-screen min-h-screen  flex items-center justify-center px-5 py-5 bg-gradient-to-r from-indigo-400  to-[#6e66d6]">
-
-
                 <div className="bg-gray-100 text-gray-500 rounded-3xl shadow-xl w-full overflow-hidden  " style={{ maxWidth: '1000px' }} >
                     <div className='absolute li bg-gray-100 shadow-lg transform sm:skew-y-0 sm:rounded-3xl -z-0 -translate-x-[9%]  translate-y-[14%] sm:w-[26rem] sm:h-[30rem] '>
-
                     </div>
-
                     <div className="md:flex w-full z-50">
-
                         <div className="hidden md:block w-1/2 bg-image py-10 px-10 relative z-50">
                             <div className='w-[2rem]'>
                                 <a href="/">
                                     <BsFillArrowLeftSquareFill size={30} style={{ cursor: "pointer", color: "rgba(255, 255, 255, 1)" }} />
                                 </a>
                             </div>
-
-
-
                             <div className='flex justify-center'>
                                 <div className='absolute top-48 w-2/4   '>
                                     <h1 className='text-white font-medium text-4xl '>Welcome back!</h1>
                                     <p className='text-white py-3 '>You can sign in to access with your existing account.</p>
                                 </div>
                             </div>
-
-
                             <div className='absolute bottom-7 inset-x-0 flex flex-col items-center'>
                                 <p className='text-white text-sm text-center text-xs' >In case you do not have an account already</p>
                                 <Link to="/auth/register" className="my-3 bg-white text-gray-800 font-bold rounded border-b-2 border-indigo-400  transition-all hover:border-indigo-400 hover:bg-indigo-400 hover:text-white shadow-md py-2 px-6 inline-flex items-center">
                                     <span className="">Register</span>
-
                                 </Link>
                             </div>
-
                         </div>
                         <div className="w-full md:w-1/2 py-10 px-5 md:px-10 z-50">
                             <div className="text-center mb-10">
-
                                 <h1 className="font-bold text-3xl text-gray-900">Login</h1>
                                 <p>Enter your information</p>
                             </div>
-
                             <div>
-
                                 <div className="flex -mx-3 z-50">
                                     <div className="w-full px-3 mb-5 z-50">
                                         <label htmlFor="" className="text-xs font-semibold px-1">Email</label>
@@ -127,10 +113,8 @@ const Login = ({ login }) => {
                                         </div>
                                     </div>
                                 </div>
-
                                 <div className="flex -mx-3">
                                     <div className="w-full px-3 mb-12 relative">
-
                                         <label htmlFor="" className="text-xs font-semibold px-1">Password</label>
                                         <div className="flex">
                                             <div className="w-10 z-10 pl-1 text-center pointer-events-none flex items-center justify-center"><i className="mdi mdi-lock-outline text-gray-400 text-lg"></i></div>
@@ -143,21 +127,20 @@ const Login = ({ login }) => {
                                                 onChange={e => onChange(e)}
                                                 minLength='8'
                                                 required />
-
                                         </div>
                                         <a href="" className='absolute  right-0  right-0'>  <p className='  text-xs my-3 mr-4 '>Forgot password?</p> </a>
                                     </div>
                                 </div>
                                 <div className="flex justify-center pt-7 mb-5">
                                     <div className="w-full sm:ml-8 mb-5 text-center sm:pr-8">
-                                        <button onClick={handleSubmit} className=" inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800">
+                                        <button onClick={loginAccount} className=" inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800">
                                             <span className=" w-[13rem] py-3.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
                                                 Login
                                             </span>
                                         </button>
+                                        
                                     </div>
                                 </div>
-
                                 <div className='flex flex-col text-center items-center'>
                                     <p className='text-xs'>or connect with social media</p>
                                     <button type="button" className="my-5 text-white bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55 mr-2 mb-2">
@@ -169,17 +152,10 @@ const Login = ({ login }) => {
                         </div>
                     </div>
                 </div>
-
             </div>
-
         </div>
     )
 }
 
-const mapStateToProps = state => ({
-    isAuthenticated: state.auth.isAuthenticated
-
-});
-
-export default connect(mapStateToProps, { login })(Login);
+export default Login;
 

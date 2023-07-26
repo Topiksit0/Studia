@@ -1,11 +1,12 @@
-import { useEffect, useState, React } from 'react';
+import { useState, React } from 'react';
 import { SettingsBreadcrumb } from './SettingsBreadcrumb';
 import { motion } from 'framer-motion';
-import Swal from 'sweetalert2';
 import { NotImplemented } from '../../../shared/elements/NotImplemented';
-import { useSelector } from 'react-redux';
+import { API } from "../../../constant";
+import { Toast } from "../../../shared/elements/Toasts";
+import { getToken } from "../../../helpers";
 
-export const SettingContent = ({ selectedOption, user, setSelectedOption }) => {
+export const SettingContent = ({ selectedOption, setSelectedOption }) => {
     const [isOldPasswordHidden, setOldPasswordHidden] = useState(true)
     const [isNewPasswordHidden, setNewPasswordHidden] = useState(true)
     const [isNewRePasswordHidden, setNewRePasswordHidden] = useState(true)
@@ -13,8 +14,6 @@ export const SettingContent = ({ selectedOption, user, setSelectedOption }) => {
     const [currentPassword, setCurrentPassword] = useState('')
     const [newPassword, setNewPassword] = useState('')
     const [newPasswordRepeat, setNewPasswordRepeat] = useState('')
-
-    const accessToken = useSelector(state => state.auth.access);
 
     const contactMethods = [
         {
@@ -42,63 +41,42 @@ export const SettingContent = ({ selectedOption, user, setSelectedOption }) => {
     };
     const transition = { duration: 0.3 };
 
-    function changePasswordButton() {
-        fetch(`http://localhost:8000/api/accounts/users/${user.id}/change-password/`, {
-            method: 'POST',
-            withCredentials: true,
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${accessToken}`
-            },
-            body: JSON.stringify({
-                current_password: currentPassword,
-                new_password: newPassword,
-                new_password_repeat: newPasswordRepeat,
-            }),
-        }).then((response) => {
-            if (response.ok) {
-                Swal.mixin({
-                    toast: true,
-                    position: 'top-end',
-                    showConfirmButton: false,
-                    timer: 3000,
-                    timerProgressBar: true,
-                    didOpen: (toast) => {
-                        toast.addEventListener('mouseenter', Swal.stopTimer)
-                        toast.addEventListener('mouseleave', Swal.resumeTimer)
-                    }
-                }).fire({
-                    icon: 'success',
-                    text: 'Password has been updated',
-                    title: 'Success!'
-                })
-                setSelectedOption('help')
-            } else {
-                response.json().then((data) => {
-                    console.log();
-                    Swal.mixin({
-                        toast: true,
-                        position: 'top-end',
-                        showConfirmButton: false,
-                        timer: 3000,
-                        timerProgressBar: true,
-                        didOpen: (toast) => {
-                            toast.addEventListener('mouseenter', Swal.stopTimer)
-                            toast.addEventListener('mouseleave', Swal.resumeTimer)
-                        }
-                    }).fire({
-                        icon: 'error',
-                        text: data['detail'],
-                        title: 'Failure'
-                    })
-                });
+
+    const changePasswordButton = async (data) => {
+
+        try {
+            const response = await fetch(`${API}/auth/change-password`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${getToken()}`,
+                },
+                body: JSON.stringify({
+                    currentPassword: currentPassword,
+                    password: newPassword,
+                    passwordConfirmation: newPasswordRepeat,
+                }),
+            });
+            const responseData = await response.json();
+            if (response.status !== 200) {
+                throw responseData;
             }
+            Toast.fire({
+                icon: 'success',
+                text: 'Password has been updated',
+                title: 'Success!'
+            })
+            setSelectedOption('help')
+            
+        } catch (error) {
+            console.log(error.error);
+            Toast.fire({
+                icon: 'error',
+                text: error.error.message,
+                title: 'Failure'
+            })
         }
-        ).catch((error) => {
-            console.error('Error de red al intentar cambiar la contraseña:', error);
-        });
-    }
+    };
 
     return (
         <div>

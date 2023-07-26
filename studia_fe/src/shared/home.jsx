@@ -1,18 +1,21 @@
-import React from 'react'
+import { useEffect, React } from "react";
 import bg_img from '../assets/mbpng2.png'
+import { useNavigate } from "react-router-dom";
 import { MdSchool } from 'react-icons/md';
 import { RiSurveyFill } from 'react-icons/ri';
-import { AuthHandler } from './elements/AuthHandler';
-
 import { FaSchool } from 'react-icons/fa';
-
+import { useAuthContext } from "../context/AuthContext";
+import { checkAuthenticated } from '../helpers'
 import './styles/home.css'
 
-
-
-
 const Home = () => {
-    AuthHandler();
+    const { user } = useAuthContext();
+    const navigate = useNavigate();
+
+    if (checkAuthenticated) {
+        navigate("/app/courses/");
+    }
+
 
     return (
         <div className='bg-[#f2f2f2]'>
@@ -51,8 +54,6 @@ const Home = () => {
                                 </g>
                             </svg>
                         </div>
-
-
                     </div>
                 </header>
                 <div class="relative items-center justify-center w-full overflow-x-hidden lg:pt-40 lg:pb-40 xl:pt-40 xl:pb-64 h-screen ">
@@ -74,9 +75,7 @@ const Home = () => {
                                         </span>
                                     </button>
                                 </a>
-
                             </div>
-
                             <div class="flex-col hidden mt-12 sm:flex lg:mt-24">
                                 <div class="flex flex-wrap gap-x-8 h-[11rem] gap-8 ">
                                     <a href="/auth/register">
@@ -90,7 +89,6 @@ const Home = () => {
                                             </div>
                                         </div>
                                     </a>
-
                                     <a href="https://www.ub.edu/campusvirtualub/ca/content/et-cal-ajuda">
                                         <div className='shadow-lg  bg-white grid text-center cursor-pointer  shadow2 rounded-md w-40'>
                                             <div className=' from-[#657DE9] h-[12rem] to-[#6e66d6] bg-gradient-to-r rounded-md flex flex-col'>
@@ -103,20 +101,17 @@ const Home = () => {
                                             </div>
                                         </div>
                                     </a>
-
                                     <a href="https://forms.office.com/pages/responsepage.aspx?id=qzwxosOxOk-7ESFXRH3btJgz-3XbAEBHsUehETyC1ApUQjJKSEhPNVlWV1pXRlYwTlVVT0cwMElIOC4u">
                                         <div className='shadow-lg  bg-white grid text-center cursor-pointer shadow2  rounded-md w-40'>
                                             <div className=' from-[#657DE9] h-[12rem] to-[#6e66d6] bg-gradient-to-r rounded-md flex flex-col'>
                                                 <div>
                                                     <RiSurveyFill className='inline text-white my-3' size={50} />
                                                 </div>
-
                                                 <h1 className='font-semibold text-white px-3'>Help us to improve</h1>
                                                 <p className='text-xs text-white py-2  px-3'>Complete the survey and help us to improve the teaching platform.</p>
                                             </div>
                                         </div>
                                     </a>
-
                                 </div>
                             </div>
                             <svg class="absolute left-0 max-w-md mt-24 -ml-64 left-svg" viewBox="0 0 423 423"
@@ -153,10 +148,8 @@ const Home = () => {
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
-
         </div >
     )
 }

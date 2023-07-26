@@ -1,20 +1,15 @@
 import { useEffect, useState, React } from 'react';
-import { connect } from 'react-redux';
-import { checkAuthenticated, load_user } from '../../../actions/auth';
 
+import { useAuthContext } from "../../../context/AuthContext";
 import { Sidebar } from '../../../shared/elements/Sidebar';
 import { Navbar } from '../../../shared/elements/Navbar';
 import SidebarSetting from '../components/SidebarSetting';
 import { SettingContent } from '../components/SettingContent';
 
-const Settings = ({ user, isAuthenticated, checkAuthenticated, load_user }) => {
+const Settings = () => {
   const [selectedOption, setSelectedOption] = useState('help');
-  useEffect(() => {
-    checkAuthenticated();
-    load_user();
-  }, []);
-
-
+  const { user } = useAuthContext();
+  
   return (
     <div className='h-screen w-full bg-white'>
       <Navbar user={user} />
@@ -29,7 +24,6 @@ const Settings = ({ user, isAuthenticated, checkAuthenticated, load_user }) => {
               <div className='p-2 w-full'>
                 <SettingContent selectedOption={selectedOption} user={user} setSelectedOption={setSelectedOption}/>
               </div>
-
             </div>
           </div>
         </div>
@@ -39,9 +33,4 @@ const Settings = ({ user, isAuthenticated, checkAuthenticated, load_user }) => {
   )
 }
 
-const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated,
-  user: state.auth.user
-});
-
-export default connect(mapStateToProps, { checkAuthenticated, load_user })(Settings);
+export default Settings;
