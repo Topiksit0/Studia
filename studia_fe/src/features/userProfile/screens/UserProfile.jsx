@@ -1,16 +1,28 @@
 import { useEffect, useState, React } from 'react';
-import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { checkAuthenticated, load_user } from '../../../actions/auth';
+import { useNavigate } from 'react-router-dom';
 import { Sidebar } from '../../../shared/elements/Sidebar';
 import { Navbar } from '../../../shared/elements/Navbar';
 import { Tag } from '../../../shared/elements/Tag';
+import { API } from "../../../constant";
+import { useAuthContext } from "../../../context/AuthContext";
 import { EditPanel } from '../components/EditPanel';
 import { CoursesCardsProfile } from '../components/CoursesCardsProfile';
+import { checkAuthenticated } from "../../../helpers";
 
-const UserProfile = ({ user, isAuthenticated, checkAuthenticated, load_user }) => {
+const UserProfile = () => {
   const [courses, setCourses] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const { user } = useAuthContext();
+  const [userProfile, setUserProfile] = useState([]);
+  let { uid } = useParams();
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!checkAuthenticated()) {
+      navigate('/');
+    }
+  }, []);
 
   const handleOpenModal = () => {
     setShowModal(true);
@@ -18,9 +30,6 @@ const UserProfile = ({ user, isAuthenticated, checkAuthenticated, load_user }) =
   const handleCloseModal = () => {
     setShowModal(false);
   };
-
-  const [userProfile, setUserProfile] = useState([]);
-  let { uid } = useParams();
 
   function renderCourseCard(course) {
     return (
@@ -30,30 +39,31 @@ const UserProfile = ({ user, isAuthenticated, checkAuthenticated, load_user }) =
     )
   }
 
-  useEffect(() => {
-    checkAuthenticated();
-    load_user();
-  }, []);
 
-  useEffect(() => {
-    const link = "http://localhost:8000/api/accounts/users/" + uid + "/courses/";
-    fetch(link)
+  function fetchCoursesCards() {
+    fetch(`${API}/users/${user.id}?populate=courses.cover,courses.students,courses.professor,courses.professor.profile_photo&fields[]=courses`)
       .then((res) => res.json())
       .then((data) => {
         setCourses(data);
       })
       .catch((error) => console.error(error));
-  }, [user, uid]);
+  }
 
-  useEffect(() => {
-    const link = "http://localhost:8000/api/accounts/users/" + uid + "/";
-    fetch(link)
+  function fetchUserProfile() {
+    fetch(`${API}/users/${user.id}?populate=*`)
       .then((res) => res.json())
       .then((data) => {
         setUserProfile(data);
       })
       .catch((error) => console.error(error));
-  }, [user, uid]);
+  }
+
+  useEffect(() => {
+    if (user) {
+      fetchCoursesCards();
+      fetchUserProfile();
+    }
+  }, []);
 
   return (
     <div className='h-screen w-full bg-white'>
@@ -75,10 +85,10 @@ const UserProfile = ({ user, isAuthenticated, checkAuthenticated, load_user }) =
                 <div
                   className="absolute top-0 w-full h-full bg-center bg-cover lg:rounded-tl-3xl"
                   style={{
-                    backgroundImage: `url(${userProfile.landscape_photo})`
+                    backgroundImage: `url(${userProfile?.landscape_photo?.url})`
                   }}
-
                 >
+
                   <span
                     id="blackOverlay"
                     className="w-full h-full absolute opacity-50 bg-black lg:rounded-tl-3xl"
@@ -93,17 +103,24 @@ const UserProfile = ({ user, isAuthenticated, checkAuthenticated, load_user }) =
                       <div className="flex flex-wrap justify-center">
                         <div className="w-full lg:w-3/12 px-4 lg:order-2 flex justify-center">
                           <div className="relative">
-                            <img
-                              alt="..."
-                              src={userProfile && userProfile.profile_photo}
-                              className="shadow-xl rounded-full h-auto align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-150-px"
-                            />
+                            {userProfile && userProfile.profile_photo ? (
+                              <img
+                                src={userProfile && userProfile.profile_photo.url}
+                                className="shadow-xl rounded-full h-auto align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-150-px"
+                                alt=""
+                              />
+                            ) : (
+                              <div></div>
+                            )}
                           </div>
                         </div>
 
                         <div className="w-full lg:w-4/12 px-4  flex justify-end lg:order-2 lg:text-right lg:self-center">
-                          <button name='editButton' onClick={handleOpenModal}
-                            className={`p-2.5 lg:m-4 mt-8 bg-indigo-500 rounded-xl hover:rounded-3xl hover:bg-indigo-600  text-white ${user.id !== userProfile.id ? 'invisible opacity-0' : ''}`}
+                          <button
+                            name='editButton'
+                            onClick={handleOpenModal}
+                            className={`p-2.5 lg:m-4 mt-8 bg-indigo-500 rounded-xl hover:rounded-3xl hover:bg-indigo-600 text-white ${user?.id !== userProfile?.id ? 'invisible opacity-0' : ''
+                              }`}
                           >
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                               <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -121,7 +138,7 @@ const UserProfile = ({ user, isAuthenticated, checkAuthenticated, load_user }) =
                         </h3>
 
                         <h3 className="text-xl font-medium leading-normal text-blueGray-500 mb-7">
-                          <p>{userProfile && userProfile.user_name}</p>
+                          <p>{userProfile && userProfile.username}</p>
                         </h3>
                         <div className="mb-2 text-blueGray-600 flex justify-center">
                           <i className="fas fa-university mr-2 text-lg text-blueGray-400" />
@@ -139,7 +156,7 @@ const UserProfile = ({ user, isAuthenticated, checkAuthenticated, load_user }) =
                       </div>
                       <div className='border-t '>
                         <div className='my-4 flex flex-col justify-center items-center'>
-                          {courses && courses.map(renderCourseCard)}
+                          {courses.courses && courses.courses.map(renderCourseCard)}
                         </div>
                       </div>
                     </div>
@@ -154,9 +171,4 @@ const UserProfile = ({ user, isAuthenticated, checkAuthenticated, load_user }) =
   )
 }
 
-const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated,
-  user: state.auth.user
-});
-
-export default connect(mapStateToProps, { checkAuthenticated, load_user })(UserProfile);
+export default UserProfile;

@@ -8,8 +8,6 @@ export const Navbar = () => {
     const navigate = useNavigate();
     const { user } = useAuthContext();
 
-    console.log(user)
-
     return (
         <div>
             <nav className="h-[8rem] bg-white">

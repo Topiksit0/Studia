@@ -37,7 +37,7 @@ const AuthProvider = ({ children }) => {
       fetchLoggedInUser(authToken);
     }
   }, [authToken]);
-  console.log(userData)
+  
   return (
     <AuthContext.Provider
       value={{ user: userData, setUser: handleUser, isLoading }}

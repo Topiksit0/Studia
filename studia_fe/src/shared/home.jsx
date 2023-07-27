@@ -4,18 +4,17 @@ import { useNavigate } from "react-router-dom";
 import { MdSchool } from 'react-icons/md';
 import { RiSurveyFill } from 'react-icons/ri';
 import { FaSchool } from 'react-icons/fa';
-import { useAuthContext } from "../context/AuthContext";
 import { checkAuthenticated } from '../helpers'
 import './styles/home.css'
 
 const Home = () => {
-    const { user } = useAuthContext();
     const navigate = useNavigate();
 
-    if (checkAuthenticated) {
-        navigate("/app/courses/");
-    }
-
+    useEffect(() => {
+        if (checkAuthenticated()) {
+          navigate("/app/courses/");
+        }
+      }, [checkAuthenticated]); 
 
     return (
         <div className='bg-[#f2f2f2]'>

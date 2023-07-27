@@ -1,4 +1,5 @@
 import { useEffect, useState, React } from 'react';
+import { useNavigate } from 'react-router-dom'; 
 import { motion } from 'framer-motion';
 import 'react-loading-skeleton/dist/skeleton.css'
 import '../styles/utils.css'
@@ -8,10 +9,12 @@ import { CoursesCardHome } from '../components/CoursesCardHome';
 import { Navbar } from '../../../shared/elements/Navbar';
 import { Spin } from "antd";
 import { API } from "../../../constant";
+import { checkAuthenticated } from "../../../helpers";
 
 const CoursesHome = () => {
   const [courses, setCourses] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const variants = {
     hidden: { opacity: 0, y: 20 },
@@ -19,6 +22,13 @@ const CoursesHome = () => {
   };
   const transition = { duration: 0.6 };
   const { user } = useAuthContext();
+
+
+  useEffect(() => {
+    if(!checkAuthenticated()){
+      navigate('/');
+    }
+  }, []);
 
   const fetchCoursesCards = async () => {
     setIsLoading(true);

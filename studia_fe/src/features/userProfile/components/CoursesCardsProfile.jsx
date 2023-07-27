@@ -13,7 +13,7 @@ export const CoursesCardsProfile = ({ course, user }) => {
     }
 
     function handleButtonClick(event) {
-        event.stopPropagation(); 
+        event.stopPropagation();
         navigate(`/app/profile/${course.professor.id}/`);
     }
 
@@ -22,10 +22,10 @@ export const CoursesCardsProfile = ({ course, user }) => {
             <div className={`w-full lg:max-w-full lg:flex ${isUserMember ? 'shadow2' : ''} cursor-pointer`}>
                 <div
                     className="h-48 lg:h-auto lg:w-48 flex-none bg-cover rounded-l text-center overflow-hidden"
-                    style={{ backgroundImage: `url(${course.course_photo})` }}
+                    style={{ backgroundImage: `url(${course?.cover?.url})` }}
                     title=""
-                ></div>
-
+                >
+                </div>
                 <div className="border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
                     <div className="mb-8">
                         {!isUserMember && (
@@ -51,7 +51,7 @@ export const CoursesCardsProfile = ({ course, user }) => {
                         <button className='flex items-center' onClick={handleButtonClick}>
                             <img
                                 className="w-10 h-10 rounded-full mr-4"
-                                src={course.professor.profile_photo}
+                                src={course.professor.profile_photo.url}
                                 alt="Avatar of Writer"
                             />
                             <div className="text-sm">

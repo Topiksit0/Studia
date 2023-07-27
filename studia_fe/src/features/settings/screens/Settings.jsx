@@ -1,5 +1,6 @@
 import { useEffect, useState, React } from 'react';
-
+import { checkAuthenticated } from "../../../helpers";
+import { useNavigate } from 'react-router-dom'; 
 import { useAuthContext } from "../../../context/AuthContext";
 import { Sidebar } from '../../../shared/elements/Sidebar';
 import { Navbar } from '../../../shared/elements/Navbar';
@@ -9,7 +10,15 @@ import { SettingContent } from '../components/SettingContent';
 const Settings = () => {
   const [selectedOption, setSelectedOption] = useState('help');
   const { user } = useAuthContext();
-  
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!checkAuthenticated()) {
+      navigate('/');
+    }
+  }, []);
+
+
   return (
     <div className='h-screen w-full bg-white'>
       <Navbar user={user} />
@@ -19,10 +28,10 @@ const Settings = () => {
           <div className=' font-bold text-2xl h-full '>
             <div className='flex h-full  space-x-5'>
               <div className=' w-96 h-full rounded-tl-3xl flex flex-col'>
-                <SidebarSetting  selectedOption={selectedOption} setSelectedOption={setSelectedOption}/>
+                <SidebarSetting selectedOption={selectedOption} setSelectedOption={setSelectedOption} />
               </div>
               <div className='p-2 w-full'>
-                <SettingContent selectedOption={selectedOption} user={user} setSelectedOption={setSelectedOption}/>
+                <SettingContent selectedOption={selectedOption} user={user} setSelectedOption={setSelectedOption} />
               </div>
             </div>
           </div>

@@ -1,10 +1,7 @@
 import { useRoutes } from 'react-router-dom'
 import { protectedRoutes } from './protected';
 import { publicRoutes } from './public';
-import { useSelector } from 'react-redux';
 import { checkAuthenticated } from '../helpers';  
-import { useAuthContext } from "../context/AuthContext";
-
 import Home from '../shared/home';
 import Page404Screen from '../features/404/screens/Page404Screen';
 
